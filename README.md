@@ -1,4 +1,4 @@
-# 创新实践b之究极无敌webgal制作小组（暂定）
+# 创新实践b知识问答系统的开发
 
 
 
@@ -10,20 +10,17 @@
 
 **21334129 徐壮**
 
+**2101xxxx 陶扬元**
+
 # **项目的技术栈**（目前）
 
-**webgal的开发文档** ：https://docs.msfasr.com/guide/
+**前端**：Vue3 + Ts + Vite + pinia + elementUI(当然如果自己能写好看的样式更好)
 
-**一些前端的基本知识(html,css,js)**
+**后端：**Python + node.js的组合式开发 主要是搭路由和写接口
 
-- **MDN文档 ：** https://developer.mozilla.org/zh-CN/
-- **我整理的笔记：** https://github.com/apprehen/Web-student
+# 项目介绍
 
-**Ai绘画（novelai）：**
+项目主要由 https://github.com/circlestarzero/EX-chatGPT 所提供的本地接口转化成api提供给接口供前端使用，主要功能能对话,且可以发送文档学习提供信息等功能
 
- - 本地部署：https://zhuanlan.zhihu.com/p/571731191
 
-**Live2D制作立绘：**
 
- - 官方文档：https://www.live2d.com/zh-CHS/ 
- - 学习教程：https://www.bilibili.com/read/cv6747751
