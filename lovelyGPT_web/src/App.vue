@@ -4,7 +4,7 @@
 <template>
 <h1> 这是lovelyGPT的前端项目捏  </h1>
 <h1>hhh</h1>
-<h2>11111</h2>
+<h2>11111222</h2>
 <img src="./assets/test.jpg" alt="">
 </template>
 
