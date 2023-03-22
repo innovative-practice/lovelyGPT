@@ -1,21 +1,45 @@
-<script setup>
+<template>
+  <div class="app">
+    <!-- <h1>lovelyGPT</h1>
+    <img class="women" src="./assets/test.jpg" alt="哪来的女人" >
+    <Home></Home> -->
+  </div>
+</template> 
+
+<script  setup>
+import Home from './components/home.vue';
+
 </script>
 
-<template>
-<h1> 这是lovelyGPT的前端项目捏  </h1>
-<h1>hhh</h1>
-<h2>11111222</h2>
-<img src="./assets/test.jpg" alt="">
-</template>
+<style scoped lang="css">
+*{
+  margin:0;
+  padding:0;
+}
 
-<style scoped>
+li{
+  list-style:none;
+}
+
+img{
+  vertical-align:top;
+  border:none;
+}
 h1{
-  width: 100%;
-  /* color: red; */
-  font-weight: bold;
   text-align: center;
 }
-img {
-  width: 500px;
+
+.app{ 
+  width: 100%;
+  height: 500px;
+  background-color: rgb(72, 75, 75);
 }
+
+.women{
+  width: 600px;
+  height: 1000px;
+}
+
+
+
 </style>
