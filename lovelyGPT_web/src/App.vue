@@ -1,14 +1,12 @@
 <template>
   <div class="app">
-    <!-- <h1>lovelyGPT</h1> -->
-    <!-- <img class="women" src="./assets/test.jpg" alt="哪来的女人" > -->
-    <!-- <Home></Home> -->
+    <h1 class="title">LovelyGPT</h1>
+    <Home></Home>
   </div>
 </template> 
 
 <script  setup>
 import Home from './views/home.vue';
-
 
 </script>
 
@@ -16,22 +14,14 @@ import Home from './views/home.vue';
 
 h1{
   text-align: center;
+  font-size: 30px;
 }
 
 .app{
-  margin-top: 0px;
   width: 100%;
   height: 100vh; 
-  /* margin-top: -10px; */
-  /* background-color: rgb(72, 75, 75); */
-  background-color: rgb(57, 55, 55);
+  background-color: rgb(150, 156, 165);
 }
-
-.women{
-  width: 600px;
-  height: 1000px;
-}
-
 
 
 </style>
