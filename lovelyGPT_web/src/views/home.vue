@@ -1,9 +1,12 @@
 <template>
     <div class="home">
         <el-container height="100%">
-            <el-aside width="100px">
+            <el-aside width="90px">
                 <Nav></Nav>
             </el-aside>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </div>
 </template>
@@ -23,6 +26,6 @@ import Nav from "../components/Nav.vue"
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-
 }
+
 </style>
