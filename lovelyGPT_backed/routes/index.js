@@ -4,6 +4,7 @@ var router = express.Router();
 const multer = require('multer');
 const fs = require('fs')
 const path = require('path')
+// 处理上传文件的函数
 const uploads = multer({
   dest: path.join(__dirname, '../upload'),
   fileFilter(req, file, callback) {
@@ -17,16 +18,24 @@ const uploads = multer({
 // 运行python代码
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
+// 讲读取文件的buffter 转换为gbk编码的中文汉字
 const iconv = require('iconv-lite')
 /* GET home page. */
+// 访问主页的路由
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
+// 访问test的路由
 router.get('/test', function (req, res, next) {
   res.send('test');
 });
 
+// 处理聊天的路由
+router.get('/chat', function (req, res, next) {
+  console.log(req.query);
+})
+
+// 上传文件的路由
 router.post('/DoucQa', uploads.single('file'), function (req, res, next) {
   console.log(req.file);
   const file = req.file;
@@ -39,6 +48,11 @@ router.post('/DoucQa', uploads.single('file'), function (req, res, next) {
   let str = iconv.decode(output, 'gbk')
   console.log(str, '***********');
 })
+
+router.get('/query', (req, res, next) => {
+  console.log(req.query);
+})
+
 
 
 module.exports = router;
