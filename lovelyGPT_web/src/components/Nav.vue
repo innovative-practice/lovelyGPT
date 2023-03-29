@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div class="nav">
         <div class="nav-menu-wrapper">
             <ul class="menu-list">
@@ -6,6 +7,10 @@
                 <el-icon size="45" color="rgb(150, 156, 165)"><Setting /></el-icon>
             </ul>
         </div>
+=======
+    <div>
+
+>>>>>>> c1db235b813bb62173b3082e31d8a21f89504152
     </div>
 </template>
 
