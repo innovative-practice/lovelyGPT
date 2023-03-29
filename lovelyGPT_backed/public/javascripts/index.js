@@ -1,15 +1,55 @@
-const openai = require('openai');
-require('dotenv').config();
-openai.apiKey = process.env.OPENAI_API_KEY;
-// 获得多个特征向量
-async function create_embeddings(input) {
-  let result = []
-  let lens = []
+
+// import { ChatCompletionRequestMessage, Configuration, CreateChatCompletionRequest, OpenAIApi } from 'openai';
+const { Configuration, OpenAIApi } = require('openai')
+
+const model = 'gpt-3.5-turbo';
+
+function getOpenAI() {
+  const configuration = new Configuration({
+    apiKey: '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',
+  });
+  const openai = new OpenAIApi(configuration);
+  return openai;
 }
-// 获得单个的特征向量
-let text = '你说得对，但是《原神》是由米哈游自研的一款全新开放世界冒险RPG。你将在游戏中探索一个被称作「提瓦特」的幻想世界。 在这广阔的世界中，你可以踏遍七国，邂逅性格各异、能力独特的同伴，与他们一同对抗强敌，踏上寻回血亲之路；也可以不带目的地漫游，沉浸在充满生机的世界里，让好奇心驱使自己发掘各个角落的奥秘……'
-async function get_embedding (text) {
-  let embedding = openai.Embeddings.create(model="text-embedding-ada-002", input=text)
-  console.log(embedding)
+
+export async function askChatGPT(requestMessage) {
+  const completion = await getOpenAI().createChatCompletion(
+    getCompletion(requestMessage),
+    // {...getOptions()}
+    {
+      "headers": {
+        'Content-Type': 'application/json',
+        // 'User-Agent': 'LovelyGPT',
+        'Authorization': 'Bearer ' + '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'
+      },
+      "proxy": {
+        "host": '127.0.0.1',
+        "port": 7890,
+        "protocol": 'http'
+      }
+    }
+  );
+  return completion.data.choices[0].message.content;
 }
-get_embedding(text)
+
+function getCompletion(messages) {
+  return {
+    model: model,
+    messages: messages,
+    temperature: 0.5,
+    max_tokens: 512,
+    presence_penalty: 0.6,
+    frequency_penalty: 0.5,
+  }
+}
+
+const messages = [
+  { "role": "system", "content": "You are a helpful assistant." },
+  { "role": "user", "content": "今天天气怎么样" },
+]
+
+askChatGPT(messages).then((response) => {
+  console.log(response);
+}).catch(error => {
+  console.log(error);
+});
