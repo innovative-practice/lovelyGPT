@@ -1,21 +1,11 @@
 <template>
-	<div class="home">
-		<!-- <el-container height="100%">
+    <div class="home">
+        <el-container height="100%">
             <el-aside width="100px">
                 <Nav></Nav>
             </el-aside>
-        </el-container> -->
-		<el-upload v-model:file-list="fileList" class="upload-demo" action="http://127.0.0.1:3000/DoucQa" multiple
-			:on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" :limit="3"
-			:on-exceed="handleExceed">
-			<el-button type="primary">Click to upload</el-button>
-			<template #tip>
-				<div class="el-upload__tip">
-					jpg/png files with a size less than 500KB.
-				</div>
-			</template>
-		</el-upload>
-	</div>
+        </el-container>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -62,14 +52,16 @@ const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
 </script>
 
 <style  scoped lang="css">
-.home {
-	width: 90vw;
-	height: 90vh;
-	/* background-color: rgb(39, 42, 65); */
-	border-radius: 15px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+.home{
+    width:90vw;
+    height:90vh;
+    background-color: rgb(39, 42,65);
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
 }
+
 </style>

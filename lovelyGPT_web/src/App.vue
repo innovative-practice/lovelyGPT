@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <h1 class="title">LovelyGPT</h1>
     <Home></Home>
   </div>
 </template> 
