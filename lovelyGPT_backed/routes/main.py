@@ -6,7 +6,7 @@ from tqdm import tqdm
 import argparse
 import os
 import sys
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 def create_embeddings(input):
@@ -79,7 +79,7 @@ class QA():
             maximum -= l
             if maximum < 0:
                 context = context[:index + 1]
-                print("超过最大长度，截断到前", index + 1, "个片段")
+                # print("超过最大长度，截断到前", index + 1, "个片段")
                 break
 
         text = "\n".join(f"{index}. {text}" for index,
@@ -88,11 +88,11 @@ class QA():
             model="gpt-3.5-turbo",
             messages=[
                 {'role': 'system',
-                 'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答，不能回答不在下文提到的内容，相关性从高到底排序：\n\n{text}'},
+                  'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答，不能回答不在下文提到的内容，相关性从高到底排序：\n\n{text}'},
                 {'role': 'user', 'content': query},
             ],
         )
-        print("使用的tokens：", response.usage.total_tokens)
+        # print("使用的tokens：", response.usage.total_tokens)
         return response.choices[0].message.content
 
 
@@ -105,9 +105,8 @@ if __name__ == '__main__':
     parser.add_argument("--print_context", action='store_true', help="是否打印上下文")
     parser.add_argument("-a", "--inputquery", help="this is parameter a",
                         dest="argA", type=str)
-
+    parser.add_argument("-- conversion")
     args = parser.parse_args()
-
     if os.path.isfile(args.file_embeding):
         data_embe = pickle.load(open(args.file_embeding, 'rb'))
     else:
@@ -116,37 +115,9 @@ if __name__ == '__main__':
             texts = [text.strip() for text in texts if text.strip()]
             data_embe, tokens = create_embeddings(texts)
             pickle.dump(data_embe, open(args.file_embeding, 'wb'))
-            print("文本消耗 {} tokens".format(tokens))
-
+            # print("文本消耗 {} tokens".format(tokens))
     qa = QA(data_embe)
-
     query = args.argA
     limit = 10
-    # while True:
-    #     query = input("请输入查询(help可查看指令)：")
-    #     if query == "quit":
-    #         break
-    #     elif query.startswith("limit"):
-    #         try:
-    #             limit = int(query.split(" ")[1])
-    #             print("已设置limit为", limit)
-    #         except Exception as e:
-    #             print("设置limit失败", e)
-    #         continue
-    #     elif query == "help":
-    #         print("输入limit [数字]设置limit")
-    #         print("输入quit退出")
-    #         continue
     answer, context = qa(query)
     print(answer.strip())
-    # with open('exp.txt', 'w') as f:
-    #     f.write(answer.strip())
-    # if args.print_context:
-    #     print("已找到相关片段：")
-    #     for text in context:
-    #         print('\t', text)
-    #     print("=====================================")
-    # print("回答如下\n\n")
-    # print(answer.strip())
-    # print("=====================================")
-    # f = open('test.pkl','rb')

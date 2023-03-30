@@ -114,7 +114,7 @@ if __name__ == '__main__':
             data_embe, tokens = create_embeddings(texts)
             pickle.dump(data_embe, open(args.file_embeding, 'wb'))
             print("文本消耗 {} tokens".format(tokens))
-
+    print(data_embe)
     qa = QA(data_embe)
 
     limit = 10

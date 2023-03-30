@@ -1,31 +1,8 @@
-起步
-基于promise可以用于浏览器和node.js的网络请求库
-
-Axios 是什么?
-Axios 是一个基于 promise 网络请求库，作用于node.js 和浏览器中。 它是 isomorphic 的(即同一套代码可以运行在浏览器和node.js中)。在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests。
-
-特性
-从浏览器创建 XMLHttpRequests
-从 node.js 创建 http 请求
-支持 Promise API
-拦截请求和响应
-转换请求和响应数据
-取消请求
-自动转换JSON数据
-客户端支持防御XSRF
-安装
-使用 npm:
-
-$ npm install axios
-使用 bower:
-
-$ bower install axios
-使用 yarn:
-
-$ yarn add axios
-使用 jsDelivr CDN:
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-使用 unpkg CDN:
-
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+有一位女孩山田凉，下北泽高校2年级生。结束乐队的贝斯和作曲担当，伊地知虹夏的挚友。
+爱好很远离世俗，是喜欢被别人叫做怪人的怪人。
+贝斯技术高超，之前在另一支乐队担任贝斯手，但因为性格不合选择主动退出。
+平常沉默寡言，但一谈到摇滚就会滔滔不绝。
+虽然看起来冷静镇定，但有些时候内心意外的纤细，压力过大时连人设都会发生翻天覆地的变化（打工时在店里露出灿烂的笑容接待客人）。
+比起盲目的追求流行，更加注重个性，认为“一旦舍弃了个性，就跟死了没区别”。
+虽然在学校里除了虹夏没其他朋友，但不同于社恐的波奇，凉只是喜欢独处（不过即使如此，两人经常也能在音乐方面和一些作为阴角的感想上心有灵犀），同学在邀请凉参加活动时，凉往往会编造各种理由推脱。
+家里是经营医院的所以家境还不错，但她的积蓄全部花在了乐器上，所以没钱的时候会去吃野菜和杂草，甚至会找波奇借钱。
