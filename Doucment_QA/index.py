@@ -80,7 +80,7 @@ class QA():
         for i in range(len(role_Arr)):
             chatRecord_Arr[i] = {
                 'role': role_Arr[i], 'content': content_Arr[i]}
-        # print(chatRecord_Arr)
+        print(chatRecord_Arr)
         maximum = 3000
         for index, l in enumerate(lens):
             maximum -= l
@@ -95,14 +95,19 @@ class QA():
             {'role': 'system',
                 'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答,相关性从高到底排序：\n\n{text}'}
         ]
-        messages.extend(chatRecord_Arr)
+        # messages.extend(chatRecord)
+        # for i in chatRecord:
+        #     # messages.append(i)
+        #     print(i)
         messages.append({'role': 'user', 'content': query})
+        # print(messages)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
         # print("使用的tokens：", response.usage.total_tokens)
-        return response.choices[0].message.content
+        # return response.choices[0].message.content
+        return 1
 
 
 if __name__ == '__main__':
@@ -117,6 +122,7 @@ if __name__ == '__main__':
     parser.add_argument("--chat_record", help="this is cahtred",
                         dest="conversi", type=str)
     args = parser.parse_args()
+    print(args)
     if os.path.isfile(args.file_embeding):
         data_embe = pickle.load(open(args.file_embeding, 'rb'))
     else:
@@ -125,7 +131,6 @@ if __name__ == '__main__':
             texts = [text.strip() for text in texts if text.strip()]
             data_embe, tokens = create_embeddings(texts)
             pickle.dump(data_embe, open(args.file_embeding, 'wb'))
-            # print("文本消耗 {} tokens".format(tokens))
     qa = QA(data_embe)
     query = args.argA
     chatredo = args.conversi
