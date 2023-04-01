@@ -23,23 +23,37 @@
 //   })
 
 // })
-let obj1 = [{ file: "test", record: [{ role: "user", content: "explosion" }] }]
-let obj2 = obj1[0].record
+// let obj1 = [{ file: "test", record: [{ role: "user", content: "explosion" }] }]
+// let obj2 = obj1[0].record
 
-obj2.push({ role: "assitant", content: "你干嘛~" })
-let arr = [
-  { role: "user", content: "explosion" },
-  { role: "assitant", content: "你干嘛~" }
-]
+// obj2.push({ role: "assitant", content: "你干嘛~" })
+// let arr = [
+//   { role: "user", content: "explosion" },
+//   { role: "assitant", content: "你干嘛~" }
+// ]
 // let arr = JSON.stringify(obj1[0].record)
 // let srt = JSON.parse(arr)
 // let arr = [1,2,]
-console.log(arr)
-let str = ''
-obj1[0].record.forEach(ele => {
-  console.log(ele)
-  str += JSON.stringify(ele) + ','
-})
-str = '[' + str + ']'
-console.log(str)
+// console.log(arr)
+// let str = ''
+// obj1[0].record.forEach(ele => {
+//   console.log(ele)
+//   str += JSON.stringify(ele) + ','
+// })
+// str = '[' + str + ']'
+// console.log(str)
 // console.log(typeof `${srt}`)
+
+// let imglist = {
+//   msg: 'explosion'
+// }
+// let chatlist = []
+// imglist.msg = ''
+// chatlist.push(imglist)
+
+//   if (imglist.msg) {
+  
+  //     console.log(imglist.msg)
+  
+  // const timer = setInterval(() => {
+//     clearInterval(timer)

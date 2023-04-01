@@ -122,7 +122,7 @@ import base from "@/api/index";
 import MarkdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
 import html2canvas from 'html2canvas';
-
+import axios from 'axios'
 export default {
   components: {
     HeadPortrait,
@@ -137,11 +137,6 @@ export default {
       return {};
     },
   },
-  watch: {
-    frinedInfo() {
-      this.getFriendChatMsg();
-    },
-  },
   data() {
     return {
       //是否在接收消息中，如果是则true待发送状态，如果是false则是等待消息转圈状态
@@ -153,12 +148,9 @@ export default {
       srcImgList: [],
       recording: false,
       audioChunks: [],
-      screenshot: ""
+      screenshot: "",
+      msgList: ''
     };
-  },
-  mounted() {
-    this.getFriendChatMsg();
-    // console.log(this.friendInfo)
   },
   methods: {
     //截图
@@ -254,24 +246,34 @@ export default {
         message: this.frinedInfo.id + ":" + "客观稍等片刻，马上告诉您！~",
       });
     },
-    //获取聊天记录
-    getFriendChatMsg() {
-      //   let params = {
-      //     frinedId: this.frinedInfo.id,
-      //   };
-      //   getChatMsg(params).then((res) => {
-      //     this.chatList = res;
-      //     this.chatList.forEach((item) => {
-      //       if (item.chatType == 2 && item.extend.imgType == 2) {
-      //         this.srcImgList.push(item.msg);
-      //       }
-      //     });
-      // this.scrollBottom();
-      //   });
-    },
     //发送信息
     sendMsg(msgList) {
       this.chatList.push(msgList);
+      this.scrollBottom();
+    },
+    sendMsgInternal(msgList) {
+      // console.log(msgList);
+      let msgCache = msgList.msg;
+      let msgIndex = 0
+      msgList.msg = ''
+      this.chatList.push(msgList);
+      const timer = setInterval(() => {
+        if (msgIndex >= msgCache.length) {
+          clearInterval(timer)
+          this.scrollBottom();
+          return
+        }
+        if (msgCache.length - msgIndex > 5) {
+          let randWord = Math.floor(Math.random() * 5)
+          for (let i = 0; i < randWord; i++) {
+            msgList.msg += msgCache[msgIndex]
+            msgIndex++
+          }
+        } else {
+          msgList.msg += msgCache[msgIndex]
+          msgIndex++
+        }
+      }, 80)
       this.scrollBottom();
     },
     //发送文字信息
@@ -379,7 +381,7 @@ export default {
         }
         ).then(response => {
           const reader = response.body.getReader();
-
+          console.log('explosion', reader)
           function readStream(reader) {
             return reader.read().then(({ done, value }) => {
               if (done) {
@@ -387,7 +389,6 @@ export default {
               }
               let decodeds = new TextDecoder().decode(value);
               let decodedArray = decodeds.split("data: ")
-
               decodedArray.forEach(decoded => {
                 if (decoded !== "") {
                   if (decoded.trim() === "[DONE]") {
@@ -432,7 +433,7 @@ export default {
         }
         ).then(response => {
           const reader = response.body.getReader();
-
+          console.log('explosion', reader)
           function readStream(reader) {
             return reader.read().then(({ done, value }) => {
               if (done) {
@@ -478,7 +479,6 @@ export default {
 
     //发送表情
     sendEmoji(msg) {
-      console.log(msg)
       const dateNow = JCMFormatDate(getNowTime());
       let chatMsg = {
         headImg: require("@/assets/img/head.jpg"),
@@ -571,7 +571,7 @@ export default {
       e.target.files = null;
     },
     //发送文件
-    sendFile(e) {
+    async sendFile(e) {
       const dateNow = JCMFormatDate(getNowTime());
       let chatMsg = {
         headImg: require("@/assets/img/head.jpg"),
@@ -584,9 +584,9 @@ export default {
         },
         uid: "jcm",
       };
+
       let files = e.target.files[0]; //图片文件名
       chatMsg.msg = files;
-      console.log(files);
       if (files) {
         switch (files.type) {
           case "application/msword":
@@ -615,11 +615,34 @@ export default {
             chatMsg.extend.fileType = 0;
         }
         this.sendMsg(chatMsg);
-
+        // this.sendMsg(chatBeforResMsg);
+        let _this = this
+        try {
+          axios.get('http://127.0.0.1:3000/test')
+            .then(response => {
+              console.log('response', response)
+              let chatResMsg = {
+                headImg: _this.frinedInfo.headImg,
+                name: _this.frinedInfo.id,
+                time: JCMFormatDate(getNowTime()),
+                msg: response.data.data,
+                chatType: 0, //信息类型，0文字，1图片
+                uid: _this.frinedInfo.id, //uid
+              };
+              _this.sendMsgInternal(chatResMsg);
+            })
+        } catch (e) {
+          console.log(e)
+        }
         e.target.files = null;
       }
     }
   },
+  watch: {
+    chatList(oldVal, newVal) {
+
+    }
+  }
 };
 </script>
 

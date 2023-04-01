@@ -31,7 +31,12 @@ router.get('/', function (req, res, next) {
 });
 // 访问test的路由
 router.get('/test', function (req, res, next) {
-  res.send('test');
+  // console.log(req.body);
+  res.send({
+    code: 200,
+    status: 'ok',
+    data: 'explosion!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  })
 });
 
 async function ToMd(files, outfilesPath) {
