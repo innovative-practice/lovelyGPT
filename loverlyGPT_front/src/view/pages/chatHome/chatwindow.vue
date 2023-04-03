@@ -136,6 +136,12 @@ export default {
     default() {
       return {};
     },
+    fileList: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
   },
   data() {
     return {
@@ -149,7 +155,8 @@ export default {
       recording: false,
       audioChunks: [],
       screenshot: "",
-      msgList: ''
+      msgList: '',
+      filesList: []  // 文件名称列表
     };
   },
   methods: {
@@ -251,6 +258,7 @@ export default {
       this.chatList.push(msgList);
       this.scrollBottom();
     },
+    //延时发送消息 --lyf版
     sendMsgInternal(msgList) {
       // console.log(msgList);
       let msgCache = msgList.msg;
@@ -381,7 +389,6 @@ export default {
         }
         ).then(response => {
           const reader = response.body.getReader();
-          console.log('explosion', reader)
           function readStream(reader) {
             return reader.read().then(({ done, value }) => {
               if (done) {
@@ -433,7 +440,6 @@ export default {
         }
         ).then(response => {
           const reader = response.body.getReader();
-          console.log('explosion', reader)
           function readStream(reader) {
             return reader.read().then(({ done, value }) => {
               if (done) {
@@ -584,8 +590,13 @@ export default {
         },
         uid: "jcm",
       };
-
-      let files = e.target.files[0]; //图片文件名
+      let params = new FormData();
+      let files = e.target.files[0]; //文件
+      params.append('file', files)
+      // formdata.append()
+      const header = {
+        'Content-Type': 'multipart/form-data',
+      }
       chatMsg.msg = files;
       if (files) {
         switch (files.type) {
@@ -616,21 +627,51 @@ export default {
         }
         this.sendMsg(chatMsg);
         // this.sendMsg(chatBeforResMsg);
-        let _this = this
         try {
-          axios.get('http://127.0.0.1:3000/test')
-            .then(response => {
-              console.log('response', response)
-              let chatResMsg = {
-                headImg: _this.frinedInfo.headImg,
-                name: _this.frinedInfo.id,
-                time: JCMFormatDate(getNowTime()),
-                msg: response.data.data,
-                chatType: 0, //信息类型，0文字，1图片
-                uid: _this.frinedInfo.id, //uid
-              };
-              _this.sendMsgInternal(chatResMsg);
-            })
+          let response = await axios({
+            url: 'http://127.0.0.1:3000/uploads',
+            method: 'post',
+            data: params,
+            headers: header
+          })
+          let chatResMsg = {
+            headImg: this.frinedInfo.headImg,
+            name: this.frinedInfo.id,
+            time: JCMFormatDate(getNowTime()),
+            msg: response.data.data,
+            chatType: 0, //信息类型，0文字，1图片
+            uid: this.frinedInfo.id, //uid
+          };
+          this.sendMsgInternal(chatResMsg);
+          // 判断文件是否以及在filesList中
+          let isExist = false
+          for (let i = 0; i < this.filesList.length; i++) {
+            if (this.filesList[i].name === files.name) {
+              isExist = true
+              break
+            }
+          }
+          if (!isExist) {
+            // _this.filesList.push(files
+            if (files.type == 'application/pdf') {
+              // _this.pdfUrl = response.data.data
+              this.fileList.push({ imgs: require('@/assets/img/fileImg/pdf.png'), name: files.name })
+            }
+            else if (files.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+              this.fileList.push({ imgs: require('@/assets/img/fileImg/word.png'), name: files.name })
+            } else {
+              this.$message({
+                message: "暂不支持该文件类型(目前可支持的文件只有pdf、word、md)",
+                type: "warning",
+              });
+            }
+          }
+          if (isExist) {
+            this.$message({
+              message: "文件已经存在噢~",
+              type: "warning",
+            });
+          }
         } catch (e) {
           console.log(e)
         }
@@ -639,9 +680,11 @@ export default {
     }
   },
   watch: {
-    chatList(oldVal, newVal) {
-
-    }
+    // filesList: {
+    //   handler: function (newval, oldVal) {
+    //   },
+    //   deep: true
+    // }
   }
 };
 </script>

@@ -17,7 +17,8 @@
     <div class="chatRight">
       <!-- <router-view></router-view> -->
       <div v-if="showChatWindow">
-        <ChatWindow :frinedInfo="chatWindowInfo" :settingInfo="SettingInfo" @personCardSort="personCardSort"></ChatWindow>
+        <ChatWindow :frinedInfo="chatWindowInfo" :settingInfo="SettingInfo" @personCardSort="personCardSort"
+          :fileList.sync="fileList"></ChatWindow>
       </div>
       <div class="showIcon" v-else>
         <span class="iconfont icon-snapchat"></span>
@@ -29,7 +30,7 @@
       <el-card shadow="hover" id="jianbian" style="line-height: 120%;text-align: center;">
         总余额：${{ this.moneryInfo.totalGranted | numFilterReservedTwo }}<br />
         可用余额：${{ this.moneryInfo.totalAvailable | numFilterReservedSix }}<br />
-        消耗余额：${{ moneryInfo.totalUsed | numFilterReservedSix }}<br />
+        消耗余额：${{ this.moneryInfo.totalUsed | numFilterReservedSix }}<br />
       </el-card>
 
       <div class="online-person">
@@ -38,9 +39,8 @@
           <span class="setting" @click="SettingStatus = 1" :class="{ active: SettingStatus === 1 }">图片</span>
           <span class="setting" @click="SettingStatus = 2" :class="{ active: SettingStatus === 2 }">语音</span>
           <span class="setting" @click="SettingStatus = 3" :class="{ active: SettingStatus === 3 }">文件</span>
-
         </div>
-        <div class="s-wrapper">
+        <div class="s-wrapper left-rgiht">
           <div>
             <input class="inputs" v-model="SettingInfo.KeyMsg" placeholder="请输入OpenAI KEY"
               style="width: 100%; margin-left: 0px;margin-right: 0px;" />
@@ -173,7 +173,15 @@
           <!--文件-->
           <el-collapse-transition>
             <div v-show="SettingStatus == 3">
-
+              <div v-for="item, index in fileList" :key="index">
+                <div class="fileshow">
+                  <img :src=item.imgs />
+                  <div class="word">
+                    <span>{{ item.name || '未知' }}</span>
+                    <span>154kb</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </el-collapse-transition>
 
@@ -232,6 +240,8 @@ export default {
       showChatWindow: false,
       //当前窗口的对话模型信息
       chatWindowInfo: {},
+      // 上传文件列表
+      fileList: [],
       imgSizes: [{
         value: '256x256'
       }, {
@@ -332,7 +342,6 @@ export default {
     },
     personCardSort(id) {
       if (id !== this.personList[0].id) {
-        console.log(id);
         let nowPersonInfo;
         for (let i = 0; i < this.personList.length; i++) {
           if (this.personList[i].id == id) {
@@ -344,7 +353,13 @@ export default {
         this.personList.unshift(nowPersonInfo);
       }
     },
+    // 传递文件
   },
+  watch: {
+    fileList: function (newVal, oldVal) {
+      console.log(newVal)
+    }
+  }
 };
 </script>
 
@@ -455,6 +470,7 @@ export default {
         color: rgb(176, 178, 189);
       }
 
+
       .s-wrapper {
         padding-left: 10px;
         height: 65vh;
@@ -471,6 +487,10 @@ export default {
           display: none;
           /* 移动端、pad 上Safari，Chrome，隐藏滚动条 */
         }
+      }
+
+      .left-rgiht {
+        height: 60vh;
       }
     }
   }
@@ -504,5 +524,56 @@ export default {
       }
     }
   }
+}
+
+.fileshow {
+  width: 250px;
+  height: 100px;
+  background-color: rgb(45, 48, 63);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: rgb(33, 36, 54);
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .word {
+    width: 60%;
+    margin-left: 10px;
+    overflow: hidden;
+
+    span {
+      width: 90%;
+      display: inline-block;
+      color: #fff;
+    }
+
+    span:first-child {
+      font-size: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    span:last-child {
+      font-size: 12px;
+      color: rgb(180, 180, 180);
+    }
+  }
+}
+
+v::deep .el-collapse-transition {
+  overflow: hidden;
 }
 </style>

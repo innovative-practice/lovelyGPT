@@ -25,8 +25,6 @@ export default {
     }
   },
   mounted() {
-    // this.isActive()
-    console.log('*******', this.personInfo)
   },
   components: {
     HeadPortrait,

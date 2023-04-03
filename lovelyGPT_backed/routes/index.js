@@ -9,10 +9,9 @@ const uploads = multer({
   dest: path.join(__dirname, '../upload'),
   fileFilter(req, file, callback) {
     // 解决中文名乱码的问题
-    // console.log('变化前', file.originalname)
-    // // file.originalname = Buffer.from(file.originalname, "latin1").toString(
-    // //   "utf8"
-    // // );
+    file.originalname = Buffer.from(file.originalname, "latin1").toString(
+      "utf8"
+    );
     // console.log('变化后', file.originalname)
     callback(null, true);
   },
@@ -35,7 +34,7 @@ router.get('/test', function (req, res, next) {
   res.send({
     code: 200,
     status: 'ok',
-    data: 'explosion!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    data: 'explosion!'
   })
 });
 
@@ -63,23 +62,32 @@ async function ToMd(files, outfilesPath) {
 // 上传文件的路由
 router.post('/uploads', uploads.single('file'), async function (req, res, next) {
   const file = req.file;
-  fs.renameSync(file.path, `upload/${file.originalname}`)
-  file.path = `upload/${file.originalname}`
-  // 将pdf和doc文件转化成md文件
-  const newfileName = file.originalname.split('.')[0]
-  const flag = ToMd(file, `upload/${newfileName}.md`)
-  if (flag) {
-    res.send({
-      code: 200,
-      status: 'ok',
-      data: 'explosion'
-    })
-  } else {
+  try {
+    fs.renameSync(file.path, `upload/${file.originalname}`)
+    file.path = `upload/${file.originalname}`
+    // 将pdf和doc文件转化成md文件
+    const newfileName = file.originalname.split('.')[0]
+    const flag = await ToMd(file, `upload/${newfileName}.md`)
+    if (flag) {
+      res.send({
+        code: 200,
+        status: 'ok',
+        data: 'explosion'
+      })
+    } else {
+      res.send({
+        code: 400,
+        error: '请检查文件类型(目前支持的文件有docx,pdf,md)))',
+        status: 'error',
+        data: '请检查文件类型(目前支持的文件有docx,pdf,md)))'
+      })
+    }
+  } catch (e) {
     res.send({
       code: 400,
-      error: '请检查文件类型(目前支持的文件有docx,pdf,md)))',
+      error: e,
       status: 'error',
-      data: null
+      data: '出错辣'
     })
   }
 })

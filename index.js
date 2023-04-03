@@ -52,8 +52,25 @@
 // chatlist.push(imglist)
 
 //   if (imglist.msg) {
-  
-  //     console.log(imglist.msg)
-  
-  // const timer = setInterval(() => {
+
+//     console.log(imglist.msg)
+
+// const timer = setInterval(() => {
 //     clearInterval(timer)
+
+
+const fs = require('fs/promises')
+
+fs.writeFile('data.txt', 'explosion')
+  .then(() => {
+    console.log('写入成功')
+  })
+  .catch(err => {
+    console.log('写入失败')
+  })
+  // .then((res) => {
+  //   console.log(res.toString())
+  // })
+  // .catch(err => {
+  //   console.log('写入失败')
+  // })
