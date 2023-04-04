@@ -100,42 +100,46 @@ let chatRecord = []
 router.post('/chat', (req, res, next) => {
   const { content, fileName } = req.body
   console.log(content, fileName)
-  let realRecord = []
-  // 如果聊天记录数组中不存在该文件的聊天记录，则添加该文件的聊天记录
-  if (!chatRecord.find(item => item.fileName === fileName)) {
-    chatRecord.push({
-      fileName,
-      record: []
+  try {
+    let realRecord = []
+    // 如果聊天记录数组中不存在该文件的聊天记录，则添加该文件的聊天记录
+    if (!chatRecord.find(item => item.fileName === fileName)) {
+      chatRecord.push({
+        fileName,
+        record: []
+      })
+    }
+    // 将聊天记录添加到对应的文件中
+    chatRecord.forEach(item => {
+      if (item.fileName === fileName) {
+        realRecord = item.record
+        realRecord.push(
+          { "role": 'user', "content": content },
+        )
+      }
+    })
+    // 将realRecord数组对象转化成字符串并赋值
+    let str = ''
+    realRecord.forEach(ele => {
+      str += JSON.stringify(ele) + ','
+    })
+    str = '[' + str + ']'
+    let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
+    ans = iconv.decode(ans, 'gbk')
+    realRecord.push({ 'role': 'assistant', 'content': ans })
+    res.send({
+      code: 200,
+      status: 'ok',
+      data: ans
+    })
+  } catch (e) {
+    res.send({
+      code: 400,
+      error: e,
+      status: 'error',
+      data: '出错辣'
     })
   }
-  // 将聊天记录添加到对应的文件中
-  chatRecord.forEach(item => {
-    if (item.fileName === fileName) {
-      realRecord = item.record
-      realRecord.push(
-        { "role": 'user', "content": content },
-      )
-    }
-  })
-  // 将realRecord数组对象转化成字符串并赋值
-  let str = ''
-  realRecord.forEach(ele => {
-    str += JSON.stringify(ele) + ','
-  })
-  str = '[' + str + ']'
-  let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
-  ans = iconv.decode(ans, 'gbk')
-  realRecord.push({ 'role': 'assistant', 'content': ans })
-  // chatRecord.forEach(item => {
-  //   if (item.fileName === fileName) {
-  //     console.log('item****', item);
-  //   }
-  // })
-  res.send({
-    code: 200,
-    status: 'ok',
-    data: ans
-  })
 })
 
 router.get('/query', (req, res, next) => {

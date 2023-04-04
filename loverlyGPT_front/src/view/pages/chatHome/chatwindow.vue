@@ -141,6 +141,12 @@ export default {
       default() {
         return [];
       }
+    },
+    nowFile: {
+      type: Object,
+      default() {
+        return {};
+      }
     }
   },
   data() {
@@ -347,7 +353,35 @@ export default {
           if (this.frinedInfo.id === "gpt-3.5-turbo" || this.frinedInfo.id === "gpt-3.5-turbo-0301") {
             this.chatCompletion(params, chatBeforResMsg)
           } else {
-            this.completion(params, chatBeforResMsg)
+            if (this.nowFile.name) {
+              // 如果不出意外应该这里没有问题！
+              let data = {
+                content: this.inputMsg,
+                fileName: this.nowFile.name,
+              }
+              axios.post('http:127.0.0.1:3000/chat', data)
+                .then((res) => {
+                  if (res.data.code === 200) {
+                    chatBeforResMsg.msg = res.data.data;
+                    this.sendMsg(chatBeforResMsg);
+                    this.acqStatus = true
+                  } else {
+                    this.$message({
+                      message: "服务器出错了~",
+                      type: "warning",
+                    });
+                  }
+
+                })
+                .catch((err) => {
+                  this.$message({
+                    message: "服务器出错了~",
+                    type: "warning",
+                  });
+                });
+            } else {
+              this.completion(params, chatBeforResMsg)
+            }
           }
         }
         this.$emit('personCardSort', this.frinedInfo.id)
@@ -680,6 +714,9 @@ export default {
     }
   },
   watch: {
+    nowFile: function (newval, oldVal) {
+      // console.log('val', newval)
+    }
   }
 };
 </script>

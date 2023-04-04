@@ -18,7 +18,7 @@
       <!-- <router-view></router-view> -->
       <div v-if="showChatWindow">
         <ChatWindow :frinedInfo="chatWindowInfo" :settingInfo="SettingInfo" @personCardSort="personCardSort"
-          :fileList.sync="fileList"></ChatWindow>
+          :fileList.sync="fileList" :nowFile="nowFile"></ChatWindow>
       </div>
       <div class="showIcon" v-else>
         <span class="iconfont icon-snapchat"></span>
@@ -241,6 +241,8 @@ export default {
       chatWindowInfo: {},
       // 上传文件列表
       fileList: [],
+      // 当前选定的文件
+      nowFile: {},
       imgSizes: [{
         value: '256x256'
       }, {
@@ -358,14 +360,17 @@ export default {
         this.fileList[i].isSelect = 0
       }
       item.isSelect = 1
+      this.nowFile = item
     },
     clearSelect(event) {
       for (let i = 0; i < this.fileList.length; i++) {
         this.fileList[i].isSelect = 0
       }
+      this.nowFile = {}
     },
     deleteFiles(item) {
       this.fileList.splice(this.fileList.indexOf(item), 1)
+      this.nowFile = {}
     }
   },
   watch: {
