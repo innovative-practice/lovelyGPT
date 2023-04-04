@@ -655,10 +655,10 @@ export default {
             // _this.filesList.push(files
             if (files.type == 'application/pdf') {
               // _this.pdfUrl = response.data.data
-              this.fileList.push({ imgs: require('@/assets/img/fileImg/pdf.png'), name: files.name })
+              this.fileList.push({ imgs: require('@/assets/img/fileImg/pdf.png'), name: files.name, isSelect: 0 })
             }
             else if (files.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-              this.fileList.push({ imgs: require('@/assets/img/fileImg/word.png'), name: files.name })
+              this.fileList.push({ imgs: require('@/assets/img/fileImg/word.png'), name: files.name, isSelect: 0 })
             } else {
               this.$message({
                 message: "暂不支持该文件类型(目前可支持的文件只有pdf、word、md)",
@@ -680,11 +680,6 @@ export default {
     }
   },
   watch: {
-    // filesList: {
-    //   handler: function (newval, oldVal) {
-    //   },
-    //   deep: true
-    // }
   }
 };
 </script>

@@ -26,13 +26,11 @@
       </div>
     </div>
     <div class="chatLeft">
-
       <el-card shadow="hover" id="jianbian" style="line-height: 120%;text-align: center;">
         总余额：${{ this.moneryInfo.totalGranted | numFilterReservedTwo }}<br />
         可用余额：${{ this.moneryInfo.totalAvailable | numFilterReservedSix }}<br />
         消耗余额：${{ this.moneryInfo.totalUsed | numFilterReservedSix }}<br />
       </el-card>
-
       <div class="online-person">
         <div class="explosion">
           <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0 }">对话</span>
@@ -40,7 +38,7 @@
           <span class="setting" @click="SettingStatus = 2" :class="{ active: SettingStatus === 2 }">语音</span>
           <span class="setting" @click="SettingStatus = 3" :class="{ active: SettingStatus === 3 }">文件</span>
         </div>
-        <div class="s-wrapper left-rgiht">
+        <div class="s-wrapper left-rgiht" @click="clearSelect">
           <div>
             <input class="inputs" v-model="SettingInfo.KeyMsg" placeholder="请输入OpenAI KEY"
               style="width: 100%; margin-left: 0px;margin-right: 0px;" />
@@ -93,7 +91,6 @@
               <div style="height: 30px;"></div>
             </div>
           </el-collapse-transition>
-
           <!--图片设置-->
           <el-collapse-transition>
             <div v-show="SettingStatus == 1">
@@ -127,9 +124,6 @@
 
             </div>
           </el-collapse-transition>
-
-
-
           <!--音频设置-->
           <el-collapse-transition>
             <div v-show="SettingStatus == 2">
@@ -168,27 +162,32 @@
 
             </div>
           </el-collapse-transition>
-
-
           <!--文件-->
           <el-collapse-transition>
-            <div v-show="SettingStatus == 3">
+            <div v-show="SettingStatus == 3" class="filecontent">
               <div v-for="item, index in fileList" :key="index">
-                <div class="fileshow">
+                <div class="fileshow" @click.stop="selectFiles($event, item, index)"
+                  :class="item.isSelect == 1 ? 'fileactive' : ''">
                   <img :src=item.imgs />
                   <div class="word">
                     <span>{{ item.name || '未知' }}</span>
                     <span>154kb</span>
                   </div>
+                  <div class="delete" @click="deleteFiles(item)">
+                    <svg t="1680574326711" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                      xmlns="http://www.w3.org/2000/svg" p-id="4048" width="32" height="32">
+                      <path
+                        d="M511.89 128.745c-201.852 0-365.49 163.638-365.49 365.49s163.638 365.49 365.49 365.49c201.851 0 365.49-163.637 365.49-365.49s-163.639-365.49-365.49-365.49zM688.52 626.69l-44.188 44.175L511.89 538.41 379.448 670.864 335.26 626.69l132.443-132.455L335.26 361.792l44.152-44.187 132.466 132.454 132.454-132.454 44.188 44.187-132.455 132.455L688.52 626.689z m0 0"
+                        p-id="4049" fill="#030303"></path>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           </el-collapse-transition>
-
         </div>
       </div>
     </div>
-    <!-- <el-col :span="4"><div class="grid-content bg-purple"></div></el-col> -->
   </div>
 </template>
 
@@ -290,6 +289,7 @@ export default {
     },
     numFilterReservedTwo(value) {
       // 截取当前数据到小数点后两位
+
       return parseFloat(value).toFixed(2)
     }
   },
@@ -353,11 +353,26 @@ export default {
         this.personList.unshift(nowPersonInfo);
       }
     },
-    // 传递文件
+    selectFiles(event, item, index) {
+      for (let i = 0; i < this.fileList.length; i++) {
+        this.fileList[i].isSelect = 0
+      }
+      item.isSelect = 1
+    },
+    clearSelect(event) {
+      for (let i = 0; i < this.fileList.length; i++) {
+        this.fileList[i].isSelect = 0
+      }
+    },
+    deleteFiles(item) {
+      this.fileList.splice(this.fileList.indexOf(item), 1)
+    }
   },
   watch: {
-    fileList: function (newVal, oldVal) {
-      console.log(newVal)
+    SettingStatus(newvalue, oldvalue) {
+      if (newvalue != 3) {
+        this.clearSelect()
+      }
     }
   }
 };
@@ -408,6 +423,7 @@ export default {
   color: #fff;
   border-width: 0px;
 }
+
 
 .astrict {
   width: 90%;
@@ -527,8 +543,10 @@ export default {
 }
 
 .fileshow {
+  transition: 0.25s;
   width: 250px;
   height: 100px;
+  position: relative;
   background-color: rgb(45, 48, 63);
   border-radius: 20px;
   display: flex;
@@ -539,8 +557,21 @@ export default {
   cursor: pointer;
   margin-top: 20px;
 
+  .delete {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    transition: all 0.25s;
+    display: none;
+  }
+
   &:hover {
     background-color: rgb(33, 36, 54);
+
+    .delete {
+      display: flex;
+    }
   }
 
   img {
@@ -573,7 +604,11 @@ export default {
   }
 }
 
-v::deep .el-collapse-transition {
-  overflow: hidden;
+.fileactive {
+  background-color: rgb(33, 36, 54);
+
+  .delete {
+    display: flex;
+  }
 }
 </style>
