@@ -113,39 +113,7 @@ export const getModels = token => {
   })
 }
 
-// 完成对话指令
-// export const getChatCompletion = (params,token) => {
-//   return axios({
-//     method: 'post',
-//     baseURL: `${baseUrl}/v1/chat/completions`,
-//     headers: {
-//       'Authorization': 'Bearer ' + token,
-//       'Content-Type': 'application/json'
-//     },
-//     data: params
-//   }).then(res => {
-//     console.log("chatgpt说")
-//     return res.data.choices[0].message.content;
-//   })
-// }
 
-
-// 完成指令
-// export const getCompletion = async (params,token) => {
-//   const response = await axios({
-//     method: 'post',
-//     baseURL: `${baseUrl}/v1/completions`,
-//     headers: {
-//       'Authorization': 'Bearer ' + token,
-//       'Content-Type': 'application/json'
-//     },
-//     responseType: 'text',
-//     stream: true,
-//     data: params
-//   }).then(res => {
-//     return res.data.choices[0].text;
-//   })
-// }
 
 
 // 根据提示创建图像
@@ -304,18 +272,18 @@ export const deleteFineTuneModel = (model, token) => {
 }
 
 // 获取账号余额信息
-export const getMoneyInfo = token => {
-  return axios({
-    method: 'get',
-    baseURL: `${baseUrl}/dashboard/billing/credit_grants`,
-    headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    }
-  }).then(res => {
-    return res.data;
-  })
-}
+// export const getMoneyInfo = token => {
+//   return axios({
+//     method: 'get',
+//     baseURL: `${baseUrl}/dashboard/billing/credit_grants`,
+//     headers: {
+//       'Authorization': 'Bearer ' + token,
+//       'Content-Type': 'application/json'
+//     }
+//   }).then(res => {
+//     return res.data;
+//   })
+// }
 
 
 // 获取聊天信息

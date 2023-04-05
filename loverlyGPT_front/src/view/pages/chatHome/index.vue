@@ -26,11 +26,10 @@
       </div>
     </div>
     <div class="chatLeft">
-      <!-- <el-card shadow="hover" id="jianbian" style="line-height: 120%;text-align: center;">
-        总余额：${{ this.moneryInfo.totalGranted | numFilterReservedTwo }}<br />
-        可用余额：${{ this.moneryInfo.totalAvailable | numFilterReservedSix }}<br />
-        消耗余额：${{ this.moneryInfo.totalUsed | numFilterReservedSix }}<br />
-      </el-card> -->
+      <!-- login.mp4 -->、
+      <video autoplay muted loop id="myVideo">
+        <source src="@/assets/img/login.mp4" type="video/mp4" />
+      </video>
       <div class="online-person">
         <div class="explosion">
           <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0 }">对话</span>
@@ -326,16 +325,6 @@ export default {
         });
       })
     },
-    // 更新当前余额
-    // updateMoneyInfo() {
-    //   getMoneyInfo(this.SettingInfo.KeyMsg).then((res) => {
-    //     this.$nextTick(() => {
-    //       this.moneryInfo.totalGranted = res.total_granted;
-    //       this.moneryInfo.totalUsed = res.total_used;
-    //       this.moneryInfo.totalAvailable = res.total_available;
-    //     })
-    //   })
-    // },
     clickPerson(info) {
       this.showChatWindow = true;
       this.chatWindowInfo = info;
@@ -384,6 +373,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#myVideo {
+  width: 100%;
+  border-radius: 20px;
+  margin: 10px 0;
+}
+
 .inputs {
   width: 65%;
   height: 50px;

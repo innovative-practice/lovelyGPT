@@ -61,6 +61,7 @@ async function ToMd(files, outfilesPath) {
 // 上传文件的路由
 router.post('/uploads', uploads.single('file'), async function (req, res, next) {
   const file = req.file;
+  console.log(file);
   try {
     fs.renameSync(file.path, `upload/${file.originalname}`)
     file.path = `upload/${file.originalname}`

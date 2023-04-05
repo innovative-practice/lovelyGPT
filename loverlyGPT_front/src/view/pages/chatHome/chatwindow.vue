@@ -358,7 +358,7 @@ export default {
               // 如果不出意外应该这里没有问题！
               console.log('EXPLOSION')
               let data = {
-                content: this.inputMsg,
+                content: this.inputMsg.trim(),
                 fileName: this.nowFile.name,
               }
               axios.post('http://127.0.0.1:3000/chat', data)
@@ -368,6 +368,7 @@ export default {
                     this.sendMsg(chatBeforResMsg);
                     this.acqStatus = true
                   } else {
+                    console.log('服务器出错了~')
                     this.$message({
                       message: "服务器出错了~",
                       type: "warning",
@@ -375,6 +376,7 @@ export default {
                   }
                 })
                 .catch((err) => {
+                  console.log('请求出错辣，请检查网络')
                   this.$message({
                     message: "服务器出错了~",
                     type: "warning",
@@ -627,6 +629,7 @@ export default {
       };
       let params = new FormData();
       let files = e.target.files[0]; //文件
+      console.log(files)
       params.append('file', files)
       // formdata.append()
       const header = {
@@ -694,7 +697,11 @@ export default {
             }
             else if (files.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
               this.fileList.push({ imgs: require('@/assets/img/fileImg/word.png'), name: files.name, isSelect: 0 })
-            } else {
+            }
+            else if (files.type == 'application/octet-stream') {
+              this.fileList.push({ imgs: require('@/assets/img/fileImg/txt.png'), name: files.name, isSelect: 0 })
+            }
+            else {
               this.$message({
                 message: "暂不支持该文件类型(目前可支持的文件只有pdf、word、md)",
                 type: "warning",

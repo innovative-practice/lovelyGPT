@@ -93,7 +93,7 @@ class QA():
                          text in enumerate(context))
         messages = [
             {'role': 'system',
-                'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答,相关性从高到底排序：\n\n{text}'}
+             'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答,相关性从高到底排序：\n\n{text}'}
         ]
         messages.extend(chatRecord_Arr)
         messages.append({'role': 'user', 'content': query})
