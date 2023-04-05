@@ -7,7 +7,8 @@ import argparse
 import os
 import re
 import sys
-openai.api_key = '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'
+# openai.api_key = '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'
+openai.api_key = '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'
 
 
 def create_embeddings(input):
@@ -68,7 +69,6 @@ class QA():
         context = []
         for i in list(text_index[0]):
             context.extend(self.data[i:i+5])
-        # context = [self.data[i] for i in list(text_index[0])]
         return context
 
     def completion(self, query, context, chatRecord):

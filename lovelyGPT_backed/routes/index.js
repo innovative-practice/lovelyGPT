@@ -12,7 +12,6 @@ const uploads = multer({
     file.originalname = Buffer.from(file.originalname, "latin1").toString(
       "utf8"
     );
-    // console.log('变化后', file.originalname)
     callback(null, true);
   },
 })
@@ -98,8 +97,9 @@ let chatRecord = []
 
 // 查询文件内容并聊天的路由
 router.post('/chat', (req, res, next) => {
-  const { content, fileName } = req.body
-  console.log(content, fileName)
+  let { content, fileName } = req.body
+  console.log(content)
+  console.log(fileName)
   try {
     let realRecord = []
     // 如果聊天记录数组中不存在该文件的聊天记录，则添加该文件的聊天记录
@@ -124,6 +124,8 @@ router.post('/chat', (req, res, next) => {
       str += JSON.stringify(ele) + ','
     })
     str = '[' + str + ']'
+    fileName = fileName.split('.')[0]
+    console.log(fileName)
     let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
     ans = iconv.decode(ans, 'gbk')
     realRecord.push({ 'role': 'assistant', 'content': ans })
@@ -139,6 +141,7 @@ router.post('/chat', (req, res, next) => {
       status: 'error',
       data: '出错辣'
     })
+    console.log(e)
   }
 })
 

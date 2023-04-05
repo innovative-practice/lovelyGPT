@@ -353,13 +353,15 @@ export default {
           if (this.frinedInfo.id === "gpt-3.5-turbo" || this.frinedInfo.id === "gpt-3.5-turbo-0301") {
             this.chatCompletion(params, chatBeforResMsg)
           } else {
+            console.log(this.nowFile)
             if (this.nowFile.name) {
               // 如果不出意外应该这里没有问题！
+              console.log('EXPLOSION')
               let data = {
                 content: this.inputMsg,
                 fileName: this.nowFile.name,
               }
-              axios.post('http:127.0.0.1:3000/chat', data)
+              axios.post('http://127.0.0.1:3000/chat', data)
                 .then((res) => {
                   if (res.data.code === 200) {
                     chatBeforResMsg.msg = res.data.data;
@@ -371,7 +373,6 @@ export default {
                       type: "warning",
                     });
                   }
-
                 })
                 .catch((err) => {
                   this.$message({
@@ -386,7 +387,7 @@ export default {
         }
         this.$emit('personCardSort', this.frinedInfo.id)
         this.inputMsg = "";
-        this.$parent.updateMoneyInfo();
+        // this.$parent.updateMoneyInfo();
       } else {
         this.$message({
           message: "消息不能为空哦~",
@@ -410,7 +411,7 @@ export default {
       let _this = this
       try {
         await fetch(
-          base.baseUrl + '/v1/chat/completions', {
+          'https://api.openai-proxy.com' + '/v1/chat/completions', {
           method: "POST",
           body: JSON.stringify({
             ...params
@@ -461,7 +462,7 @@ export default {
       let _this = this
       try {
         await fetch(
-          base.baseUrl + '/v1/completions', {
+          'https://api.openai-proxy.com' + '/v1/completions', {
           method: "POST",
           body: JSON.stringify({
             ...params

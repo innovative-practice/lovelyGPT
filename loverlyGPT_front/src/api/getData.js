@@ -92,7 +92,7 @@ export const getModels = token => {
     headers: {
       'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json'
-    }
+    },
   }).then(res => {
     const modelsObj = []
     //获取所有的模型
@@ -323,6 +323,6 @@ export const getChatMsg = params => {
   return axios({
     method: 'post',
     baseURL: `${baseUrl}/friend/chatMsg`,
-    data: params
+    data: params,
   }).then(res => res.data)
 }

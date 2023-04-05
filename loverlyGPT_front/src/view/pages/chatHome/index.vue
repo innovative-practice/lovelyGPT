@@ -26,11 +26,11 @@
       </div>
     </div>
     <div class="chatLeft">
-      <el-card shadow="hover" id="jianbian" style="line-height: 120%;text-align: center;">
+      <!-- <el-card shadow="hover" id="jianbian" style="line-height: 120%;text-align: center;">
         总余额：${{ this.moneryInfo.totalGranted | numFilterReservedTwo }}<br />
         可用余额：${{ this.moneryInfo.totalAvailable | numFilterReservedSix }}<br />
         消耗余额：${{ this.moneryInfo.totalUsed | numFilterReservedSix }}<br />
-      </el-card>
+      </el-card> -->
       <div class="online-person">
         <div class="explosion">
           <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0 }">对话</span>
@@ -314,11 +314,11 @@ export default {
         this.personList = res;
         this.personListCache = res;
         //获取余额信息
-        getMoneyInfo(newVal).then((res) => {
-          this.moneryInfo.totalGranted = res.total_granted;
-          this.moneryInfo.totalUsed = res.total_used;
-          this.moneryInfo.totalAvailable = res.total_available;
-        });
+        // getMoneyInfo(newVal).then((res) => {
+        //   this.moneryInfo.totalGranted = res.total_granted;
+        //   this.moneryInfo.totalUsed = res.total_used;
+        //   this.moneryInfo.totalAvailable = res.total_available;
+        // });
       }).catch(e => {
         this.$message({
           message: "OpenAI Key有问题哦~",
@@ -327,15 +327,15 @@ export default {
       })
     },
     // 更新当前余额
-    updateMoneyInfo() {
-      getMoneyInfo(this.SettingInfo.KeyMsg).then((res) => {
-        this.$nextTick(() => {
-          this.moneryInfo.totalGranted = res.total_granted;
-          this.moneryInfo.totalUsed = res.total_used;
-          this.moneryInfo.totalAvailable = res.total_available;
-        })
-      })
-    },
+    // updateMoneyInfo() {
+    //   getMoneyInfo(this.SettingInfo.KeyMsg).then((res) => {
+    //     this.$nextTick(() => {
+    //       this.moneryInfo.totalGranted = res.total_granted;
+    //       this.moneryInfo.totalUsed = res.total_used;
+    //       this.moneryInfo.totalAvailable = res.total_available;
+    //     })
+    //   })
+    // },
     clickPerson(info) {
       this.showChatWindow = true;
       this.chatWindowInfo = info;
