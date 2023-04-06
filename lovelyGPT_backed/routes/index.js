@@ -126,7 +126,9 @@ router.post('/chat', (req, res, next) => {
     })
     str = '[' + str + ']'
     fileName = fileName.split('.')[0]
-    console.log(fileName)
+    // console.log(fileName)
+    fileName = iconv.encode(fileName, 'utf-8')
+    fileName = iconv.decode(fileName, 'utf-8')
     let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
     ans = iconv.decode(ans, 'gbk')
     realRecord.push({ 'role': 'assistant', 'content': ans })

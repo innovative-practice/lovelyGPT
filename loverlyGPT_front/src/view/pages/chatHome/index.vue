@@ -312,12 +312,6 @@ export default {
         sessionStorage.setItem('OpenAI_key', newVal)
         this.personList = res;
         this.personListCache = res;
-        //获取余额信息
-        // getMoneyInfo(newVal).then((res) => {
-        //   this.moneryInfo.totalGranted = res.total_granted;
-        //   this.moneryInfo.totalUsed = res.total_used;
-        //   this.moneryInfo.totalAvailable = res.total_available;
-        // });
       }).catch(e => {
         this.$message({
           message: "OpenAI Key有问题哦~",
@@ -376,7 +370,8 @@ export default {
 #myVideo {
   width: 100%;
   border-radius: 20px;
-  margin: 10px 0;
+  margin-top: -30px;
+  // margin: 10px 0;
 }
 
 .inputs {

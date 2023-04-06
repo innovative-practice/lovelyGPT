@@ -271,20 +271,6 @@ export const deleteFineTuneModel = (model, token) => {
   })
 }
 
-// 获取账号余额信息
-// export const getMoneyInfo = token => {
-//   return axios({
-//     method: 'get',
-//     baseURL: `${baseUrl}/dashboard/billing/credit_grants`,
-//     headers: {
-//       'Authorization': 'Bearer ' + token,
-//       'Content-Type': 'application/json'
-//     }
-//   }).then(res => {
-//     return res.data;
-//   })
-// }
-
 
 // 获取聊天信息
 export const getChatMsg = params => {
