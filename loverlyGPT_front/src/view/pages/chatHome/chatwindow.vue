@@ -351,7 +351,37 @@ export default {
             uid: this.frinedInfo.id, //uid
           };
           if (this.frinedInfo.id === "gpt-3.5-turbo" || this.frinedInfo.id === "gpt-3.5-turbo-0301") {
-            this.chatCompletion(params, chatBeforResMsg)
+            if (this.nowFile.name) {
+              // 如果不出意外应该这里没有问题！
+              console.log('EXPLOSION')
+              let data = {
+                content: this.inputMsg.trim(),
+                fileName: this.nowFile.name,
+              }
+              axios.post('http://127.0.0.1:3000/chat', data)
+                .then((res) => {
+                  if (res.data.code === 200) {
+                    chatBeforResMsg.msg = res.data.data;
+                    this.sendMsg(chatBeforResMsg);
+                    this.acqStatus = true
+                  } else {
+                    console.log('服务器出错了~')
+                    this.$message({
+                      message: "服务器出错了~",
+                      type: "warning",
+                    });
+                  }
+                })
+                .catch((err) => {
+                  console.log('请求出错辣，请检查网络')
+                  this.$message({
+                    message: "服务器出错了~",
+                    type: "warning",
+                  });
+                });
+            } else {
+              this.chatCompletion(params, chatBeforResMsg)
+            }
           } else {
             console.log(this.nowFile)
             if (this.nowFile.name) {

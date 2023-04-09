@@ -72,7 +72,7 @@ router.post('/uploads', uploads.single('file'), async function (req, res, next) 
       res.send({
         code: 200,
         status: 'ok',
-        data: 'explosion'
+        data: '文件已上传成功,选择右侧文件可以问我问题哦'
       })
     } else {
       res.send({
@@ -138,6 +138,8 @@ router.post('/chat', (req, res, next) => {
       data: ans
     })
   } catch (e) {
+    // token 限制则清空聊天记录
+    reaklRecord = []
     res.send({
       code: 400,
       error: e,
