@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router/index'
 import "./mock/index.js"
+import "./assets/inconfont/iconfont.css"
 
 Vue.use(VueRouter)
 Vue.config.productionTip = false

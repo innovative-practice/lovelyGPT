@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 // 下载文件并保存到本地upload文件夹中
 const multer = require('multer');
+const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
 // 处理上传文件的函数
@@ -37,6 +38,14 @@ router.get('/test', function (req, res, next) {
   })
 });
 
+function guid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+      v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 async function ToMd(files, outfilesPath) {
   // console.log(files, '*********');
   let type = files.mimetype;
@@ -55,6 +64,46 @@ async function ToMd(files, outfilesPath) {
     return 1
   } else {
     return 0
+  }
+}
+
+async function ToVoice(text) {
+  let gptRes = await axios.get(`http://124.221.89.187:3000/chat/${text}`, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+      'Content-Type': 'application/json',
+      'Connection': 'keep-alive'
+    }
+  })
+  console.log('vue中接受的日语', gptRes.data.data)
+  gptRes = gptRes.data.data
+  console.log(gptRes)
+  let data = JSON.stringify({
+    "fn_index": 0,
+    "data": [
+      gptRes,
+      "specialweek",
+      "日本語",
+      1
+    ],
+    "session_hash": guid()
+  });
+  let config = {
+    method: 'post',
+    url: 'http://127.0.0.1:7860/run/predict/',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+      'Content-Type': 'application/json',
+      'Connection': 'keep-alive'
+    },
+    data: data
+  };
+  try {
+    let res = await axios(config)
+    console.log('返回的C盘文件名', res.data.data[1].name)
+    return res.data.data[1].name
+  } catch (e) {
+    return e
   }
 }
 
@@ -126,7 +175,6 @@ router.post('/chat', (req, res, next) => {
     })
     str = '[' + str + ']'
     fileName = fileName.split('.')[0]
-    // console.log(fileName)
     fileName = iconv.encode(fileName, 'utf-8')
     fileName = iconv.decode(fileName, 'utf-8')
     let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
@@ -150,10 +198,31 @@ router.post('/chat', (req, res, next) => {
   }
 })
 
-router.get('/query', (req, res, next) => {
-  console.log(req.query);
+// 将文本转化成语音的路由
+router.get('/toVoice/:text', async (req, res, next) => {
+  const destPath = path.join(__dirname, '../public/video')
+  let text = req.params.text
+  try {
+    console.log('127.0.0.1接受的text', text)
+    let ans = await ToVoice(text)
+    let fileName = ans.replace('C:\\Users\\35143\\AppData\\Local\\Temp\\', '').split('.')[0]
+    // 将ans复制到video文件下面中以http的形式发送给前端播放
+    fs.copyFileSync(ans, path.join(destPath, `${fileName}.mp3`))
+    res.send({
+      code: 200,
+      status: 'ok',
+      data: `http://127.0.0.1:3000/video/${fileName}.mp3  `
+    })
+  } catch (e) {
+    res.send({
+      code: 400,
+      error: e,
+      status: 'error',
+      data: '出错辣'
+    })
+    console.log(e)
+  }
 })
-
 
 
 module.exports = router;

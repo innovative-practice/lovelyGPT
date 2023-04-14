@@ -443,7 +443,7 @@ export default {
       let _this = this
       try {
         await fetch(
-          'https://api.openai-proxy.com' + '/v1/chat/completions', {
+          'https://api.openai.com' + '/v1/chat/completions', {
           method: "POST",
           body: JSON.stringify({
             ...params
@@ -494,7 +494,7 @@ export default {
       let _this = this
       try {
         await fetch(
-          'https://api.openai-proxy.com' + '/v1/completions', {
+          'https://api.openai.com' + '/v1/completions', {
           method: "POST",
           body: JSON.stringify({
             ...params

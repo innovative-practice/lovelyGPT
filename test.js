@@ -1,34 +1,4 @@
-// const axios = require('axios')
-async function askChatGPT(requestMessage) {
-  try {
-    let params = {
-      model: "gpt-3.5-turbo",
-      max_tokens: 2048,
-      temperature: 0.5,
-      top_p: 1,
-      presence_penalty: 0,
-      frequency_penalty: 0,
-      messages: requestMessage,
-    }
-    let response = await fetch(
-      'https://api.openai-proxy.com/v1/chat/completions', {
-      method: "POST",
-      body: JSON.stringify({
-        ...params
-      }),
-      headers: {
-        Authorization: 'Bearer ' + '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',
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-    return response.json()
-  } catch (e) {
-    console.log('error', e)
-    return e
-  }
-}
-
-askChatGPT([{ "role": 'system', 'content': 'you are helpful useful a AI' }, { "role": 'user', 'content': '你好啊！' }]).then((response) => {
-  console.log(response)
-})
+let res = 'C:\\Users\\35143\\AppData\\Local\\Temp\\tmpjmagu5e9.wav'
+// 提取temp文件夹中的文件名
+let fileName = res.replace('C:\\Users\\35143\\AppData\\Local\\Temp\\','').split('.')[0]
+console.log(fileName, typeof fileName)

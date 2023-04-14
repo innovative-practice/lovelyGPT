@@ -26,6 +26,7 @@ export default {
     return {
       menuList: [
         "icon-xinxi",
+        "icon-voice",
         "icon-shezhi",
       ],
       current: 0,
@@ -41,6 +42,11 @@ export default {
           }, () => { });
           break;
         case 1:
+          this.$router.push({
+            name: "Voice",
+          }, () => { });
+          break;
+        case 2:
           this.$router.push({
             name: "Setting",
           }, () => { });
@@ -77,13 +83,15 @@ export default {
         list-style: none;
         cursor: pointer;
         position: relative;
+        font-size: 30px;
 
         .block {
           background-color: rgb(29, 144, 245);
           position: absolute;
+          top: 4px;
           left: -40px;
           width: 6px;
-          height: 25px;
+          height: 35px;
           transition: 0.5s;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
@@ -118,5 +126,9 @@ export default {
   .block {
     opacity: 1 !important;
   }
+}
+
+.iconfont {
+  font-size: 25px;
 }
 </style>

@@ -19,5 +19,10 @@ export default new VueRouter({
             name: "Setting",
             component: Setting
         },
+        {
+            path: "/voice",
+            name: "Voice",
+            component: () => import('../view/pages/voice.vue')
+        }
     ]
 })
