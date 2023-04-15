@@ -75,9 +75,8 @@ async function ToVoice(text) {
       'Connection': 'keep-alive'
     }
   })
-  console.log('vue中接受的日语', gptRes.data.data)
+  // 通过 chatGpt 返回的数据并转化成日语
   gptRes = gptRes.data.data
-  console.log(gptRes)
   let data = JSON.stringify({
     "fn_index": 0,
     "data": [
@@ -100,7 +99,6 @@ async function ToVoice(text) {
   };
   try {
     let res = await axios(config)
-    console.log('返回的C盘文件名', res.data.data[1].name)
     return res.data.data[1].name
   } catch (e) {
     return e
@@ -144,12 +142,9 @@ router.post('/uploads', uploads.single('file'), async function (req, res, next) 
 // 保存聊天记录，并对不同的文件有不同的聊天记录
 let chatRecord = []
 
-
 // 查询文件内容并聊天的路由
 router.post('/chat', (req, res, next) => {
   let { content, fileName } = req.body
-  console.log(content)
-  console.log(fileName)
   try {
     let realRecord = []
     // 如果聊天记录数组中不存在该文件的聊天记录，则添加该文件的聊天记录
@@ -203,7 +198,6 @@ router.get('/toVoice/:text', async (req, res, next) => {
   const destPath = path.join(__dirname, '../public/video')
   let text = req.params.text
   try {
-    console.log('127.0.0.1接受的text', text)
     let ans = await ToVoice(text)
     let fileName = ans.replace('C:\\Users\\35143\\AppData\\Local\\Temp\\', '').split('.')[0]
     // 将ans复制到video文件下面中以http的形式发送给前端播放
@@ -223,6 +217,5 @@ router.get('/toVoice/:text', async (req, res, next) => {
     console.log(e)
   }
 })
-
 
 module.exports = router;

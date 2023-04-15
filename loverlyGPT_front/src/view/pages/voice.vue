@@ -8,11 +8,18 @@
         style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
         rows="3" dir autocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off" autocomplete="off"
         v-model="inputMsg" @keyup.enter="sendText">
-                                                  </textarea>
-      <!--发送-->
-      <div>
+          </textarea>
+      <div v-if="acqStatus">
         <div class="send boxinput" @click="sendText">
           <img src="@/assets/img/emoji/rocket.png" alt="" />
+        </div>
+      </div>
+      <!--等待-->
+      <div v-else>
+        <div class="send boxinput">
+          <div class="spinner">
+            <img src="@/assets/img/shuaxin.png" alt="AI回答中" />
+          </div>
         </div>
       </div>
     </div>
@@ -27,7 +34,7 @@ export default {
     return {
       voiceUrl: '',
       inputMsg: '',
-
+      acqStatus: true
     }
   },
   mounted() {
@@ -36,10 +43,12 @@ export default {
   },
   methods: {
     async sendText() {
-      console.log('this.inputMsg',this.inputMsg)
+      this.acqStatus = false
+      console.log('this.inputMsg', this.inputMsg)
       let res = await axios.get(`http://127.0.0.1:3000/toVoice/${this.inputMsg}`)
       console.log(res.data.data)
       this.voiceUrl = res.data.data
+      this.acqStatus = true
     },
     async getVoice() {
       // this.voiceUrl = await ToVoice(this.inputMsg)
@@ -103,6 +112,22 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
