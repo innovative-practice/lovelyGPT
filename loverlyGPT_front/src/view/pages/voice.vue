@@ -1,14 +1,22 @@
 <template>
   <div class="voice">
-    EXPLOSION!!!
-    <audio :src="voiceUrl" id="liang" controls>
-    </audio>
+    <!-- 遍历语音 -->
+    <div class="chat-content" id="chat-content" ref="chatContent">
+      <div class="chat-wrapper" v-for="(item, index) in voiceUrlList" :key="index">
+        <div v-if="item.flag === 1">
+          <Explosion :voiceUrl="item.url" controls></Explosion>
+        </div>
+        <div v-if="item.flag === 2">
+          <chat :yueyunchat="item.url"></chat>
+        </div>
+      </div>
+    </div>
     <div class="bottom">
       <textarea id="textareaMsg" class="inputs"
         style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
         rows="3" dir autocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off" autocomplete="off"
         v-model="inputMsg" @keyup.enter="sendText">
-          </textarea>
+                              </textarea>
       <div v-if="acqStatus">
         <div class="send boxinput" @click="sendText">
           <img src="@/assets/img/emoji/rocket.png" alt="" />
@@ -27,43 +35,90 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
+import Explosion from '@/components/Explosion.vue'
+import chat from '@/components/chat.vue'
 export default {
   name: "voice",
+  components: {
+    Explosion,
+    chat
+  },
   data() {
     return {
-      voiceUrl: '',
+      voiceUrl: '123',
       inputMsg: '',
-      acqStatus: true
+      acqStatus: true,
+      voiceUrlList: []
     }
   },
   mounted() {
-    // console.log(ToVoice('呀哈喽'))
 
   },
   methods: {
     async sendText() {
-      this.acqStatus = false
-      console.log('this.inputMsg', this.inputMsg)
-      let res = await axios.get(`http://127.0.0.1:3000/toVoice/${this.inputMsg}`)
-      console.log(res.data.data)
-      this.voiceUrl = res.data.data
-      this.acqStatus = true
+      if (this.inputMsg) {
+        this.acqStatus = false
+        this.voiceUrlList.push({
+          url: this.inputMsg,
+          flag: 2
+        })
+        // try {
+        //   let res = await axios.get(`http://127.0.0.1:3000/toVoice/${this.inputMsg}`)
+        //   console.log(res.data.data)
+        //   this.voiceUrl = res.data.data
+        //   // 1 代表语音 2 代表文字
+        //   this.voiceUrlList.push({
+        //     url: res.data.data,
+        //     flag: 1
+        //   })
+        // } catch (e) {
+        //   this.$message({
+        //     message: '服务器出错辣',
+        //     type: 'error'
+        //   })
+        // }
+        this.acqStatus = true
+        this.inputMsg = ''
+      } else {
+        this.$message({
+          message: '请输入内容要发送的内容呐',
+          type: 'warning'
+        })
+      }
     },
-    async getVoice() {
-      // this.voiceUrl = await ToVoice(this.inputMsg)
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.voice {
+  width: 80%;
+  height: 74vh;
+  left: 15%;
+  top: 5vh;
+  background-color: rgb(50, 54, 68);
+  border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+
+  #textareaMsg {
+    // resize: none;
+    overflow: hidden;
+  }
+}
+
 .bottom {
   display: flex;
   width: 60%;
   justify-content: center;
   align-items: center;
-  // background-color: red;
+  width: 90%;
+  position: absolute;
+  bottom: 0;
+  margin: 3%;
+  display: flex;
 }
 
 .inputs {
@@ -128,6 +183,28 @@ export default {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.chat-content {
+  width: 100%;
+  height: 85%;
+  overflow-y: scroll;
+  padding: 20px;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    /* Safari,Chrome 隐藏滚动条 */
+    height: 0;
+    /* Safari,Chrome 隐藏滚动条 */
+    display: none;
+    /* 移动端、pad 上Safari，Chrome，隐藏滚动条 */
+  }
+
+  .chat-wrapper {
+    position: relative;
+    word-break: break-all;
   }
 }
 </style>
