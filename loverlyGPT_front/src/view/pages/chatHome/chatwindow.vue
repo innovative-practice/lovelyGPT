@@ -1024,7 +1024,7 @@ textarea::-webkit-scrollbar-thumb {
         height: 50px;
         background-color: #45c4be;
         border-radius: 15px;
-        border: 2px solid rgb(34, 135, 225);
+        border: 2px solid rgb(255, 255, 255);
         padding: 10px;
         box-sizing: border-box;
         transition: 0.2s;
