@@ -16,7 +16,7 @@
         style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
         rows="3" dir autocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off" autocomplete="off"
         v-model="inputMsg" @keyup.enter="sendText">
-                              </textarea>
+                                  </textarea>
       <div v-if="acqStatus">
         <div class="send boxinput" @click="sendText">
           <img src="@/assets/img/emoji/rocket.png" alt="" />
@@ -93,9 +93,9 @@ export default {
 
 <style lang="scss" scoped>
 .voice {
-  width: 80%;
+  width: 60%;
   height: 74vh;
-  left: 15%;
+  left: 30%;
   top: 5vh;
   background-color: rgb(50, 54, 68);
   border-radius: 20px;

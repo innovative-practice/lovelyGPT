@@ -1,0 +1,44 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "liang.moc3",
+		"Textures": [
+			"liang.4096/texture_00.png",
+			"liang.4096/texture_01.png"
+		],
+		"Physics": "liang.physics3.json",
+		"DisplayInfo": "liang.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "baiyan.exp3.json",
+					"Interruptable": true,
+					"fade_in": 2000,
+					"fade_out": 2000
+				}
+			],
+			"chicao": [
+				{}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": [
+		{
+			"name": "chicao",
+			"id": "chicao"
+		}
+	],
+	"Expressions": [
+		{
+			"name": "baiyan",
+			"file": "baiyan.exp3.json"
+		}
+	]
+}
