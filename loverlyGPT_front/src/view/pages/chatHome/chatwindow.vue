@@ -819,7 +819,7 @@ textarea::-webkit-scrollbar-thumb {
       }
 
       .detail {
-        color: #9e9e9e;
+        color: #641010;
         font-size: 12px;
         margin-top: 2px;
       }
@@ -846,7 +846,7 @@ textarea::-webkit-scrollbar-thumb {
   .botoom {
     width: 100%;
     height: 74vh;
-    background-color: rgb(50, 54, 68);
+    background-color: #F4e6dd;
     border-radius: 20px;
     padding: 20px;
     box-sizing: border-box;
@@ -1022,7 +1022,7 @@ textarea::-webkit-scrollbar-thumb {
       .inputs {
         width: 65%;
         height: 50px;
-        background-color: rgb(66, 70, 86);
+        background-color: #45c4be;
         border-radius: 15px;
         border: 2px solid rgb(34, 135, 225);
         padding: 10px;

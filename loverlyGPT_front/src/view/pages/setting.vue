@@ -19,6 +19,13 @@
           </div>
         </transition>
       </el-main>
+      <el-footer>
+        <div class="auther">
+          <div class="auther-head">
+            <a href="https://github.com/apprehen"><img src="@/assets/img/head.jpg" alt=""></a>
+          </div>
+        </div>
+      </el-footer>
       <!-- <el-footer style="margin-top: 18%;">ssssssssssssssssssssssssssssss</el-footer> -->
     </el-container>
   </div>
@@ -38,4 +45,18 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang= "scss" scoped>
+.auther{
+  padding-top: 50px;
+}
+.auther{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auther-head img{
+  width: 150px;
+  height: 150px;
+  border-radius:50%;
+}
+</style>

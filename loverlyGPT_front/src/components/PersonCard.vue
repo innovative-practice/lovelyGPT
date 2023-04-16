@@ -58,7 +58,7 @@ export default {
   width: 100%;
   height: 80px;
   border-radius: 10px;
-  background-color: rgb(50, 54, 68);
+  background-color: #f4e6dd;
   position: relative;
   margin: 25px 0;
   cursor: pointer;

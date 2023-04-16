@@ -97,7 +97,7 @@ export default {
   height: 74vh;
   left: 30%;
   top: 5vh;
-  background-color: rgb(50, 54, 68);
+  background-color: #f4e6dd;
   border-radius: 20px;
   padding: 20px;
   box-sizing: border-box;
@@ -124,9 +124,9 @@ export default {
 .inputs {
   width: 65%;
   height: 50px;
-  background-color: rgb(66, 70, 86);
+  background-color: #45c4be;
   border-radius: 15px;
-  border: 2px solid rgb(34, 135, 225);
+  border: 2px solid rgb(255, 255, 255);
   padding: 10px;
   box-sizing: border-box;
   transition: 0.2s;

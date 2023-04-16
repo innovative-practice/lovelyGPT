@@ -25,11 +25,12 @@ export default {
 .home {
   width: 90vw;
   height: 90vh;
-  background-color: rgb(39, 42, 55);
+  background-color: #45c4be;
   border-radius: 15px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0.9;
 }
 </style>
