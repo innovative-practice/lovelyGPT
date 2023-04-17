@@ -873,13 +873,13 @@ object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.1:
   integrity sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==
 
 officeparser@^3.1.4:
-  version "3.2.0"
-  resolved "https://registry.npmmirror.com/officeparser/-/officeparser-3.2.0.tgz#24452396b0e51c3da2c036686cdf535495b5d352"
-  integrity sha512-IYHKRxDsVOpVrc1UVpCbh7ScG8b+XTojqtyekJWBEuoSaPI4L0Pm7PEEdfTTwi7wPU8cnxPI6X9ozGHbjWUG5g==
+  version "3.2.2"
+  resolved "https://registry.npmmirror.com/officeparser/-/officeparser-3.2.2.tgz#b9eb3bad05d784ce05a10ece4248267d732b2665"
+  integrity sha512-3ZFtViRm6sOlHsG4JS01XTa7VLm6DcCJ68BSY66QylYTqO/5lvOW/I/qGMkAFyDS1SuoFz1jCWxySUWH4SFZFA==
   dependencies:
     decompress "^4.2.0"
     rimraf "^2.6.3"
-    xml2js "^0.4.19"
+    xml2js "^0.5.0"
 
 on-finished@~2.3.0:
   version "2.3.0"
@@ -1245,10 +1245,10 @@ wrappy@1:
   resolved "https://registry.npmmirror.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xml2js@^0.4.19:
-  version "0.4.23"
-  resolved "https://registry.npmmirror.com/xml2js/-/xml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
-  integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
+xml2js@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npmmirror.com/xml2js/-/xml2js-0.5.0.tgz#d9440631fbb2ed800203fad106f2724f62c493b7"
+  integrity sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~11.0.0"
