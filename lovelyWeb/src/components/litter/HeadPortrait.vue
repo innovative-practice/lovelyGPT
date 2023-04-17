@@ -1,0 +1,49 @@
+<template>
+  <div class="head-portrait">
+    <img :src="ImgUrl">
+  </div>
+</template>
+
+<script setup lang='ts'>
+import { reactive, ref } from 'vue'
+const props = defineProps({
+  ImgUrl: String
+})
+</script>
+<style scoped lang="less">
+.head-portrait {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+  // border: 2px solid rgb(137,140,151);
+  border: 2px solid rgb(255, 255, 255);
+  position: relative;
+  // background-color: red;
+  // overflow: hidden;
+
+  &::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    z-index: 1;
+    display: block;
+    border-radius: 50%;
+    background-color: rgb(144, 225, 80);
+    position: absolute;
+    right: 0;
+  }
+
+  img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    // padding: 2px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: middle;
+  }
+}
+</style>
