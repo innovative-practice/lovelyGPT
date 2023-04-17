@@ -43,6 +43,7 @@ const changeMenu = (index: number) => {
     default:
       router.push('/home')
       break;
+      
   }
 }
 </script>
