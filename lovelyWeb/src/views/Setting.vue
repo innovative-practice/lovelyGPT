@@ -12,7 +12,6 @@
       <el-main>
         <transition name="el-zoom-in-top">
           <div style="text-align: center;margin-top: 5%;" class="transition-box">
-
             <div style="font-size: 97px;margin-top: 5%;">
               <div style="text-decoration: none;color: #67C23A;">EXPLOSIONING!!!!!!</div>
             </div>

@@ -32,7 +32,7 @@ const changeMenu = (index: number) => {
   current.value = index
   switch (index) {
     case 0:
-      router.push('/home')
+      router.push('/')
       break;
     case 1:
       router.push('/voice')
@@ -41,9 +41,9 @@ const changeMenu = (index: number) => {
       router.push('/setting')
       break;
     default:
-      router.push('/home')
+      router.push('/')
       break;
-      
+
   }
 }
 </script>

@@ -16,7 +16,7 @@
         style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
         rows="3" dir autocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off" autocomplete="off"
         v-model="inputMsg" @keyup.enter="sendText">
-                                  </textarea>
+        </textarea>
       <div v-if="acqStatus">
         <div class="send boxinput" @click="sendText">
           <img src="@/assets/img/emoji/rocket.png" alt="" />
@@ -24,7 +24,7 @@
       </div>
       <!--等待-->
       <div v-else>
-        <div class="send boxinput">
+        <div class="send boxinput" @click="waitMessage">
           <div class="spinner">
             <img src="@/assets/img/shuaxin.png" alt="AI回答中" />
           </div>

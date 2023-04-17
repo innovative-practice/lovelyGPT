@@ -1,5 +1,5 @@
 <template>
-  <div>这是Chat 页面</div>
+  <div>EXPLOSION</div>
 </template>
 
 <script setup lang='ts'>
