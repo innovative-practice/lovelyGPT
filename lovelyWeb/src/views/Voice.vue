@@ -11,6 +11,9 @@
           <div v-if="item.type === 'text'">
             <LitterChat :chatContent="item.content" :person="item.person"></LitterChat>
           </div>
+          <div v-if="item.type === 'video'" class="chat-friend">
+            <LitterVoice :voiceUrl="voice" :person="item.person"></LitterVoice>
+          </div>
         </div>
       </div>
       <div class="bottom">
@@ -18,7 +21,7 @@
           style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
           rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off"
           autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
-                        </textarea>
+                                                        </textarea>
         <div v-if="acqStatus">
           <div class="send boxinput" @click="sendText">
             <img src="@/assets/img/rocket.png" alt="" />
@@ -43,6 +46,8 @@ import LitterChat from '@/components/litter/LitterChat.vue';
 import { animation, getNowTime, yueyunFormatDate } from '@/util/index.js'
 import { reactive, ref } from 'vue'
 import headerPng from '@/assets/img/header.png'
+import LitterVoice from '@/components/litter/LitterVoice.vue'
+import voiceUrl from '@/assets/video/zaoshanghao.mp3'
 interface person {
   name: string,
   avatar: string,
@@ -55,6 +60,7 @@ interface Message {
 }
 let acqStatus = ref(true)
 let inputMsg = ref('')
+let voice = voiceUrl
 // 存储消息的数组
 let messageList: Message[] = reactive([])
 const sendText = async () => {
@@ -69,9 +75,19 @@ const sendText = async () => {
         time: yueyunFormatDate(getNowTime()),
       }
     })
-    inputMsg.value = ''
+    messageList.push({
+      type: 'video',
+      content: 'explosion',
+      person: {
+        name: 'AI',
+        avatar: headerPng,
+        time: yueyunFormatDate(getNowTime()),
+      }
+    })
   }
+  inputMsg.value = ''
 }
+
 const waitMessage = () => {
   console.log('waitMessage')
 }
@@ -98,6 +114,16 @@ const waitMessage = () => {
     box-sizing: border-box;
     position: relative;
     left: -50px;
+
+    .chat-friend {
+      width: 100%;
+      float: left;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
 
     .bottom {
       display: flex;
