@@ -30,6 +30,7 @@ import '@/assets/font/font/iconfont.css'
 #app {
   width: 100%;
   height: 100%;
+  background: url("@/assets/img/baizi.png") no-repeat;
   overflow: hidden;
   background-size: cover;
   position: absolute;

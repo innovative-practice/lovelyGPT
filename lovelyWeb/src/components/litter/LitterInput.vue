@@ -4,7 +4,7 @@
       style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
       rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off" autocomplete="off"
       v-model="inputMsg" @keyup.enter="sendText">
-              </textarea>
+                </textarea>
     <div v-if="acqStatus">
       <div class="send boxinput" @click="sendText">
         <img src="@/assets/img/rocket.png" alt="" />

@@ -33,7 +33,7 @@ export function throttle(fn, delay = 200) {
     }
  }
 //下拉动画
- export function animation(obj, target, fn1) {
+export function animation(obj, target, fn1) {
     // console.log(fn1);
     // fn是一个回调函数，在定时器结束的时候添加
     // 每次开定时器之前先清除掉定时器
@@ -121,7 +121,7 @@ export function getNowTime() {
   // 输出结果
   return currentTime;
 }
-
+  
 
 /**
  * 格式化时间

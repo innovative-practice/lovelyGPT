@@ -967,11 +967,11 @@ textarea::-webkit-scrollbar-thumb {
               height: 30px;
               border-radius: 50%;
               vertical-align: middle;
-              margin-left: 10px;
+              margin-left: 8px;
             }
 
             span {
-              line-height: 30px;
+              line-height: 32px;
             }
 
             span:first-child {

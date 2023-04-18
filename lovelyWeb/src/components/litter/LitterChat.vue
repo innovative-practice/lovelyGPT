@@ -4,6 +4,11 @@
       <div class="chat-text">
         <span style="font-size:16px">{{ chatContent }}</span>
       </div>
+      <div class="info-time">
+        <span>{{ person?.name }}</span>
+        <span>{{ person?.time }}</span>
+        <img :src="person?.avatar" alt="" />
+      </div>
     </div>
   </div>
 </template>
@@ -11,7 +16,8 @@
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
 const props = defineProps({
-  chatContent: String
+  chatContent: String,
+  person: Object,
 })
 </script>
 <style scoped lang='less'>
@@ -35,6 +41,26 @@ const props = defineProps({
 
     &:hover {
       background-color: rgb(26, 129, 219);
+    }
+  }
+
+  .info-time {
+    margin: 10px 0;
+    color: #fff;
+    font-size: 14px;
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    span:last-child {
+      color: rgb(101, 104, 115);
+      margin-left: 10px;
+      vertical-align: middle;
     }
   }
 }
