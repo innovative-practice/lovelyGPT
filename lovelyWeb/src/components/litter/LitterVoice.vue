@@ -1,7 +1,7 @@
 <template>
   <div class="littervoice">
     <div class="chat-text">
-      <audio :src="voiceUrl" controls></audio>
+      <audio :src="props.voiceUrl" controls></audio>
       <div class="info-time">
         <img :src="person?.avatar" alt="" />
         <span>{{ person?.name }}</span>
@@ -13,6 +13,7 @@
 
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
+
 const props = defineProps({
   voiceUrl: String,
   person: Object,
