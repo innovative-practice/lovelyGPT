@@ -100,3 +100,13 @@ export function yueyunFormatDate(dateStr) {
   let second = date.getSeconds();
   return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
 }
+
+// 获取MP3的时长
+export function getMP3Duration(url) {
+  return new Promise((resolve, reject) => {
+    let audio = new Audio(url);
+    audio.addEventListener("loadedmetadata", () => {
+      resolve(+audio.duration);
+    });
+  });
+}

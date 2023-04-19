@@ -10,7 +10,7 @@
             <LitterChat :chatContent="item.content" :person="item.person"></LitterChat>
           </div>
           <div v-if="item.type === 'video'" class="chat-friend">
-            <LitterVoice :voiceUrl="item.voiceUrl" :person="item.person"></LitterVoice>
+            <LitterVoice :voiceUrl="item.voiceUrl" :person="item.person" :voiceTime="item.voiceDuration"></LitterVoice>
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
           style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
           rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off"
           autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
-                                                                                                                                  </textarea>
+                                                                                                                                                    </textarea>
         <div v-if="acqStatus">
           <div class="send boxinput" @click="sendText">
             <img src="@/assets/img/rocket.png" alt="" />
@@ -41,7 +41,7 @@
 <script setup lang='ts'>
 import Liang from '@/components/litter/liang.vue';
 import LitterChat from '@/components/litter/LitterChat.vue';
-import { animation, getNowTime, yueyunFormatDate } from '@/util/index'
+import { animation, getNowTime, yueyunFormatDate, getMP3Duration } from '@/util/index'
 import { reactive, ref } from 'vue'
 import headerPng from '@/assets/img/header.png'
 import LitterVoice from '@/components/litter/LitterVoice.vue'
@@ -56,13 +56,15 @@ interface Message {
   type: string,
   content: string,
   person?: person,
-  voiceUrl?: string
+  voiceUrl?: string,
+  voiceDuration?: any
 }
 let acqStatus = ref(true)
 let inputMsg = ref('')
 let voice = voiceUrl
 // 存储消息的数组
 let messageList: Message[] = reactive([])
+
 const sendText = async () => {
   let message = inputMsg.value
   // console.log('sendText')
@@ -77,11 +79,10 @@ const sendText = async () => {
       }
     })
     acqStatus.value = false
-
     inputMsg.value = ''
     try {
       const res = await getVoice(message)
-      console.log(res)
+      const mp3Duration = await getMP3Duration(res)
       messageList.push({
         type: 'video',
         content: 'explosion',
@@ -90,7 +91,8 @@ const sendText = async () => {
           name: 'AI',
           avatar: headerPng,
           time: yueyunFormatDate(getNowTime()),
-        }
+        },
+        voiceDuration: mp3Duration
       })
       acqStatus.value = true
     } catch (e) {

@@ -1,7 +1,7 @@
 <template>
   <div class="littervoice">
     <div class="chat-text">
-      <audio :src="props.voiceUrl" controls></audio>
+      <audio :src="props.voiceUrl" controls ref="audio" id="audio"></audio>
       <div class="info-time">
         <img :src="person?.avatar" alt="" />
         <span>{{ person?.name }}</span>
@@ -12,13 +12,13 @@
 </template>
 
 <script setup lang='ts'>
-import { reactive, ref } from 'vue'
-
+import { reactive, ref, nextTick, onMounted } from 'vue'
 const props = defineProps({
   voiceUrl: String,
   person: Object,
+  voiceTime: Number,
 })
-console.log(props.voiceUrl)
+console.log(props.voiceTime)
 </script>
 <style scoped lang='less'>
 .chat-text {
