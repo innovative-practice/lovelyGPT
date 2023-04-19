@@ -81,12 +81,12 @@ const sendText = async () => {
     acqStatus.value = false
     inputMsg.value = ''
     try {
-      const res = await getVoice(message)
-      const mp3Duration = await getMP3Duration(res)
+      // const res = await getVoice(message)
+      const mp3Duration = await getMP3Duration(voiceUrl)
       messageList.push({
         type: 'video',
         content: 'explosion',
-        voiceUrl: res,
+        // voiceUrl: res,
         person: {
           name: 'AI',
           avatar: headerPng,
@@ -122,7 +122,7 @@ const waitMessage = () => {
   .voice-right {
     width: 60%;
     height: 74vh;
-    background-color: #f4e6dd;
+    background-color: #dfdddd;
     border-radius: 20px;
     padding: 20px;
     box-sizing: border-box;
@@ -235,14 +235,14 @@ const waitMessage = () => {
   .inputs {
     width: 65%;
     height: 50px;
-    background-color: #45c4be;
+    background-color: #e7e6e6;
     border-radius: 15px;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid rgb(189, 189, 189);
     padding: 10px;
     box-sizing: border-box;
     transition: 0.2s;
     font-size: 20px;
-    color: #fff;
+    color: #000000;
     font-weight: 100;
     margin: 0 20px;
     overflow: hidden;
