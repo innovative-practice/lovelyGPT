@@ -9,9 +9,12 @@
           <span class="yuyin-time">{{ prTime }}"</span>
         </div>
       </div>
-      <div class="change">
+      <div class="change" @click="change">
         <span>转文字</span>
       </div>
+    </div>
+    <div class="text" v-show="strStatus">
+     <div class="text-main">{{str}}</div>
     </div>
     <div class="info-time">
       <img :src="person?.avatar" alt="" />
@@ -34,18 +37,32 @@ const props = defineProps({
 // let time =ref(parseInt(props.voiceTime))
 let time: any = ref(props.voiceTime)
 let prTime: number = parseInt(time.value)
-//播放语音
+//播放暂停语音
+let audioStatus = ref('play')
 const btnPlay = () => {
-  console.log('播放语音')
   const audio = document.getElementById('audio') as HTMLAudioElement
-  audio.play()
-  console.log(audio.play)
+  if (audioStatus.value == 'play') {
+    audio.play();
+    audioStatus.value = 'pause';
+  } else if (audioStatus.value == 'pause') {
+    audio.pause();
+    audio.currentTime = 0;
+    audioStatus.value = 'play';
+  }
+  // console.log(audioStatus.value == 'play');
 }
-// console.log(props.voiceTime)
+//语音转文字
+let strStatus = ref(false)
+let str = ref('我是傻逼啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊')
+// console.log(str.value);
+function change (String: any){
+  strStatus.value = true
+}
+
 </script>
 <style scoped lang='less'>
 .littervoice {
-  width: 65%;
+  width: 70%;
 }
 
 .chat {
@@ -107,6 +124,24 @@ const btnPlay = () => {
   }
 }
 
+.text{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  max-width: 90%;
+  margin-top:5px ;
+  padding-top: 15px;
+  padding-bottom: 7px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 20px 20px 20px 5px;
+  background-color: #ffffff;
+  color: #000000;
+  .text-main{
+    padding-left: 5%;
+  }
+}
 
 .info-time {
   margin: 10px 0;
