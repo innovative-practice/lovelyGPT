@@ -7,7 +7,7 @@ import App from './App.vue'
 import './assets/font/inconfont/iconfont.css'
 import './assets/font/font/iconfont.css'
 // 引入路由
-import { router } from './router' 
+import { router } from './router'
 const app = createApp(App)
 // 全局注册
 app.use(ElementPlus)

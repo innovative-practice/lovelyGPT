@@ -1,19 +1,19 @@
 <template>
   <div class="chatHome">
-    <div class="chatLeft" style="width:24%">
-      <div class="title">
-        <h1>AI问答系统</h1>
-      </div>
-      <div class="online-person" style="margin-top: 5%;">
-        <span class="onlin-text">模型列表</span>
-        <input class="inputs" v-model="modelSearch" style=" margin-top: 10px;" />
-        <div class="s-wrapper">
-          <div class="personList" v-for="personInfo in personList" :key="personInfo.id" @click="clickPerson(personInfo)">
-            <PersonCard :personInfo="personInfo" :pcCurrent="pcCurrent"></PersonCard>
+      <div class="chatLeft" style="width:24%">
+        <div class="title">
+          <h1>AI问答系统</h1>
+        </div>
+        <div class="online-person" style="margin-top: 5%;">
+          <span class="onlin-text">模型列表</span>
+          <input class="inputs" v-model="modelSearch" style=" margin-top: 10px;" />
+          <div class="s-wrapper">
+            <div class="personList" v-for="personInfo in personList" :key="personInfo.id" @click="clickPerson(personInfo)">
+              <PersonCard :personInfo="personInfo" :pcCurrent="pcCurrent"></PersonCard>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     <div class="chatRight">
       <!-- <router-view></router-view> -->
       <div v-if="showChatWindow">
@@ -433,24 +433,24 @@ export default {
   }
 }
 
-.inputs {
-  width: 90%;
-  height: 50px;
-  background-color: #f4e6dd;
-  border-radius: 15px;
-  border: 2px solid rgb(255, 255, 255);
-  padding: 10px;
-  box-sizing: border-box;
-  transition: 0.2s;
-  font-size: 20px;
-  color: #fff;
-  font-weight: 100;
-  margin: 0 20px;
+  .inputs {
+    width: 90%;
+    height: 50px;
+    background-color: #f4e6dd;
+    border-radius: 15px;
+    border: 2px solid rgb(255, 255, 255);
+    padding: 10px;
+    box-sizing: border-box;
+    transition: 0.2s;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 100;
+    margin: 0 20px;
 
-  &:focus {
-    outline: none;
+    &:focus {
+      outline: none;
+    }
   }
-}
 
 .chatHome {
   // margin-top: 20px;

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang='ts'>
-import { reactive, ref, nextTick, onMounted } from 'vue'
+import { reactive, ref } from 'vue'
 const props = defineProps({
   voiceUrl: String,
   person: Object,
