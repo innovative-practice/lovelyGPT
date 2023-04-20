@@ -1,11 +1,22 @@
 <template>
   <div class="littervoice">
     <div class="chat">
-      <div class="chat-text" @click="btnPlay">
+      <div class="chat-text" @click="handlePlay()">
         <!-- <audio :src="props.voiceUrl" controls ref="audio" id="audio"></audio> -->
-        <audio :src="props.voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
+        <audio :src="voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
         <div class="yuyin-title">
-          <img src="@/assets/img/yu.png" alt="" class="yuyin-img">
+          <img 
+          v-if="isPlaying"
+          src="@/assets/img/yuyin-on.gif" 
+          alt="" 
+          class="yuyin-img"
+          />
+          <img
+          v-else
+          src="@/assets/img/yuyin-off.png"
+          alt=""
+          class="yuyin-img"
+          />
           <span class="yuyin-time">{{ prTime }}"</span>
         </div>
       </div>
@@ -25,7 +36,7 @@
 </template>
 
 <script setup lang='ts'>
-import { reactive, ref, nextTick, onMounted } from 'vue'
+import { reactive, ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import voiceUrl from '@/assets/video/zaoshanghao.mp3'
 import { cond } from 'lodash';
 const props = defineProps({
@@ -38,20 +49,33 @@ const props = defineProps({
 // let time =ref(parseInt(props.voiceTime))
 let time: any = ref(props.voiceTime)
 let prTime: number = parseInt(time.value)
-//播放暂停语音
-let audioStatus = ref('play')
-const btnPlay = () => {
+
+//播放暂停语音及语音动画效果切换
+let isPlaying = ref(false) 
+let timer = ref(NaN)
+const handlePlay =()=>{
   const audio = document.getElementById('audio') as HTMLAudioElement
-  if (audioStatus.value == 'play') {
+  if(!isPlaying.value){
     audio.play();
-    audioStatus.value = 'pause';
-  } else if (audioStatus.value == 'pause') {
+    isPlaying.value = true;
+    watchEnd();
+  }else{
     audio.pause();
+    clearTimeout(timer.value);
+    isPlaying.value = false;
     audio.currentTime = 0;
-    audioStatus.value = 'play';
   }
-  // console.log(audioStatus.value == 'play');
 }
+const watchEnd =() =>{
+  timer.value = setTimeout(()=>{
+    isPlaying.value = false;
+  },(4*1000))//时间
+}
+
+onBeforeUnmount(()=>{
+  clearTimeout(timer.value);
+})
+
 //语音转文字
 let strStatus = ref(false)
 let str = props.gptchat
@@ -86,10 +110,10 @@ function change(String: any) {
     cursor: pointer;
 
     .yuyin-img {
-      width: 80px;
-      height: 40px;
-      margin-left: -10px;
-      margin-bottom: 2px;
+      width: 35px;
+      height: 35px;
+      margin-left: 10px;
+      margin-bottom: 5px;
       color: #000000;
     }
 
