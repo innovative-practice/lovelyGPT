@@ -1,55 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    *:hover {
-      display: none;
-    }
-    .box1 {
-      width: 200px;
-      height: 200px;
-      background-color: red;
-      position: relative;
-    }
-
-    .box11 {
-      width: 50px;
-      height: 50px;
-      background-color: blue;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
-    .box2 {
-      width: 100px;
-      height: 100px;
-      background-color: green;
-      top: 0;
-      right: 0;
-    }
-
-    .box3 {
-      width: 100px;
-      height: 100px;
-      background-color: yellow;
-      top: 0;
-      right: 0;
-    }
-  </style>
+  <meta charset="utf-8">
+  <title></title>
 </head>
 
 <body>
-  <div class="box1">
-    <div class="box11"></div>
-  </div>
-  <div class="box2"></div>
-  <div class="box3"></div>
+  <script type="text/javascript" defer>
+    let tip = document.querySelector("#s1");
+    function checknum() {
+      var a = document.getElementById("1");
+      console.log(a.value);
+      if (a.value.length == 10) {
+        document.getElementById("s1").innerHTML = "";
+        return true
+      } else {
+        console.log("卡号长度必须为10!");
+        document.getElementById("s1").innerHTML = "卡号长度必须为10!";
+        document.getElementById("s1").style.color = "red";
+        return false
+      }
+    }
+
+    function checkpw() {
+      var b = document.getElementById("2").value;
+      var len2 = b.length;
+      if (8 <= len2 && len2 <= 15) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    function checkwechat() {
+      var c = document.getElementById("4").value;
+
+      if (c.length <= 0) {
+        document.getElementById("s4").innerHTML("4");
+        return false;
+      } else {
+        document.getElementById("s4").innerHTML("4");
+        return true;
+      }
+    }
+
+    function checkall() {
+      if (checknum() && checkpw() && checkwechat()) {
+        confirm("认证成功")
+      } else {
+        confirm("请重新输入")
+      }
+    }
+  </script>
+  <form>
+    <table>
+      <tr>
+        <td>校园卡号:</td>
+        <td><input type="text" name="kahao" onblur="checknum()" id="1"></td>
+        <td><span id="s1"></span></td>
+      </tr>
+      <tr>
+        <td>口令:</td>
+        <td><input type="text" id="2" onclick="checkpw()"></td>
+      </tr>
+      <tr>
+        <td>二次口令:</td>
+        <td><input type="text" id="3" onclick="checkpw()"></td>
+      </tr>
+      <tr>
+        <td>QQ/微信:</td>
+        <td><input type="text" id="4" onclick="checkwechat()"><span id="s4"></span></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="提交" onclick="checkall()"></td>
+        <td><input type="reset" value="重置"></td>
+      </tr>
+    </table>
+  </form>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
     <div class="chat">
       <div class="chat-text" @click="btnPlay">
         <!-- <audio :src="props.voiceUrl" controls ref="audio" id="audio"></audio> -->
-        <audio :src="voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
+        <audio :src="props.voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
         <div class="yuyin-title">
           <img src="@/assets/img/yu.png" alt="" class="yuyin-img">
           <span class="yuyin-time">{{ prTime }}"</span>
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="text" v-show="strStatus">
-     <div class="text-main">{{str}}</div>
+      <div class="text-main">{{ str }}</div>
     </div>
     <div class="info-time">
       <img :src="person?.avatar" alt="" />
@@ -32,6 +32,7 @@ const props = defineProps({
   voiceUrl: String,
   person: Object,
   voiceTime: Number,
+  gptchat: String
 })
 //语音时间 
 // let time =ref(parseInt(props.voiceTime))
@@ -53,9 +54,9 @@ const btnPlay = () => {
 }
 //语音转文字
 let strStatus = ref(false)
-let str = ref('我是傻逼啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊')
-// console.log(str.value);
-function change (String: any){
+let str = props.gptchat
+console.log(str);
+function change(String: any) {
   strStatus.value = true
 }
 
@@ -73,7 +74,7 @@ function change (String: any){
   .chat-text {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 50%;
     max-width: 90%;
     padding-top: 15px;
     padding-bottom: 7px;
@@ -112,33 +113,34 @@ function change (String: any){
 
   .change {
     background-color: rgb(161, 153, 153);
-    height: 25px;
+    // height: 25px;
     border-radius: 15px;
-    width: 20%;
+    // width: 20%;
+    // width: 100px;
+    font-size: 20px;
+    padding: 10px 10px;
     margin-left: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0.5;
     cursor: pointer;
   }
 }
 
-.text{
+.text {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 60%;
   max-width: 90%;
-  margin-top:5px ;
+  margin-top: 5px;
   padding-top: 15px;
   padding-bottom: 7px;
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 20px 20px 20px 5px;
-  background-color: #ffffff;
-  color: #000000;
-  .text-main{
+  background-color: #fff;
+  color: #000;
+
+  .text-main {
     padding-left: 5%;
   }
 }

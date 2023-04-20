@@ -68,7 +68,7 @@ async function ToMd(files, outfilesPath) {
 }
 
 async function ToVoice(text) {
-  let gptRes = await axios.get(`http://124.221.89.187:3000/chat/${text}`, {
+  const voiceRes = await axios.get(`http://124.221.89.187:3000/chat/${text}`, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
       'Content-Type': 'application/json',
@@ -76,7 +76,8 @@ async function ToVoice(text) {
     }
   })
   // 通过 chatGpt 返回的数据并转化成日语
-  gptRes = gptRes.data.data
+  let gptRes = voiceRes.data.data
+  let gptchat = voiceRes.data.gpt
   let data = JSON.stringify({
     "fn_index": 0,
     "data": [
@@ -99,7 +100,10 @@ async function ToVoice(text) {
   };
   try {
     let res = await axios(config)
-    return res.data.data[1].name
+    return {
+      data: res.data.data[1],
+      gptchat: gptchat
+    }
   } catch (e) {
     return e
   }
@@ -198,14 +202,18 @@ router.get('/toVoice/:text', async (req, res, next) => {
   const destPath = path.join(__dirname, '../public/video')
   let text = req.params.text
   try {
-    let ans = await ToVoice(text)
+    let obj = await ToVoice(text)
+    console.log(obj)
+    let ans = obj.data.name
+    let gptchat = obj.gptchat
     let fileName = ans.replace('C:\\Users\\35143\\AppData\\Local\\Temp\\', '').split('.')[0]
     // 将ans复制到video文件下面中以http的形式发送给前端播放
     fs.copyFileSync(ans, path.join(destPath, `${fileName}.mp3`))
     res.send({
       code: 200,
       status: 'ok',
-      data: `http://127.0.0.1:3000/video/${fileName}.mp3  `
+      data: `http://127.0.0.1:3000/video/${fileName}.mp3`,
+      gptchat: gptchat
     })
   } catch (e) {
     res.send({

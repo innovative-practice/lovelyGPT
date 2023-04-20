@@ -12,7 +12,10 @@ export const getVoice = (message: string) => {
     // url: `${baseUrl}/test`,
   })
     .then(res => {
-      return res.data.data
+      return {
+        data: res.data.data,
+        gptchat: res.data.gptchat
+      }
     })
     .catch(err => {
       console.log('出错辣')

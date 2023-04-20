@@ -10,7 +10,8 @@
             <LitterChat :chatContent="item.content" :person="item.person"></LitterChat>
           </div>
           <div v-if="item.type === 'video'" class="chat-friend">
-            <LitterVoice :voiceUrl="item.voiceUrl" :person="item.person" :voiceTime="item.voiceDuration"></LitterVoice>
+            <LitterVoice :voiceUrl="item.voiceUrl" :person="item.person" :voiceTime="item.voiceDuration"
+              :gptchat="item.gptchat"></LitterVoice>
           </div>
         </div>
       </div>
@@ -19,7 +20,7 @@
           style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
           rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off"
           autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
-                                                                                                                                                    </textarea>
+                                                                                                                                                                      </textarea>
         <div v-if="acqStatus">
           <div class="send boxinput" @click="sendText">
             <img src="@/assets/img/rocket.png" alt="" />
@@ -57,7 +58,8 @@ interface Message {
   content: string,
   person?: person,
   voiceUrl?: string,
-  voiceDuration?: any
+  voiceDuration?: any,
+  gptchat?: string
 }
 let acqStatus = ref(true)
 let inputMsg = ref('')
@@ -81,12 +83,13 @@ const sendText = async () => {
     acqStatus.value = false
     inputMsg.value = ''
     try {
-      // const res = await getVoice(message)
-      const mp3Duration = await getMP3Duration(voiceUrl)
+      const res: any = await getVoice(message)
+      const mp3Duration = await getMP3Duration(res.data)
       messageList.push({
         type: 'video',
         content: 'explosion',
-        // voiceUrl: res,
+        voiceUrl: res.data,
+        gptchat: res.gptchat,
         person: {
           name: 'AI',
           avatar: headerPng,
