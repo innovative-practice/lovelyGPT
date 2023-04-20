@@ -77,7 +77,7 @@ const changeMenu = (index: number) => {
           background-color: rgb(29, 144, 245);
           position: absolute;
           top: 0px;
-          left: -20px;
+          left: -40px;
           width: 6px;
           height: 35px;
           transition: 0.5s;

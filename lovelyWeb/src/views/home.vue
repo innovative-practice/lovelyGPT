@@ -20,7 +20,7 @@ import { reactive, ref } from 'vue'
 .home {
   width: 90vw;
   height: 90vh;
-  background-color: #45c4be;
+  background-color: #3b3d3d;
   border-radius: 15px;
   position: absolute;
   left: 50%;
