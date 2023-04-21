@@ -1,9 +1,9 @@
 <template>
   <div class="person-card" :class="{ activeCard: personInfo?.id == current }">
     <div class="info">
-      <HeadPortrait :imgUrl="personInfo?.headImg"></HeadPortrait>
+      <HeadPortrait :ImgUrl="personInfo?.headImg"></HeadPortrait>
       <div class="info-detail">
-        <!-- <div class="name">{{ truncateString(personInfo?.name, 17) }}</div> -->
+        <div class="name">{{ truncateString(personInfo?.name, 17) }}</div>
         <div class="detail">{{ personInfo?.lastMsg }}</div>
       </div>
 
@@ -16,8 +16,14 @@ import HeadPortrait from './HeadPortrait.vue';
 import { reactive, ref } from 'vue'
 const props = defineProps({
   personInfo: Object,
-  current: Number,
+  current: String,
 })
+const truncateString = (str: string, num: number) => {
+  if (str.length <= num) {
+    return str;
+  }
+  return str.slice(0, num) + "...";
+}
 </script>
 <style scoped lang='less'>
 .person-card {

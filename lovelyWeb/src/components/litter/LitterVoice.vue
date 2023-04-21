@@ -3,20 +3,10 @@
     <div class="chat">
       <div class="chat-text" @click="handlePlay()">
         <!-- <audio :src="props.voiceUrl" controls ref="audio" id="audio"></audio> -->
-        <audio :src="voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
+        <audio :src="props.voiceUrl" controls ref="musicAudio" id="audio" style="display: none"></audio>
         <div class="yuyin-title">
-          <img 
-          v-if="isPlaying"
-          src="@/assets/img/yuyin-on.gif" 
-          alt="" 
-          class="yuyin-img"
-          />
-          <img
-          v-else
-          src="@/assets/img/yuyin-off.png"
-          alt=""
-          class="yuyin-img"
-          />
+          <img v-if="isPlaying" src="@/assets/img/yuyin-on.gif" alt="" class="yuyin-img" />
+          <img v-else src="@/assets/img/yuyin-off.png" alt="" class="yuyin-img" />
           <span class="yuyin-time">{{ prTime }}"</span>
         </div>
       </div>
@@ -48,31 +38,32 @@ const props = defineProps({
 //语音时间 
 // let time =ref(parseInt(props.voiceTime))
 let time: any = ref(props.voiceTime)
+console.log(time.value);
 let prTime: number = parseInt(time.value)
 
 //播放暂停语音及语音动画效果切换
-let isPlaying = ref(false) 
+let isPlaying = ref(false)
 let timer = ref(NaN)
-const handlePlay =()=>{
+const handlePlay = () => {
   const audio = document.getElementById('audio') as HTMLAudioElement
-  if(!isPlaying.value){
+  if (!isPlaying.value) {
     audio.play();
     isPlaying.value = true;
     watchEnd();
-  }else{
+  } else {
     audio.pause();
     clearTimeout(timer.value);
     isPlaying.value = false;
     audio.currentTime = 0;
   }
 }
-const watchEnd =() =>{
-  timer.value = setTimeout(()=>{
+const watchEnd = () => {
+  timer.value = setTimeout(() => {
     isPlaying.value = false;
-  },(4*1000))//时间
+  }, (4 * 1000))//时间
 }
 
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
   clearTimeout(timer.value);
 })
 

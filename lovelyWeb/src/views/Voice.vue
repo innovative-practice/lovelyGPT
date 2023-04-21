@@ -83,19 +83,19 @@ const sendText = async () => {
     acqStatus.value = false
     inputMsg.value = ''
     try {
-      // const res: any = await getVoice(message)
-      // const mp3Duration = await getMP3Duration(res.data)
+      const res: any = await getVoice(message)
+      const mp3Duration = await getMP3Duration(res.data)
       messageList.push({
         type: 'video',
         content: 'explosion',
-        // voiceUrl: res.data,
-        // gptchat: res.gptchat,
+        voiceUrl: res.data,
+        gptchat: res.gptchat,
         person: {
           name: 'AI',
           avatar: headerPng,
           time: yueyunFormatDate(getNowTime()),
         },
-        // voiceDuration: mp3Duration
+        voiceDuration: mp3Duration
       })
       acqStatus.value = true
     } catch (e) {

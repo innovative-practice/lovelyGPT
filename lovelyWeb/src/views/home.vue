@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <!-- @ts-nocheck -->
     <el-container height="100%">
       <el-aside width="80px">
         <Nav></Nav>

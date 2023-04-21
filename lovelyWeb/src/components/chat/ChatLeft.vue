@@ -7,31 +7,52 @@
       <span class="onlin-text">模型列表</span>
       <input class="inputs" v-model="modelSearch" style=" margin-top: 10px;" />
       <div class="s-wrapper">
-        <div class="personList" v-for="personInfo in personList" :key="personInfo.id" @click="clickPerson(personInfo)">
-          <PersonCard :personInfo="personInfo" :pcCurrent="pcCurrent"></PersonCard>
+        <div class="personList" v-for="personInfo in personList as any" :key="personInfo.id"
+          @click="clickPerson(personInfo)">
+          <PersonCard :personInfo="personInfo" :current="pcCurrent"></PersonCard>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang='ts'>
-import { reactive, ref } from 'vue'
+<script setup lang="ts">
+import { reactive, ref, onMounted, watch } from 'vue'
 import PersonCard from '../litter/PersonCard.vue';
 import { getModels } from '@/api/getData'
 let modelSearch = ref('')
-let personList = await getModels('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')
-console.log(personList)
-let pcCurrent = ref(personList[0])
-// let personList = reactive([{ id: 0 }])
+let personList: any = ref([])
+let personListCache: any = ref([])
+let pcCurrent = ref()
+onMounted(async () => {
+  personList.value = await getModels('sk-xxx')
+  personListCache.value = personList.value
+  // pcCurrent.value = personList.value[0].id
+})
+
+// 点击函数
 const clickPerson = (personInfo: any) => {
-  console.log(personInfo)
+  pcCurrent.value = personInfo.id
 }
+
+// 监听搜索函数
+const changePersonListWatch = watch(modelSearch, (newValue: string, oldValue: string) => {
+  console.log(newValue, oldValue)
+  if (personList.value.length != 0) {
+    personList.value = personListCache.value.filter((item: any) => {
+      return item.name.indexOf(newValue) != -1
+    })
+  }
+  if (newValue == '') {
+    personList.value = personListCache.value
+  }
+})
+
 </script>
 <style scoped lang='less'>
 .chatLeft {
   width: 280px;
-  // overflow: hidden;
+  overflow: hidden;
 
   .title {
     color: #fff;

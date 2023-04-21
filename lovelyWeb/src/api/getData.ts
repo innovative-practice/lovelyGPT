@@ -37,7 +37,7 @@ export const getModels = (token: string) => {
     const models = [...new Set(res.data.data.map((model: any) => model.id))].sort();
     models.forEach((model, index) => {
       let modelObj = {
-        img: "",
+        img: Ai,
         name: model,
         detail: 'EXPLOSION!!!!!!!!!!!!!',
         lastMsg: model + "模型",
