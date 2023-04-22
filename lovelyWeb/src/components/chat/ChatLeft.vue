@@ -20,23 +20,32 @@
 import { reactive, ref, onMounted, watch } from 'vue'
 import PersonCard from '../litter/PersonCard.vue';
 import { getModels } from '@/api/getData'
+import { usePersonStore } from '@/store/index'
+import { storeToRefs } from 'pinia';
 let modelSearch = ref('')
 let personList: any = ref([])
 let personListCache: any = ref([])
 let pcCurrent = ref()
 onMounted(async () => {
-  personList.value = await getModels('sk-xxx')
+  personList.value = await getModels('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')
   personListCache.value = personList.value
   // pcCurrent.value = personList.value[0].id
 })
 
+// 使用pinia传递参数
+const selectPerson = usePersonStore()
+// 传递给中间组件的数据 <storeToRefs> 做成响应式
+let toPerson = storeToRefs(selectPerson)
+
 // 点击函数
 const clickPerson = (personInfo: any) => {
   pcCurrent.value = personInfo.id
+  selectPerson.person = personInfo
 }
 
+
 // 监听搜索函数
-const changePersonListWatch = watch(modelSearch, (newValue: string, oldValue: string) => {
+watch(modelSearch, (newValue: string, oldValue: string) => {
   console.log(newValue, oldValue)
   if (personList.value.length != 0) {
     personList.value = personListCache.value.filter((item: any) => {
