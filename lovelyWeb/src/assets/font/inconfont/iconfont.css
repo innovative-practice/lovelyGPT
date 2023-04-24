@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4016366 */
-  src: url('iconfont.woff2?t=1681461143114') format('woff2'),
-       url('iconfont.woff?t=1681461143114') format('woff'),
-       url('iconfont.ttf?t=1681461143114') format('truetype');
+  src: url('iconfont.woff2?t=1682305101910') format('woff2'),
+       url('iconfont.woff?t=1682305101910') format('woff'),
+       url('iconfont.ttf?t=1682305101910') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,18 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-microphone:before {
+  content: "\eb6b";
+}
+
+.icon-microphone1:before {
+  content: "\e78b";
+}
+
+.icon-microphone-mute:before {
+  content: "\e689";
 }
 
 .icon-duihua2:before {
