@@ -1,5 +1,11 @@
 <template>
-  <div class="chatRight"></div>
+  <div class="chatRight">
+    <div class="login-video">
+      <video autoplay muted loop id="myVideo">
+        <source src="@/assets/video/login.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
 </template>
 
 <script setup lang='ts'>
@@ -11,6 +17,12 @@ import { reactive, ref } from 'vue'
   width: 280px;
   background-color: #bfa;
   // overflow: hidden;
+  #myVideo{
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5%;
+  }
 
   .title {
     color: #fff;
@@ -57,4 +69,5 @@ import { reactive, ref } from 'vue'
     }
   }
 }
+
 </style>

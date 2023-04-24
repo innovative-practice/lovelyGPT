@@ -14,6 +14,7 @@ const app = createApp(App)
 // 全局注册
 app.use(ElementPlus)
 // 挂载路由
+
 app.use(router)
 // 导入 pinia
 app.use(createPinia())

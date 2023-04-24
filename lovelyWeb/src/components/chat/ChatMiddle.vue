@@ -373,14 +373,14 @@ const sendFile = (e: any) => {
         .inputs {
           width: 65%;
           height: 50px;
-          background-color: #45c4be;
+          background-color: #e7e6e6;
           border-radius: 15px;
-          border: 2px solid rgb(255, 255, 255);
+          border: 2px solid #bdbdbd;
           padding: 10px;
           box-sizing: border-box;
           transition: 0.2s;
           font-size: 20px;
-          color: #fff;
+          color: #000000;
           font-weight: 100;
           margin: 0 20px;
 

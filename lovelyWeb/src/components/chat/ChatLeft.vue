@@ -112,14 +112,14 @@ watch(modelSearch, (newValue: string, oldValue: string) => {
 .inputs {
   width: 90%;
   height: 50px;
-  background-color: #f4e6dd;
+  background-color: #ffffff;
   border-radius: 15px;
   border: 2px solid rgb(255, 255, 255);
   padding: 10px;
   box-sizing: border-box;
   transition: 0.2s;
   font-size: 20px;
-  color: #fff;
+  color: #000000;
   font-weight: 100;
   margin: 0 20px;
 

@@ -60,9 +60,8 @@ const handlePlay = () => {
 const watchEnd = () => {
   timer.value = setTimeout(() => {
     isPlaying.value = false;
-  }, (4 * 1000))//时间
+  }, ((3+1) * 1000))//时间
 }
-
 onBeforeUnmount(() => {
   clearTimeout(timer.value);
 })

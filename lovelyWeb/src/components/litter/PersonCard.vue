@@ -30,7 +30,7 @@ const truncateString = (str: string, num: number) => {
   width: 100%;
   height: 80px;
   border-radius: 10px;
-  background-color: #f4e6dd;
+  background-color: #ffffff;
   position: relative;
   margin: 25px 0;
   cursor: pointer;
@@ -51,7 +51,7 @@ const truncateString = (str: string, num: number) => {
 
       // width: ;
       .name {
-        color: #fff;
+        color: #727272;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -70,9 +70,9 @@ const truncateString = (str: string, num: number) => {
   }
 
   &:hover {
-    background-color: #1d90f5;
+    background-color: #0c0c0c;
     transition: 0.3s;
-    box-shadow: 0px 0px 10px 0px rgba(0, 136, 255);
+    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
 
     // box-shadow:  0 5px 20px rgba(251, 152, 11, .5);
     .info {
@@ -86,9 +86,9 @@ const truncateString = (str: string, num: number) => {
 }
 
 .activeCard {
-  background-color: #1d90f5;
+  background-color: #0c0c0c;
   transition: 0.3s;
-  box-shadow: 3px 2px 10px 0px rgba(0, 136, 255);
+  box-shadow: 3px 2px 10px 0px rgb(124, 117, 117);
 
   .info {
     .info-detail {
