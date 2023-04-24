@@ -1,7 +1,7 @@
 <template>
   <div class="chatMiddle">
-    <div class="chat-window">
-      <div class="top" v-if="selectPerson.person.headImg">
+    <div class="chat-window" v-if="selectPerson.person.headImg">
+      <div class="top">
         <div class="head-pic">
           <HeadPortrait :ImgUrl="selectPerson.person.headImg"></HeadPortrait>
         </div>
@@ -39,12 +39,12 @@
             </div>
             <!--录音-->
             <div class="send boxinput" @click="stopRecording" v-if="recording"
-              style="margin-left: 1.5%;font-size: 30px;text-align: center;">
-              <i class="el-icon-microphone" style="margin-top: 17%;"></i>
+              style="margin-left: 1.5%;font-size: 30px; display: flex;justify-content: center;align-items: center;">
+              <span class="iconfont icon-microphone" style="font-size: 25px"></span>
             </div>
             <div class="send boxinput" @click="startRecording" v-if="!recording"
-              style="margin-left: 1.5%;font-size: 30px;text-align: center;">
-              <i class="el-icon-turn-off-microphone" style="margin-top: 17%;"></i>
+              style="margin-left: 1.5%;font-size: 30px; display: flex;justify-content: center;align-items: center;">
+              <span class="iconfont icon-microphone-mute" style="font-size: 25px;"></span>
             </div>
             <!--emo表情列表-->
             <div class="emoji-content">
@@ -71,6 +71,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      EXPLOSION!!
     </div>
   </div>
 </template>

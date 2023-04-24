@@ -5,6 +5,7 @@ import './assets/reset.css'
 import App from './App.vue'
 // 引入图标字体
 import './assets/font/inconfont/iconfont.css'
+import './assets/font/font/fonts.css'
 import './assets/font/font/iconfont.css'
 // 引入pinia
 import { createPinia } from 'pinia'
@@ -20,3 +21,4 @@ app.use(router)
 app.use(createPinia())
 // 挂载app
 app.mount('#app')
+
