@@ -27,7 +27,10 @@
         <div class="chat-content" id="chat-content" ref="chatContent">
           <div class="chat-wrapper" v-for="(item, index) in messageList" :key="index">
             <div v-if="item.type === 'text'" class="chat-me">
-              <LitterChat :chatContent="item.content" :person="item.person"></LitterChat>
+              <LitterChat :chatContent="item.content" :person="item.person" type="me"></LitterChat>
+            </div>
+            <div v-if="item.type === 'AIreply'" class="chat-friend">
+              <LitterChat :chatContent="item.content" :person="item.person" type="AI"></LitterChat>
             </div>
           </div>
         </div>
@@ -80,7 +83,7 @@
 
 
 <script setup lang='ts'>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import HeadPortrait from '../litter/HeadPortrait.vue'
 import LitterChat from '@/components/litter/LitterChat.vue';
 import { animation, getNowTime, yueyunFormatDate, getMP3Duration } from '@/util/index'
@@ -99,11 +102,21 @@ interface Message {
   voiceDuration?: any,
   gptchat?: string
 }
+// 数据
 let messageList: Message[] = reactive([])
 let inputMsg = ref('')
 let acqStatus = ref(true)
-
+// 使用pinia接受参数
+let selectPerson: any = usePersonStore()
 const showEmoji = ref(false)
+const recording = ref(false)
+
+
+
+// 函数
+/*
+  * @Description: 点击表情
+*/
 const clickEmoji = () => {
   showEmoji.value = !showEmoji.value
 }
@@ -111,18 +124,12 @@ const sendEmoji = (emoji: string) => {
   inputMsg.value += emoji
   showEmoji.value = false
 }
-const recording = ref(false)
 const startRecording = () => {
   recording.value = true
 }
 const stopRecording = () => {
   recording.value = false
 }
-
-
-
-// 使用pinia接受参数
-const selectPerson: any = usePersonStore()
 const sendText = async () => {
   let message = inputMsg.value
   // console.log('sendText')
@@ -138,15 +145,23 @@ const sendText = async () => {
     })
     acqStatus.value = false
     inputMsg.value = ''
-
   }
+  console.log(selectPerson)
+  messageList.push({
+    type: 'AIreply',
+    content: 'Explosion!!',
+    person: {
+      name: selectPerson.person.name,
+      avatar: selectPerson.person.headImg,
+      time: yueyunFormatDate(getNowTime()),
+    }
+  })
+  acqStatus.value = true
   inputMsg.value = ''
 }
-
 const waitMessage = () => {
   console.log('waitMessage')
 }
-
 const sc = () => {
   console.log('sc')
 }
@@ -156,6 +171,23 @@ const sendImg = (e: any) => {
 const sendFile = (e: any) => {
   console.log(e.target.files[0])
 }
+const completion = async (params: any, chatBeforResMsg: any) => {
+  // 新增一个空消息
+  messageList.push({
+    type: 'AIreply',
+    content: '',
+    person: {
+      name: selectPerson.person.name,
+      avatar: selectPerson.person.headImg,
+      time: yueyunFormatDate(getNowTime()),
+    }
+  })
+}
+
+// 监听
+watch(selectPerson, () => {
+  messageList = []
+})
 </script>
 <style scoped lang='less'>
 .chatMiddle {
@@ -211,8 +243,8 @@ const sendFile = (e: any) => {
         }
 
         .detail {
-          color: #641010;
-          font-size: 12px;
+          color: #fff;
+          font-size: 18px;
           margin-top: 2px;
         }
       }
@@ -277,53 +309,6 @@ const sendFile = (e: any) => {
             flex-direction: column;
             justify-content: flex-end;
             align-items: flex-end;
-
-            .chat-text {
-              float: right;
-              max-width: 90%;
-              padding: 20px;
-              border-radius: 20px 20px 5px 20px;
-              background-color: rgb(29, 144, 245);
-              color: #fff;
-
-              &:hover {
-                background-color: rgb(26, 129, 219);
-              }
-            }
-
-            .chat-img {
-              img {
-                max-width: 300px;
-                max-height: 200px;
-                border-radius: 10px;
-              }
-            }
-
-            .info-time {
-              margin: 10px 0;
-              color: #fff;
-              font-size: 14px;
-              display: flex;
-              justify-content: flex-end;
-
-              img {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                vertical-align: middle;
-                margin-left: 8px;
-              }
-
-              span {
-                line-height: 32px;
-              }
-
-              span:first-child {
-                color: rgb(101, 104, 115);
-                margin-right: 10px;
-                vertical-align: middle;
-              }
-            }
           }
 
           .chat-friend {

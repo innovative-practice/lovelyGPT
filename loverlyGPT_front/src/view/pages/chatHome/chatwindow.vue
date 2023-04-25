@@ -513,9 +513,7 @@ export default {
                 return;
               }
               let decodeds = new TextDecoder().decode(value);
-
               let decodedArray = decodeds.split("data: ")
-
               decodedArray.forEach(decoded => {
                 if (decoded !== "") {
                   if (decoded.trim() === "[DONE]") {
