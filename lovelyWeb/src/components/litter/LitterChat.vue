@@ -31,18 +31,18 @@ const props = defineProps({
     max-width: 90%;
     padding: 20px;
     border-radius: 20px 20px 5px 20px;
-    background-color: rgb(29, 144, 245);
-    color: #fff;
+    background-color: #91ed61;
+    color: #000000;
 
     &:hover {
-      background-color: rgb(26, 129, 219);
+      background-color: rgb(92, 129, 39);
     }
   }
 
 
   .info-time {
     margin: 10px 0;
-    color: #fff;
+    color: #000000;
     font-size: 14px;
     display: flex;
     justify-content: flex-end;
@@ -76,18 +76,18 @@ const props = defineProps({
     max-width: 90%;
     padding: 20px;
     border-radius: 20px 20px 20px 5px;
-    background-color: rgb(29, 144, 245);
-    color: #fff;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
 
     &:hover {
-      background-color: rgb(26, 129, 219);
+      background-color: rgb(117, 117, 117);
     }
   }
 
 
   .info-time {
     margin: 10px 0;
-    color: #fff;
+    color: #000000;
     font-size: 14px;
     display: flex;
     justify-content: flex-end;
