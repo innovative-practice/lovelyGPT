@@ -72,7 +72,7 @@ const changeMenu = (index: number) => {
         .iconfont {
           font-size: 25px;
           margin-left: -20px;
-          transition: 0.8s;
+          transition: 0.5s;
         }
 
         .block {

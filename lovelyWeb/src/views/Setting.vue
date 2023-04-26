@@ -21,7 +21,12 @@
       <el-footer>
         <div class="auther">
           <div class="auther-head">
-            <a href="https://github.com/apprehen"><img src="@/assets/img/header.png" alt=""></a>
+            <ul>
+              <li><a href="https://github.com/apprehen"><img src="@/assets/img/header.png" alt=""></a></li>
+              <li><a href="https://github.com/meguminkin"><img src="@/assets/img/head2.jpg" alt=""></a></li>
+              <li><a href="https://github.com/cj1officicial"><img src="@/assets/img/head3.jpg" alt=""></a></li>
+              <li><a href="https://github.com/apprehen"><img src="@/assets/img/header.png" alt=""></a></li>
+            </ul>
           </div>
         </div>
       </el-footer>
@@ -36,6 +41,18 @@ import { reactive, ref } from 'vue'
 <style scoped lang='less'>
 .auther {
   padding-top: 50px;
+
+  .auther-head{
+    ul{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      li{
+        margin-left: 20px;
+      }
+    }
+  }
 }
 
 .auther {
