@@ -38,7 +38,7 @@
           <div class="chatInputs">
             <!--表情-->
             <div class="emoji boxinput" @click="clickEmoji">
-              <img src="@/assets/img/emoji/smiling-face.png" alt="" />
+              <img src="@/assets/img/biaoqing.png" alt="" />
             </div>
             <!--录音-->
             <div class="send boxinput" @click="stopRecording" v-if="recording"
@@ -60,7 +60,7 @@
             </textarea>
             <div v-if="acqStatus">
               <div class="send boxinput" @click="sendText">
-                <img src="@/assets/img/rocket.png" alt="" />
+                <img src="/src/assets/img/send.png" alt="" />
               </div>
             </div>
             <!--等待-->
@@ -215,6 +215,7 @@ watch(selectPerson, () => {
   .chat-window {
     height: 100%;
     width: 100%;
+    margin-top: -25px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -324,11 +325,16 @@ watch(selectPerson, () => {
       }
 
       .chatInputs {
-        width: 90%;
+        width: 100%;
         position: absolute;
         bottom: 0;
-        margin: 3%;
+        margin-left: -20px;
+        padding-top: 15px;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border-radius: 0 0 15px 15px;
 
         .boxinput {
           width: 50px;
@@ -337,6 +343,7 @@ watch(selectPerson, () => {
           border-radius: 15px;
           border: 1px solid rgb(80, 85, 103);
           position: relative;
+          margin-bottom: 2px;
           cursor: pointer;
 
           img {
@@ -350,11 +357,15 @@ watch(selectPerson, () => {
         }
 
         .emoji {
-          transition: 0.3s;
-
+          transition: 0.5s;
+          background-color: #fff;
+          border-color: #ffffff;
+          img{
+            width: 36px;
+            height:36px;
+          }
           &:hover {
-            background-color: rgb(46, 49, 61);
-            border: 1px solid rgb(71, 73, 82);
+            box-shadow: 0px 0px 10px 0px rgb(149, 149, 149);
           }
         }
 
@@ -363,14 +374,14 @@ watch(selectPerson, () => {
           height: 50px;
           background-color: #e7e6e6;
           border-radius: 15px;
-          border: 2px solid #bdbdbd;
+          border: 2px solid #ffffff;
           padding: 10px;
           box-sizing: border-box;
           transition: 0.2s;
           font-size: 20px;
           color: #000000;
           font-weight: 100;
-          margin: 0 20px;
+          margin: auto 20px 5px 20px;
 
           &:focus {
             outline: none;
@@ -378,13 +389,13 @@ watch(selectPerson, () => {
         }
 
         .send {
-          background-color: rgb(29, 144, 245);
+          background-color: rgb(255, 255, 255);
           border: 0;
           transition: 0.3s;
-          box-shadow: 0px 0px 5px 0px rgba(0, 136, 255);
+          box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
 
           &:hover {
-            box-shadow: 0px 0px 10px 0px rgba(0, 136, 255);
+            box-shadow: 0px 0px 10px 0px rgb(149, 149, 149);
           }
         }
       }
@@ -458,4 +469,5 @@ watch(selectPerson, () => {
 
   }
 }
+
 </style>

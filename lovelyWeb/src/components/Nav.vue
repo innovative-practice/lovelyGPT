@@ -71,6 +71,8 @@ const changeMenu = (index: number) => {
 
         .iconfont {
           font-size: 25px;
+          margin-left: -20px;
+          transition: 0.8s;
         }
 
         .block {
@@ -89,6 +91,7 @@ const changeMenu = (index: number) => {
         &:hover {
           span {
             color: rgb(29, 144, 245);
+            margin-left: 8px;
           }
 
           .block {
@@ -109,6 +112,7 @@ const changeMenu = (index: number) => {
 .activeNav {
   span {
     color: rgb(29, 144, 245);
+    margin-left: 8px !important;
   }
 
   .block {

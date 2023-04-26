@@ -62,6 +62,7 @@ watch(modelSearch, (newValue: string, oldValue: string) => {
 .chatLeft {
   width: 280px;
   overflow: hidden;
+  margin-top: 15px;
 
   .title {
     color: #fff;

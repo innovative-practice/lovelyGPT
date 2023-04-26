@@ -74,6 +74,7 @@ const truncateString = (str: string, num: number) => {
     transition: 0.3s;
     box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
 
+
     // box-shadow:  0 5px 20px rgba(251, 152, 11, .5);
     .info {
       .info-detail {
