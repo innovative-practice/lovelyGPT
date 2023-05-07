@@ -23,7 +23,7 @@
                                                                                                                                                                       </textarea>
         <div v-if="acqStatus">
           <div class="send boxinput" @click="sendText">
-            <img src="@/assets/img/rocket.png" alt="" />
+            <img src="@/assets/img/send.png" alt="" />
           </div>
         </div>
         <!--等待-->
@@ -116,6 +116,7 @@ const waitMessage = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  
 
   .voice-left {
     width: 40%;
@@ -224,31 +225,33 @@ const waitMessage = () => {
   }
 
   .bottom {
+    margin-left: -20px;
+    padding-top: 10px;
     display: flex;
-    width: 60%;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
     position: absolute;
     bottom: 0;
-    margin: 3%;
     display: flex;
+    background-color: #ffffff;
+    border-radius: 0 0 15px 15px;
   }
 
   .inputs {
+
     width: 65%;
     height: 50px;
     background-color: #e7e6e6;
     border-radius: 15px;
-    border: 2px solid rgb(189, 189, 189);
+    border: 2px solid #ffffff;
     padding: 10px;
     box-sizing: border-box;
     transition: 0.2s;
     font-size: 20px;
     color: #000000;
     font-weight: 100;
-    margin: 0 20px;
-    overflow: hidden;
+    margin: auto 20px 5px 20px;
 
     &:focus {
       outline: none;
@@ -256,22 +259,23 @@ const waitMessage = () => {
   }
 
   .send {
-    background-color: rgb(29, 144, 245);
-    border: 0;
-    transition: 0.3s;
-    box-shadow: 0px 0px 5px 0px rgba(0, 136, 255);
+    background-color: rgb(255, 255, 255);
+          border: 0;
+          transition: 0.3s;
+          box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
 
-    &:hover {
-      box-shadow: 0px 0px 10px 0px rgba(0, 136, 255);
-    }
+          &:hover {
+            box-shadow: 0px 0px 10px 0px rgb(149, 149, 149)
+          }
+        
   }
 
   .boxinput {
     width: 50px;
     height: 50px;
-    background-color: rgb(66, 70, 86);
+    background-color: rgb(255, 255, 255);
     border-radius: 15px;
-    border: 1px solid rgb(80, 85, 103);
+    border: 1px solid rgb(255, 255, 255);
     position: relative;
     cursor: pointer;
 
