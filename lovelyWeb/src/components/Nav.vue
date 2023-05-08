@@ -4,8 +4,10 @@
       <ul class="menu-list">
         <li v-for="(item, index) in menuList" :key="index" :class="{ activeNav: index == current }"
           @click="changeMenu(index)">
-          <div class="block"></div>
-          <span class="iconfont" :class="item"></span>
+          <div class="ui">
+            <div class="block"></div>
+            <span class="iconfont" :class="item"></span>
+          </div>
         </li>
       </ul>
     </div>
@@ -62,24 +64,40 @@ const changeMenu = (index: number) => {
     .menu-list {
       margin-left: 10px;
 
+
       li {
         margin: 40px 0 0 30px;
         list-style: none;
         cursor: pointer;
         position: relative;
         font-size: 30px;
-
+        .ui{
+          width: 60px ;
+          margin-left: -40px;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+          // background-color: red;
+          span{
+            padding-left: 10px
+          }
+        }
         .iconfont {
           font-size: 25px;
-          margin-left: -20px;
+          // margin-left: -20px;
           transition: 0.5s;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .block {
           background-color: rgb(29, 144, 245);
           position: absolute;
-          top: 0px;
-          left: -40px;
+          // top: 0px;
+          margin-left: 0px;
           width: 6px;
           height: 35px;
           transition: 0.5s;
@@ -87,17 +105,18 @@ const changeMenu = (index: number) => {
           border-bottom-right-radius: 4px;
           opacity: 0;
         }
+          &:hover {
+            span {
+              color: rgb(29, 144, 245);
+              padding-left: 30px;
+            }
 
-        &:hover {
-          span {
-            color: rgb(29, 144, 245);
-            margin-left: 8px;
-          }
-
-          .block {
-            opacity: 1;
-          }
+            .block {
+              opacity: 1;
+            }
         }
+
+        
       }
     }
   }
@@ -112,7 +131,7 @@ const changeMenu = (index: number) => {
 .activeNav {
   span {
     color: rgb(29, 144, 245);
-    margin-left: 8px !important;
+    padding-left: 30px !important;
   }
 
   .block {

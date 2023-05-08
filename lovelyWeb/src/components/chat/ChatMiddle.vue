@@ -75,8 +75,10 @@
         </div>
       </div>
     </div>
-    <div v-else>
-      EXPLOSION!!
+    <div v-else class="choose">
+      <div class="choose-main">
+        <span>请选择您的聊天对象</span>
+      </div>
     </div>
   </div>
 </template>
@@ -215,7 +217,7 @@ watch(selectPerson, () => {
   .chat-window {
     height: 100%;
     width: 100%;
-    margin-top: -6%;
+    margin-top: -3.5%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -468,6 +470,17 @@ watch(selectPerson, () => {
     }
 
   }
+}
+.choose{
+   width: 100%;
+   height: 100%;
+   display: flex;
+   align-items: space-between;
+   justify-content: center;
+   .choose-main{
+      font-size: 30px;
+      color: rgb(157, 155, 233);
+   }
 }
 
 </style>

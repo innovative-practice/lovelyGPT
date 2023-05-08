@@ -7,7 +7,7 @@
                 </textarea>
     <div v-if="acqStatus">
       <div class="send boxinput" @click="sendText">
-        <img src="@/assets/img/rocket.png" alt="" />
+        <img src="/src/assets/img/send.png" alt="" />
       </div>
     </div>
     <!--等待-->
