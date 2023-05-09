@@ -20,9 +20,132 @@
               <el-tooltip class="item" effect="dark" content="指定要生成的最大单词数，不能超过2048." placement="top">
                 <span class="demonstration" style="">max_tokens</span>
               </el-tooltip>
+
+              <el-slider class="astrict" v-model="SettingInfo.MaxTokens" :step="1" :min="0" :max="2048"></el-slider>
             </div>
+
+            <div class="block">
+              <el-tooltip class="item" effect="dark" content="指定生成文本的随机性，范围是0到1，越高表示越多样化和创造性，越低表示越保守和确定性。"
+                placement="top">
+                <span class="demonstration">temperature(0~1)</span>
+              </el-tooltip>
+
+              <el-slider class="astrict" v-model="SettingInfo.Temperature" :step="0.1" :min="0" :max="1"></el-slider>
+            </div>
+
+            <div class="block">
+              <el-tooltip class="item" effect="dark" content="指定降低重复单词出现概率的程度，范围是0到1，越高表示越避免重复。" placement="top">
+                  <span class="demonstration">frequency_penalty(-2~2)</span>
+              </el-tooltip>
+
+              <el-slider class="astrict" v-model="SettingInfo.FrequencyPenalty" :step="0.1" :min="-2"
+                :max="2"></el-slider>
+            </div>
+
+            <div class="block">
+                <el-tooltip class="item" effect="dark" content="指定降低重复话题出现概率的程度，范围是0到1，越高表示越避免重复。" placement="top">
+                  <span class="demonstration">presence_penalty(-2~2)</span>
+                </el-tooltip>
+                <el-slider class="astrict" v-model="SettingInfo.PresencePenalty" :step="0.1" :min="-2"
+                  :max="2"></el-slider>
+            </div>
+            <div style="height: 30px;"></div>
           </div>
         </el-collapse-transition>
+        <!--图片设置-->
+        <el-collapse-transition>
+            <div v-show="SettingStatus == 1">
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="打开之后聊天发送的内容为描述图片的信息" placement="top">
+                  <span class="demonstration">产图模式</span>
+                </el-tooltip>
+                <el-switch v-model="SettingInfo.openProductionPicture" :width="defaulWidth"
+                  style="margin-left: 15%;"></el-switch>
+              </div>
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="图片的大小。" placement="top">
+                  <span class="demonstration">size</span>
+                </el-tooltip>
+                <div>
+                  <el-select v-model="SettingInfo.size" placeholder="请选择" style="margin-top: 10px;">
+                    <el-option v-for="item in imgSizes" :key="item.value" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="生成图片的数量。" placement="top">
+                  <span class="demonstration">n(1~10)</span>
+                </el-tooltip>
+                <el-slider class="astrict" v-model="SettingInfo.n" :step="1" :min="-1" :max="10"></el-slider>
+              </div>
+
+            </div>
+          </el-collapse-transition>
+          <!--音频设置-->
+          <el-collapse-transition>
+            <div v-show="SettingStatus == 2">
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="英文录音识别专用" placement="top">
+                  <span class="demonstration">英语音频翻译</span>
+                </el-tooltip>
+                <el-switch v-model="SettingInfo.translateEnglish" :width="defaulWidth"
+                  style="margin-left: 15%;"></el-switch>
+              </div>
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="请选你录音说的语言，以便于更快更精准的识别" placement="top">
+                  <span class="demonstration">language</span>
+                </el-tooltip>
+                <div>
+                  <el-select v-model="SettingInfo.language" placeholder="请选择" style="margin-top: 10px;">
+                    <el-option v-for="item in languages" :key="item.value" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+
+
+              <div class="block">
+                <el-tooltip class="item" effect="dark" content="指定语音识别的随机性，范围是0到1，越高表示越多样化和创造性，越低表示越保守和确定性。"
+                  placement="top">
+                  <span class="demonstration">temperature(0~1)</span>
+                </el-tooltip>
+
+                <el-slider class="astrict" v-model="SettingInfo.TemperatureAudio" :step="0.1" :min="0"
+                  :max="1"></el-slider>
+              </div>
+
+
+            </div>
+          </el-collapse-transition>
+          <!--文件-->
+          <el-collapse-transition>
+            <div v-show="SettingStatus == 3" class="filecontent">
+              <div v-for="item, index in fileList" :key="index">
+                <div class="fileshow" @click.stop="selectFiles($event, item, index)"
+                  :class="item.isSelect == 1 ? 'fileactive' : ''">
+                  <img :src=item.imgs />
+                  <div class="word">
+                    <span>{{ item.name || '未知' }}</span>
+                    <span>154kb</span>
+                  </div>
+                  <div class="delete" @click="deleteFiles(item)">
+                    <svg t="1680574326711" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                      xmlns="http://www.w3.org/2000/svg" p-id="4048" width="32" height="32">
+                      <path
+                        d="M511.89 128.745c-201.852 0-365.49 163.638-365.49 365.49s163.638 365.49 365.49 365.49c201.851 0 365.49-163.637 365.49-365.49s-163.639-365.49-365.49-365.49zM688.52 626.69l-44.188 44.175L511.89 538.41 379.448 670.864 335.26 626.69l132.443-132.455L335.26 361.792l44.152-44.187 132.466 132.454 132.454-132.454 44.188 44.187-132.455 132.455L688.52 626.689z m0 0"
+                        p-id="4049" fill="#030303"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-collapse-transition>
       </div>
     </div>
   </div>
@@ -39,6 +162,60 @@ const clearSelect = (event:any)=>{
       }
       nowFile = {}
 }
+const selectFiles = (event:any, item:any, index:any)=>{
+  for (let i = 0; i < fileList.length; i++) {
+        fileList[i].isSelect = 0
+      }
+      item.isSelect = 1
+      nowFile = item
+}
+const deleteFiles = (item:any)=>{
+  fileList.splice(fileList.indexOf(item), 1)
+  nowFile = {}
+}
+const SettingInfo = reactive({
+  translateEnglish: false,
+  openProductionPicture: false,
+  KeyMsg: "",
+  MaxTokens: 1000,
+  Temperature: 1,
+  TemperatureAudio: 0,
+  TopP: 1,
+  FrequencyPenalty: 0,
+  PresencePenalty: 0,
+  n: 1,
+  size: "256x256",
+  language: "zh"
+})
+const imgSizes = reactive([
+  {
+    value: '256x256'
+  },
+  {
+    value: '512x512'
+  },
+  {
+    value: '1024x1024'
+  },
+])
+let defaulWidth = ref(70)
+const languages = reactive([
+  {
+    value: 'zh'
+  },
+  {
+    value: 'en'
+  },
+  {
+    value: 'fr'
+  },
+  {
+    value: 'de'
+  },
+  {
+    value: 'ja'
+  },
+])
 
 </script>
 <style scoped lang='less'>
@@ -112,8 +289,42 @@ const clearSelect = (event:any)=>{
 
 
         .demonstration {
-          color:aliceblue;
+          color:rgb(0, 0, 0);
           text-align: center;
+        }
+
+
+        .astrict {
+          width: 90%;
+        }
+      }
+
+
+      .fileshow {
+        transition: 0.25s;
+        width: 250px;
+        height: 100px;
+        position: relative;
+        background-color: rgb(45, 48, 63);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+        margin-top: 20px;
+
+
+        .word {
+          width: 60%;
+          margin-left: 10px;
+          overflow: hidden;
+        }
+
+
+        .delete {
+          display: flex;
         }
       }
     }
