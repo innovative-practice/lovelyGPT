@@ -4,8 +4,8 @@
       <h1>AI问答系统</h1>
     </div>
     <div class="online-person" style="margin-top: 5%;">
-      <span class="onlin-text">模型列表</span>
-      <input class="inputs" v-model="modelSearch" style=" margin-top: 10px;" />
+      <!--暂时注释掉“模型列表”四个字<span class="onlin-text">模型列表</span>-->
+      <input class="inputs" v-model="modelSearch" placeholder="Choose model" style=" margin-top: 10px;" />
       <div class="s-wrapper">
         <div class="personList" v-for="personInfo in personList as any" :key="personInfo.id"
           @click="clickPerson(personInfo)">
@@ -66,7 +66,9 @@ watch(modelSearch, (newValue: string, oldValue: string) => {
 
   .title {
     color: #fff;
-    padding-left: 10px;
+    position: relative;
+    left: 30%;
+    font-size: 110%;
   }
 
   .online-person {

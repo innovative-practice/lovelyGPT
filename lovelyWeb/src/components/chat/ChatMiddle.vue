@@ -77,7 +77,7 @@
     </div>
     <div v-else class="choose">
       <div class="choose-main">
-        <span>请选择您的聊天对象</span>
+        <span>Please choose the model !</span>
       </div>
     </div>
   </div>
@@ -478,8 +478,8 @@ watch(selectPerson, () => {
    align-items: space-between;
    justify-content: center;
    .choose-main{
-      font-size: 30px;
-      color: rgb(157, 155, 233);
+      font-size: 40px;
+      color: rgb(200,71,50);
    }
 }
 

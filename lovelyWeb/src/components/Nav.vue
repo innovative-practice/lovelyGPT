@@ -54,7 +54,8 @@ const changeMenu = (index: number) => {
   width: 100%;
   height: 90vh;
   position: relative;
-  border-radius: 20px 0 0 20px;
+  border-radius: 10px 0 0 10px;
+  background-color: rgb(226, 199, 199);
 
   .nav-menu-wrapper {
     position: absolute;
@@ -123,8 +124,8 @@ const changeMenu = (index: number) => {
 
   .own-pic {
     position: absolute;
-    bottom: 10%;
-    margin-left: 25px;
+    bottom: 90%;
+    margin-left: 15px;
   }
 }
 

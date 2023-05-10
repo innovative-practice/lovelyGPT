@@ -221,7 +221,8 @@ const languages = reactive([
 <style scoped lang='less'>
 .chatRight {
   width: 280px;
-  background-color: #bfa;
+  background-color: rgb(219,152,122);
+  border-radius: 3%;
   // overflow: hidden;
   #myVideo{
     width: 100%;
