@@ -196,7 +196,8 @@ watch(selectPerson, () => {
   flex: 1;
   padding-right: 30px;
   margin: 0;
-
+  padding: 0;
+  // background-color: red;
   .showIcon {
     position: relative;
     width: 100%;

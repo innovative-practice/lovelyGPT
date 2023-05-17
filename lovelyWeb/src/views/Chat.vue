@@ -17,10 +17,10 @@ import { reactive, ref } from 'vue'
 <style scoped lang='less'>
 .chat-home {
   display: flex;
+  padding: 0;
   width: 100%;
   height: 100%;
-
-  // border: 1px solid red;
+  margin: 0;
   .chat-middle {
     overflow: hidden;
   }

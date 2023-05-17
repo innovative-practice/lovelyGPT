@@ -9,3 +9,14 @@ export const usePersonStore = defineStore({
     }
   }
 })
+
+export const openApiParams = defineStore({
+  id: 'openApiParams',
+  state: () => {
+    return {
+      openApiParams: {
+        
+      }
+    }
+  }
+})

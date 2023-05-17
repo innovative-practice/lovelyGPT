@@ -5,9 +5,7 @@
       <el-aside width="80px">
         <Nav></Nav>
       </el-aside>
-      <el-main>
         <router-view></router-view>
-      </el-main>
     </el-container>
   </div>
 </template>
@@ -27,6 +25,7 @@ import { reactive, ref } from 'vue'
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.9;
+  opacity: 1;
+  overflow: hidden;
 }
 </style>

@@ -8,8 +8,6 @@
     <div class="online-person">
       <div class="explosion">
         <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0}">对话</span>
-        <span class="setting" @click="SettingStatus = 1" :class="{ active: SettingStatus === 1}">图片</span>
-        <span class="setting" @click="SettingStatus = 2" :class="{ active: SettingStatus === 2}">语音</span>
         <span class="setting" @click="SettingStatus = 3" :class="{ active: SettingStatus === 3}">文件</span>
       </div>
       <div class="s-wrapper left-right" @click="clearSelect">
@@ -52,77 +50,6 @@
             <div style="height: 30px;"></div>
           </div>
         </el-collapse-transition>
-        <!--图片设置-->
-        <el-collapse-transition>
-            <div v-show="SettingStatus == 1">
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="打开之后聊天发送的内容为描述图片的信息" placement="top">
-                  <span class="demonstration">产图模式</span>
-                </el-tooltip>
-                <el-switch v-model="SettingInfo.openProductionPicture" :width="defaulWidth"
-                  style="margin-left: 15%;"></el-switch>
-              </div>
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="图片的大小。" placement="top">
-                  <span class="demonstration">size</span>
-                </el-tooltip>
-                <div>
-                  <el-select v-model="SettingInfo.size" placeholder="请选择" style="margin-top: 10px;">
-                    <el-option v-for="item in imgSizes" :key="item.value" :value="item.value">
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="生成图片的数量。" placement="top">
-                  <span class="demonstration">n(1~10)</span>
-                </el-tooltip>
-                <el-slider class="astrict" v-model="SettingInfo.n" :step="1" :min="-1" :max="10"></el-slider>
-              </div>
-
-            </div>
-          </el-collapse-transition>
-          <!--音频设置-->
-          <el-collapse-transition>
-            <div v-show="SettingStatus == 2">
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="英文录音识别专用" placement="top">
-                  <span class="demonstration">英语音频翻译</span>
-                </el-tooltip>
-                <el-switch v-model="SettingInfo.translateEnglish" :width="defaulWidth"
-                  style="margin-left: 15%;"></el-switch>
-              </div>
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="请选你录音说的语言，以便于更快更精准的识别" placement="top">
-                  <span class="demonstration">language</span>
-                </el-tooltip>
-                <div>
-                  <el-select v-model="SettingInfo.language" placeholder="请选择" style="margin-top: 10px;">
-                    <el-option v-for="item in languages" :key="item.value" :value="item.value">
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
-
-
-              <div class="block">
-                <el-tooltip class="item" effect="dark" content="指定语音识别的随机性，范围是0到1，越高表示越多样化和创造性，越低表示越保守和确定性。"
-                  placement="top">
-                  <span class="demonstration">temperature(0~1)</span>
-                </el-tooltip>
-
-                <el-slider class="astrict" v-model="SettingInfo.TemperatureAudio" :step="0.1" :min="0"
-                  :max="1"></el-slider>
-              </div>
-
-
-            </div>
-          </el-collapse-transition>
           <!--文件-->
           <el-collapse-transition>
             <div v-show="SettingStatus == 3" class="filecontent">
@@ -187,48 +114,21 @@ const SettingInfo = reactive({
   size: "256x256",
   language: "zh"
 })
-const imgSizes = reactive([
-  {
-    value: '256x256'
-  },
-  {
-    value: '512x512'
-  },
-  {
-    value: '1024x1024'
-  },
-])
-let defaulWidth = ref(70)
-const languages = reactive([
-  {
-    value: 'zh'
-  },
-  {
-    value: 'en'
-  },
-  {
-    value: 'fr'
-  },
-  {
-    value: 'de'
-  },
-  {
-    value: 'ja'
-  },
-])
 
 </script>
 <style scoped lang='less'>
 .chatRight {
   width: 280px;
   background-color: rgb(219,152,122);
-  border-radius: 3%;
-  // overflow: hidden;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
   #myVideo{
     width: 100%;
     height: auto;
     margin-top: 10px;
-    border-radius: 5%;
+    // 右上角设置圆角
+    border-top-right-radius: 8px;
   }
 
   .title {

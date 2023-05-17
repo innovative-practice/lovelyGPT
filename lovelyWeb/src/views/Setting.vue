@@ -25,7 +25,7 @@
               <li><a href="https://github.com/apprehen"><img src="@/assets/img/header.png" alt=""></a></li>
               <li><a href="https://github.com/meguminkin"><img src="@/assets/img/head2.jpg" alt=""></a></li>
               <li><a href="https://github.com/cj1officicial"><img src="@/assets/img/head3.jpg" alt=""></a></li>
-              <li><a href="https://github.com/apprehen"><img src="@/assets/img/header.png" alt=""></a></li>
+              <li><a href="https://github.com/MyCaptainzZ"><img src="@/assets/img/head4.jpg" alt=""></a></li>
             </ul>
           </div>
         </div>
