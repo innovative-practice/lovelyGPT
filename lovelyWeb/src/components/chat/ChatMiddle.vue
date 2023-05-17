@@ -20,7 +20,7 @@
             <span class="iconfont icon-tupian"></span>
           </label>
           <input type="file" name="" id="imgFile" @change="sendImg" accept="image/*" />
-          <input type="file" name="" id="docFile" @change="sendFile" accept="application/*,text/*" />
+          <input type="file" name="" id="docFile" @change="sendFile" accept="application/*,tenxt/*" />
         </div>
       </div>
       <div class="message">
@@ -91,6 +91,7 @@ import LitterChat from '@/components/litter/LitterChat.vue';
 import { animation, getNowTime, yueyunFormatDate, getMP3Duration } from '@/util/index'
 import headerPng from '@/assets/img/header.png'
 import { usePersonStore } from '@/store/index'
+import { openApiParams } from '@/store/index'
 interface person {
   name: string,
   avatar: string,
@@ -112,7 +113,14 @@ let acqStatus = ref(true)
 let selectPerson: any = usePersonStore()
 const showEmoji = ref(false)
 const recording = ref(false)
+const originParams = ref({})
+// 接受openApi参数
+const openApi = openApiParams()
 
+// 监听openApi参数
+watch(openApi, (newVal, oldVal) => {
+  originParams.value = newVal.openApiParams
+})
 
 
 // 函数
@@ -476,7 +484,9 @@ watch(selectPerson, () => {
    width: 100%;
    height: 100%;
    display: flex;
-   align-items: space-between;
+   margin-top: 10vh;
+   align-items: flex-start;
+  // align-items: center;
    justify-content: center;
    .choose-main{
       font-size: 40px;

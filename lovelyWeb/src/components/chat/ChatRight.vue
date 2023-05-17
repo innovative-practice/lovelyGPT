@@ -7,8 +7,8 @@
     </div>
     <div class="online-person">
       <div class="explosion">
-        <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0}">对话</span>
-        <span class="setting" @click="SettingStatus = 3" :class="{ active: SettingStatus === 3}">文件</span>
+        <span class="setting" @click="SettingStatus = 0" :class="{ active: SettingStatus === 0 }">对话</span>
+        <span class="setting" @click="SettingStatus = 3" :class="{ active: SettingStatus === 3 }">文件</span>
       </div>
       <div class="s-wrapper left-right" @click="clearSelect">
         <!--对话设置-->
@@ -19,7 +19,8 @@
                 <span class="demonstration" style="">max_tokens</span>
               </el-tooltip>
 
-              <el-slider class="astrict" v-model="SettingInfo.MaxTokens" :step="1" :min="0" :max="2048"></el-slider>
+              <el-slider class="astrict" v-model="SettingInfo.MaxTokens" :step="1" :min="0" :max="2048"
+                @input="yueyun"></el-slider>
             </div>
 
             <div class="block">
@@ -28,51 +29,52 @@
                 <span class="demonstration">temperature(0~1)</span>
               </el-tooltip>
 
-              <el-slider class="astrict" v-model="SettingInfo.Temperature" :step="0.1" :min="0" :max="1"></el-slider>
+              <el-slider class="astrict" v-model="SettingInfo.Temperature" :step="0.1" :min="0" :max="1"
+                @input="yueyun"></el-slider>
             </div>
 
             <div class="block">
               <el-tooltip class="item" effect="dark" content="指定降低重复单词出现概率的程度，范围是0到1，越高表示越避免重复。" placement="top">
-                  <span class="demonstration">frequency_penalty(-2~2)</span>
+                <span class="demonstration">frequency_penalty(-2~2)</span>
               </el-tooltip>
 
-              <el-slider class="astrict" v-model="SettingInfo.FrequencyPenalty" :step="0.1" :min="-2"
-                :max="2"></el-slider>
+              <el-slider class="astrict" v-model="SettingInfo.FrequencyPenalty" :step="0.1" :min="-2" :max="2"
+                @input="yueyun"></el-slider>
             </div>
 
             <div class="block">
-                <el-tooltip class="item" effect="dark" content="指定降低重复话题出现概率的程度，范围是0到1，越高表示越避免重复。" placement="top">
-                  <span class="demonstration">presence_penalty(-2~2)</span>
-                </el-tooltip>
-                <el-slider class="astrict" v-model="SettingInfo.PresencePenalty" :step="0.1" :min="-2"
-                  :max="2"></el-slider>
+              <el-tooltip class="item" effect="dark" content="指定降低重复话题出现概率的程度，范围是0到1，越高表示越避免重复。" placement="top">
+                <span class="demonstration">presence_penalty(-2~2)</span>
+              </el-tooltip>
+              <el-slider class="astrict" v-model="SettingInfo.PresencePenalty" :step="0.1" :min="-2" :max="2"
+                @input="yueyun"></el-slider>
             </div>
             <div style="height: 30px;"></div>
           </div>
         </el-collapse-transition>
-          <!--文件-->
-          <el-collapse-transition>
-            <div v-show="SettingStatus == 3" class="filecontent">
-              <div v-for="item, index in fileList" :key="index">
-                <div class="fileshow" @click.stop="selectFiles($event, item, index)"
-                  :class="item.isSelect == 1 ? 'fileactive' : ''">
-                  <img :src=item.imgs />
-                  <div class="word">
-                    <span>{{ item.name || '未知' }}</span>
-                    <span>154kb</span>
-                  </div>
-                  <div class="delete" @click="deleteFiles(item)">
-                    <svg t="1680574326711" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" p-id="4048" width="32" height="32">
-                      <path
-                        d="M511.89 128.745c-201.852 0-365.49 163.638-365.49 365.49s163.638 365.49 365.49 365.49c201.851 0 365.49-163.637 365.49-365.49s-163.639-365.49-365.49-365.49zM688.52 626.69l-44.188 44.175L511.89 538.41 379.448 670.864 335.26 626.69l132.443-132.455L335.26 361.792l44.152-44.187 132.466 132.454 132.454-132.454 44.188 44.187-132.455 132.455L688.52 626.689z m0 0"
-                        p-id="4049" fill="#030303"></path>
-                    </svg>
-                  </div>
+        <!--文件-->
+        <el-collapse-transition>
+          <div v-show="SettingStatus == 3" class="filecontent">
+            <div v-for="item, index in fileList" :key="index">
+              <div class="fileshow" @click.stop="selectFiles($event, item, index)"
+                :class="item.isSelect == 1 ? 'fileactive' : ''">
+                <img :src=item.imgs />
+                <div class="word">
+                  <span>{{ item.name || '未知' }}</span>
+                  <span>154kb</span>
+                </div>
+                <div class="delete" @click="deleteFiles(item)">
+                  <svg t="1680574326711" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="4048" width="32" height="32">
+                    <path
+                      d="M511.89 128.745c-201.852 0-365.49 163.638-365.49 365.49s163.638 365.49 365.49 365.49c201.851 0 365.49-163.637 365.49-365.49s-163.639-365.49-365.49-365.49zM688.52 626.69l-44.188 44.175L511.89 538.41 379.448 670.864 335.26 626.69l132.443-132.455L335.26 361.792l44.152-44.187 132.466 132.454 132.454-132.454 44.188 44.187-132.455 132.455L688.52 626.689z m0 0"
+                      p-id="4049" fill="#030303"></path>
+                  </svg>
                 </div>
               </div>
             </div>
-          </el-collapse-transition>
+          </div>
+        </el-collapse-transition>
       </div>
     </div>
   </div>
@@ -80,23 +82,26 @@
 
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
+import { openApiParams } from '@/store/index'
 let SettingStatus = ref(0)
-let fileList:any = reactive([])
+let fileList: any = reactive([])
 let nowFile = reactive({})
-const clearSelect = (event:any)=>{
+const apiParams = openApiParams()
+
+const clearSelect = (event: any) => {
   for (let i = 0; i < fileList.length; i++) {
-        fileList[i].isSelect = 0
-      }
-      nowFile = {}
+    fileList[i].isSelect = 0
+  }
+  nowFile = {}
 }
-const selectFiles = (event:any, item:any, index:any)=>{
+const selectFiles = (event: any, item: any, index: any) => {
   for (let i = 0; i < fileList.length; i++) {
-        fileList[i].isSelect = 0
-      }
-      item.isSelect = 1
-      nowFile = item
+    fileList[i].isSelect = 0
+  }
+  item.isSelect = 1
+  nowFile = item
 }
-const deleteFiles = (item:any)=>{
+const deleteFiles = (item: any) => {
   fileList.splice(fileList.indexOf(item), 1)
   nowFile = {}
 }
@@ -114,16 +119,22 @@ const SettingInfo = reactive({
   size: "256x256",
   language: "zh"
 })
+const yueyun = () => {
+  // 将修改后的数据传入store的openApiParams的数据中
+  apiParams.openApiParams = SettingInfo
+  // console.log(apiParams.openApiParams) 
+}
 
 </script>
 <style scoped lang='less'>
 .chatRight {
   width: 280px;
-  background-color: rgb(219,152,122);
+  background-color: rgb(219, 152, 122);
   margin: 0;
-  height: 100%;
-  overflow: hidden;
-  #myVideo{
+  height: 90vh;
+
+  // overflow: hidden;
+  #myVideo {
     width: 100%;
     height: auto;
     margin-top: 10px;
@@ -156,7 +167,7 @@ const SettingInfo = reactive({
 
 
       .setting.active {
-        color: #827fac;//选中后的颜色
+        color: #827fac; //选中后的颜色
       }
     }
 
@@ -190,7 +201,7 @@ const SettingInfo = reactive({
 
 
         .demonstration {
-          color:rgb(0, 0, 0);
+          color: rgb(0, 0, 0);
           text-align: center;
         }
 
@@ -235,5 +246,4 @@ const SettingInfo = reactive({
     }
   }
 }
-
 </style>
