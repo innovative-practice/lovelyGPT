@@ -134,12 +134,14 @@ const sendEmoji = (emoji: string) => {
   inputMsg.value += emoji
   showEmoji.value = false
 }
+// *******
 const startRecording = () => {
   recording.value = true
 }
 const stopRecording = () => {
   recording.value = false
 }
+// *********
 const sendText = async () => {
   let message = inputMsg.value
   // console.log('sendText')
@@ -181,6 +183,11 @@ const sendImg = (e: any) => {
 const sendFile = (e: any) => {
   console.log(e.target.files[0])
 }
+
+const getOpenApiReply = (params:any) =>{
+
+}
+
 const completion = async (params: any, chatBeforResMsg: any) => {
   // 新增一个空消息
   messageList.push({
@@ -192,6 +199,7 @@ const completion = async (params: any, chatBeforResMsg: any) => {
       time: yueyunFormatDate(getNowTime()),
     }
   })
+
 }
 
 // 监听
