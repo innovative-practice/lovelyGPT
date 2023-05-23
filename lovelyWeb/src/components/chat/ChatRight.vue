@@ -20,7 +20,7 @@
               </el-tooltip>
 
               <el-slider class="astrict" v-model="SettingInfo.MaxTokens" :step="1" :min="0" :max="2048"
-                @input="yueyun"></el-slider>
+                @input="postParams"></el-slider>
             </div>
 
             <div class="block">
@@ -30,7 +30,7 @@
               </el-tooltip>
 
               <el-slider class="astrict" v-model="SettingInfo.Temperature" :step="0.1" :min="0" :max="1"
-                @input="yueyun"></el-slider>
+                @input="postParams"></el-slider>
             </div>
 
             <div class="block">
@@ -39,7 +39,7 @@
               </el-tooltip>
 
               <el-slider class="astrict" v-model="SettingInfo.FrequencyPenalty" :step="0.1" :min="-2" :max="2"
-                @input="yueyun"></el-slider>
+                @input="postParams"></el-slider>
             </div>
 
             <div class="block">
@@ -47,7 +47,7 @@
                 <span class="demonstration">presence_penalty(-2~2)</span>
               </el-tooltip>
               <el-slider class="astrict" v-model="SettingInfo.PresencePenalty" :step="0.1" :min="-2" :max="2"
-                @input="yueyun"></el-slider>
+                @input="postParams"></el-slider>
             </div>
             <div style="height: 30px;"></div>
           </div>
@@ -106,8 +106,6 @@ const deleteFiles = (item: any) => {
   nowFile = {}
 }
 const SettingInfo = reactive({
-  translateEnglish: false,
-  openProductionPicture: false,
   KeyMsg: "",
   MaxTokens: 1000,
   Temperature: 1,
@@ -116,13 +114,10 @@ const SettingInfo = reactive({
   FrequencyPenalty: 0,
   PresencePenalty: 0,
   n: 1,
-  size: "256x256",
-  language: "zh"
 })
-const yueyun = () => {
-  // 将修改后的数据传入store的openApiParams的数据中
+
+const postParams = () => {
   apiParams.openApiParams = SettingInfo
-  // console.log(apiParams.openApiParams) 
 }
 
 </script>
