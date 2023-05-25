@@ -1,76 +1,60 @@
-// const fs = require('fs')
-// fs.readFile('data.txt', function (err, data) {
-//   if (err) {
-//     return console.error(err);
-//   }
-//   let datasource = data.toString();
-//   let mubiao = [];
-//   datasource = datasource.split('}')
-//   datasource.shift();
-//   datasource.pop();
-//   let res = ''
-//   mubiao = [... new Set(datasource)]
-//   mubiao.forEach(ele => {
-//     // res.push(ele + '}')
-//     res += ele + '}' + '\n'
-//   })
-//   console.log(res)
-//   fs.writeFile('result.txt', res, function (err) {
-//     if (err) {
-//       return console.log('文件写入失败!' + err.message);
-//     }
-//     console.log('文件写入成功');
-//   })
+import axios from 'axios'
+import fs from 'fs/promises'
+// const md5 = require('js-md5');
+import md5 from 'js-md5'
+async function convertTextToSpeech () {
+  try {
+    const url = 'http://124.221.89.187:3232/models/liang/speakers/1'
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+    const data = {
+      text: 'Hello, world!',
+      language: '日本語',
+      speed: 0.95,
+      noise_scale: 0.667,
+      noise_scale_w: 0.8
+    }
+    const response = await axios.post(url, data, { headers,responseType: 'arraybuffer' })
+    if (response.status === 200 && response.headers['content-type'] === 'audio/wav') {
+      const buffer = Buffer.from(response.data, 'binary')
+      await fs.writeFile('output.wav', buffer)
+      console.log('Downloaded')
+    } else {
+      console.log('Download failed')
+    }
+  } catch(err) {
+    console.log('发生错误',err.message)
+  }
+}
 
-// })
-// let obj1 = [{ file: "test", record: [{ role: "user", content: "explosion" }] }]
-// let obj2 = obj1[0].record
+// convertTextToSpeech()
+async function baiduTra(text) {
+  const q = text
+  const from = "auto"
+  const to = "jp"
+  const appid = "20230414001641454"
+  const salt = (new Date).getTime()
+  const key = "xvfCVyHcnGTtJRfHsO8W"
+  const str1 = appid + q + salt + key
+  const sign = md5(str1)
+  try {
+    let res = await axios.get('https://fanyi-api.baidu.com/api/trans/vip/translate', {
+      params: {
+        q,
+        from,
+        to,
+        appid,
+        salt,
+        sign
+      }
+    })
+    console.log(res.data)
+    console.log(res.data.trans_result[0].dst)
+    return res.data.trans_result[0].dst
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-// obj2.push({ role: "assitant", content: "你干嘛~" })
-// let arr = [
-//   { role: "user", content: "explosion" },
-//   { role: "assitant", content: "你干嘛~" }
-// ]
-// let arr = JSON.stringify(obj1[0].record)
-// let srt = JSON.parse(arr)
-// let arr = [1,2,]
-// console.log(arr)
-// let str = ''
-// obj1[0].record.forEach(ele => {
-//   console.log(ele)
-//   str += JSON.stringify(ele) + ','
-// })
-// str = '[' + str + ']'
-// console.log(str)
-// console.log(typeof `${srt}`)
-
-// let imglist = {
-//   msg: 'explosion'
-// }
-// let chatlist = []
-// imglist.msg = ''
-// chatlist.push(imglist)
-
-//   if (imglist.msg) {
-
-//     console.log(imglist.msg)
-
-// const timer = setInterval(() => {
-//     clearInterval(timer)
-
-
-const fs = require('fs/promises')
-
-fs.writeFile('data.txt', 'explosion')
-  .then(() => {
-    console.log('写入成功')
-  })
-  .catch(err => {
-    console.log('写入失败')
-  })
-  // .then((res) => {
-  //   console.log(res.toString())
-  // })
-  // .catch(err => {
-  //   console.log('写入失败')
-  // })
+baiduTra('你好')

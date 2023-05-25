@@ -17,7 +17,7 @@ axios.interceptors.response.use(
 
 const base = {
   axios: axios,
-  baseUrl: 'http://127.0.0.1:3000',
+  baseUrl: 'http://127.0.0.1:4000',
   aiBaseUrl: 'https://api.openai.com'
 }
 

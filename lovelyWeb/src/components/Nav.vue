@@ -2,8 +2,12 @@
   <div class="nav">
     <div class="nav-menu-wrapper">
       <ul class="menu-list">
-        <li v-for="(item, index) in menuList" :key="index" :class="{ activeNav: index == current }"
-          @click="changeMenu(index)">
+        <li
+          v-for="(item, index) in menuList"
+          :key="index"
+          :class="{ activeNav: index == current }"
+          @click="changeMenu(index)"
+        >
           <div class="ui">
             <div class="block"></div>
             <span class="iconfont" :class="item"></span>
@@ -17,37 +21,32 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import headjpg from '@/assets/img/header.png'
-import HeadPortrait from '@/components/litter/HeadPortrait.vue'
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-let menuList = ref([
-  "icon-xinxi",
-  "icon-voice",
-  "icon-shezhi",
-])
-let current = ref(0)
-const ImgUrl = headjpg
+<script setup lang="ts">
+import headjpg from "@/assets/img/header.png";
+import HeadPortrait from "@/components/litter/HeadPortrait.vue";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+let menuList = ref(["icon-xinxi", "icon-voice", "icon-shezhi"]);
+let current = ref(0);
+const ImgUrl = headjpg;
 const changeMenu = (index: number) => {
-  current.value = index
+  current.value = index;
   switch (index) {
     case 0:
-      router.push('/')
+      router.push("/");
       break;
     case 1:
-      router.push('/voice')
+      router.push("/voice");
       break;
     case 2:
-      router.push('/setting')
+      router.push("/setting");
       break;
     default:
-      router.push('/')
+      router.push("/");
       break;
-
   }
-}
+};
 </script>
 <style scoped lang="less">
 .nav {
@@ -65,15 +64,14 @@ const changeMenu = (index: number) => {
     .menu-list {
       margin-left: 10px;
 
-
       li {
         margin: 40px 0 0 30px;
         list-style: none;
         cursor: pointer;
         position: relative;
         font-size: 30px;
-        .ui{
-          width: 60px ;
+        .ui {
+          width: 60px;
           margin-left: -40px;
           height: 100%;
           display: flex;
@@ -81,8 +79,8 @@ const changeMenu = (index: number) => {
           align-items: center;
           position: relative;
           // background-color: red;
-          span{
-            padding-left: 10px
+          span {
+            padding-left: 10px;
           }
         }
         .iconfont {
@@ -106,18 +104,16 @@ const changeMenu = (index: number) => {
           border-bottom-right-radius: 4px;
           opacity: 0;
         }
-          &:hover {
-            span {
-              color: rgb(29, 144, 245);
-              padding-left: 30px;
-            }
+        &:hover {
+          span {
+            color: rgb(29, 144, 245);
+            padding-left: 30px;
+          }
 
-            .block {
-              opacity: 1;
-            }
+          .block {
+            opacity: 1;
+          }
         }
-
-        
       }
     }
   }

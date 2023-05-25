@@ -84,12 +84,13 @@ const sendText = async () => {
     inputMsg.value = ''
     try {
       const res: any = await getVoice(message)
-      const mp3Duration = await getMP3Duration(res.data)
+      console.log(res)
+      const mp3Duration = await getMP3Duration(res.voicePath)
       messageList.push({
         type: 'video',
         content: 'explosion',
-        voiceUrl: res.data,
-        gptchat: res.gptchat,
+        voiceUrl: res.voicePath,
+        gptchat: res.reply,
         person: {
           name: 'AI',
           avatar: headerPng,

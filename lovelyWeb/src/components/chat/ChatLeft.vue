@@ -1,15 +1,27 @@
 <template>
-  <div class="chatLeft" style="width:24%">
+  <div class="chatLeft" style="width: 24%">
     <div class="title">
       <h1>AI问答系统</h1>
     </div>
-    <div class="online-person" style="margin-top: 5%;">
+    <div class="online-person" style="margin-top: 5%">
       <!--暂时注释掉“模型列表”四个字<span class="onlin-text">模型列表</span>-->
-      <input class="inputs" v-model="modelSearch" placeholder="Choose model" style=" margin-top: 10px;" />
+      <input
+        class="inputs"
+        v-model="modelSearch"
+        placeholder="Choose model"
+        style="margin-top: 10px"
+      />
       <div class="s-wrapper">
-        <div class="personList" v-for="personInfo in personList as any" :key="personInfo.id"
-          @click="clickPerson(personInfo)">
-          <PersonCard :personInfo="personInfo" :current="pcCurrent"></PersonCard>
+        <div
+          class="personList"
+          v-for="personInfo in personList as any"
+          :key="personInfo.id"
+          @click="clickPerson(personInfo)"
+        >
+          <PersonCard
+            :personInfo="personInfo"
+            :current="pcCurrent"
+          ></PersonCard>
         </div>
       </div>
     </div>
@@ -17,48 +29,48 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, watch } from 'vue'
-import PersonCard from '../litter/PersonCard.vue';
-import { getModels } from '@/api/getData'
-import { usePersonStore } from '@/store/index'
-import { storeToRefs } from 'pinia';
-let modelSearch = ref('')
-let personList: any = ref([])
-let personListCache: any = ref([])
-let pcCurrent = ref()
+import { reactive, ref, onMounted, watch } from "vue";
+import PersonCard from "../litter/PersonCard.vue";
+import { getModels } from "@/api/getData";
+import { usePersonStore } from "@/store/index";
+import { storeToRefs } from "pinia";
+let modelSearch = ref("");
+let personList: any = ref([]);
+let personListCache: any = ref([]);
+let pcCurrent = ref();
 onMounted(async () => {
-  personList.value = await getModels('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')
-  personListCache.value = personList.value
+  personList.value = await getModels(
+    "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"
+  );
+  personListCache.value = personList.value;
   // pcCurrent.value = personList.value[0].id
-})
+});
 
 // 使用pinia传递参数
-const selectPerson = usePersonStore()
+const selectPerson = usePersonStore();
 // 传递给中间组件的数据 <storeToRefs> 做成响应式
-let toPerson = storeToRefs(selectPerson)
+let toPerson = storeToRefs(selectPerson);
 
 // 点击函数
 const clickPerson = (personInfo: any) => {
-  pcCurrent.value = personInfo.id
-  selectPerson.person = personInfo
-}
-
+  pcCurrent.value = personInfo.id;
+  selectPerson.person = personInfo;
+};
 
 // 监听搜索函数
 watch(modelSearch, (newValue: string, oldValue: string) => {
-  console.log(newValue, oldValue)
+  console.log(newValue, oldValue);
   if (personList.value.length != 0) {
     personList.value = personListCache.value.filter((item: any) => {
-      return item.name.indexOf(newValue) != -1
-    })
+      return item.name.indexOf(newValue) != -1;
+    });
   }
-  if (newValue == '') {
-    personList.value = personListCache.value
+  if (newValue == "") {
+    personList.value = personListCache.value;
   }
-})
-
+});
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .chatLeft {
   width: 280px;
   overflow: hidden;
@@ -87,10 +99,9 @@ watch(modelSearch, (newValue: string, oldValue: string) => {
       color: rgb(176, 178, 189);
     }
 
-
     .s-wrapper {
       padding-left: 10px;
-      height: 65vh;
+      height: 70vh;
       margin-top: 10px;
       overflow: hidden;
       overflow-y: scroll;

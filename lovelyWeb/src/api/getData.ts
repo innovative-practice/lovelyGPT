@@ -8,18 +8,16 @@ let aiBaseUrl = base.aiBaseUrl
 export const getVoice = (message: string) => {
   return axios({
     method: 'get',
-    url: `${baseUrl}/toVoice/${message}`,
-    // url: `${baseUrl}/test`,
+    baseURL: `${baseUrl}/toVoice/${message}`,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  }).then(res => {
+    console.log('wuwuwu',res.data)
+    return res.data.data
+  }).catch(err => {
+    console.log(err)
   })
-    .then(res => {
-      return {
-        data: res.data.data,
-        gptchat: res.data.gptchat
-      }
-    })
-    .catch(err => {
-      console.log('出错辣')
-    })
 }
 
 // 获取模型列表
