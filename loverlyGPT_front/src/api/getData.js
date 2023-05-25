@@ -1,7 +1,7 @@
 import base from './index'
 let axios = base.axios
 let baseUrl = base.baseUrl
-
+let proDuUrl = base.proDuUrl
 const Arrimgs = [
   require('@/assets/img/AIimgs/1.jpg'),
   require('@/assets/img/AIimgs/2.jpg'),
@@ -279,4 +279,19 @@ export const getChatMsg = params => {
     baseURL: `${baseUrl}/friend/chatMsg`,
     data: params,
   }).then(res => res.data)
+}
+
+// 获取语音文件路径
+export const getVoice = (message) => {
+  return axios({
+    method: 'get',
+    baseURL: `${proDuUrl}/toVoice/${message}`,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  }).then(res => {
+    return res.data.data
+  }).catch(err => {
+    console.log(err)
+  })
 }

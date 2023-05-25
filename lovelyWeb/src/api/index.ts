@@ -18,7 +18,8 @@ axios.interceptors.response.use(
 const base = {
   axios: axios,
   baseUrl: 'http://127.0.0.1:4000',
-  aiBaseUrl: 'https://api.openai.com'
+  aiBaseUrl: 'https://api.openai.com',
+  proDuctUrl: 'http://124.221.89.187:4200'
 }
 
 export default base

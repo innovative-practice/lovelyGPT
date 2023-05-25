@@ -1,10 +1,9 @@
 <template>
   <div class="littervoice">
     <div class="chat">
-      <div class="chat-text" @click="handlePlay">
-        <!-- <audio :src="props.voiceUrl" controls ref="audio" id="audio"></audio> -->
+      <div class="chat-text" @click="handlePlay()">
         <audio
-          :src="props.voiceUrl"
+          :src="voiceUrl"
           controls
           ref="musicAudio"
           id="audio"
@@ -13,13 +12,13 @@
         <div class="yuyin-title">
           <img
             v-if="isPlaying"
-            src="@/assets/img/yuyin-on.gif"
+            :src="require('@/assets/img/yuyin-on.gif')"
             alt=""
             class="yuyin-img"
           />
           <img
             v-else
-            src="@/assets/img/yuyin-off.png"
+            :src="require('@/assets/img/yuyin-off.png')"
             alt=""
             class="yuyin-img"
           />
@@ -34,67 +33,61 @@
       <div class="text-main">{{ str }}</div>
     </div>
     <div class="info-time">
-      <img :src="person?.avatar" alt="" />
-      <span>{{ person?.name }}</span>
-      <span>{{ person?.time }}</span>
+      <img :src="person.avatar" alt="" />
+      <span>{{ person.name }}</span>
+      <span>{{ person.time }}</span>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref, nextTick, onMounted, onBeforeUnmount } from "vue";
-const props = defineProps({
-  voiceUrl: String,
-  person: Object,
-  voiceTime: Number,
-  gptchat: String,
-});
-
-const musicAudio: any = ref(null);
-//语音时间
-// let time =ref(parseInt(props.voiceTime))
-let time: any = ref(props.voiceTime);
-console.log(time.value);
-// 向上取整
-let prTime = Math.ceil(time.value);
-
-//播放暂停语音及语音动画效果切换
-let isPlaying = ref(false);
-let timer = ref(NaN);
-const handlePlay = () => {
-  const audio = document.getElementById("audio") as HTMLAudioElement;
-  if (!isPlaying.value) {
-    // audio.play();
-    musicAudio.value.play();
-    isPlaying.value = true;
-    watchEnd();
-  } else {
-    // audio.pause();
-    musicAudio.value.pause();
-    clearTimeout(timer.value);
-    isPlaying.value = false;
-    // audio.currentTime = 0;
-    musicAudio.value.currentTime = 0;
-  }
+<script>
+export default {
+  props: {
+    voiceUrl: String,
+    person: Object,
+    voiceTime: Number,
+    gptchat: String,
+  },
+  data() {
+    return {
+      time: this.voiceTime,
+      prTime: parseInt(this.voiceTime),
+      isPlaying: false,
+      timer: NaN,
+      strStatus: false,
+      str: this.gptchat,
+    };
+  },
+  methods: {
+    handlePlay() {
+      const audio = document.getElementById("audio");
+      if (!this.isPlaying) {
+        audio.play();
+        this.isPlaying = true;
+        this.watchEnd();
+      } else {
+        audio.pause();
+        clearTimeout(this.timer);
+        this.isPlaying = false;
+        audio.currentTime = 0;
+      }
+    },
+    watchEnd() {
+      this.timer = setTimeout(() => {
+        this.isPlaying = false;
+      }, (3 + 1) * 1000); //时间
+    },
+    change() {
+      this.strStatus = true;
+    },
+  },
+  beforeUnmount() {
+    clearTimeout(this.timer);
+  },
 };
-const watchEnd = () => {
-  timer.value = setTimeout(() => {
-    isPlaying.value = false;
-  }, (3 + 1) * 1000); //时间
-};
-onBeforeUnmount(() => {
-  clearTimeout(timer.value);
-});
-
-//语音转文字
-let strStatus = ref(false);
-let str = props.gptchat;
-console.log(str);
-function change(String: any) {
-  strStatus.value = true;
-}
 </script>
-<style scoped lang="less">
+
+<style scoped lang="scss">
 .littervoice {
   width: 70%;
 }
@@ -145,10 +138,7 @@ function change(String: any) {
 
   .change {
     background-color: rgb(161, 153, 153);
-    // height: 25px;
     border-radius: 15px;
-    // width: 20%;
-    // width: 100px;
     font-size: 20px;
     padding: 10px 10px;
     margin-left: 15px;

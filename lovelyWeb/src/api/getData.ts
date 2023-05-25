@@ -1,19 +1,19 @@
 import base from './index'
 import Ai from '@/assets/AIimgs/1.jpg'
-let axios = base.axios
+let myaxios = base.axios
 let baseUrl = base.baseUrl
 let aiBaseUrl = base.aiBaseUrl
+let proDuctUrl = base.proDuctUrl
 
 // 获取语音文件路径
 export const getVoice = (message: string) => {
-  return axios({
+  return myaxios({
     method: 'get',
-    baseURL: `${baseUrl}/toVoice/${message}`,
+    baseURL: `${proDuctUrl}/toVoice/${message}`,
     headers: {
       'Content-Type': 'application/json'
     },
   }).then(res => {
-    console.log('wuwuwu',res.data)
     return res.data.data
   }).catch(err => {
     console.log(err)
@@ -22,7 +22,7 @@ export const getVoice = (message: string) => {
 
 // 获取模型列表
 export const getModels = (token: string) => {
-  return axios({
+  return myaxios({
     method: 'get',
     baseURL: `${aiBaseUrl}/v1/models`,
     headers: {

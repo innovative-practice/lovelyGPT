@@ -1,59 +1,87 @@
 <template>
   <div class="voice">
     <div class="voice-left">
-      <LitterVoice :voice="voice" />
+      <liang></liang>
     </div>
     <div class="voice-right">
-      <div class="chat-content">
+      <div class="chat-content" id="chat-content" ref="chatContent">
         <div
           class="chat-wrapper"
-          v-for="(message, index) in messageList"
+          v-for="(item, index) in messageList"
           :key="index"
         >
-          <div class="chat-me" v-if="message.person">
-            <div class="chat-text">{{ message.content }}</div>
-            <div class="info-time">
-              <span>{{ message.person.name }}</span>
-              <span>{{ message.person.time }}</span>
-              <img :src="message.person.avatar" alt="" />
-            </div>
+          <div v-if="item.type === 'text'" class="chat-me">
+            <LitterChat
+              :chatContent="item.content"
+              :person="item.person"
+            ></LitterChat>
           </div>
-          <div class="chat-friend" v-else>
-            <div class="chat-text">{{ message.content }}</div>
-            <div class="info-time">
-              <span>{{ message.gptchat }}</span>
-              <span>{{ message.person.time }}</span>
-              <img :src="message.person.avatar" alt="" />
-            </div>
+          <div v-if="item.type === 'video'" class="chat-friend">
+            <LitterVoice
+              :voiceUrl="item.voiceUrl"
+              :person="item.person"
+              :voiceTime="item.voiceDuration"
+              :gptchat="item.gptchat"
+            ></LitterVoice>
           </div>
         </div>
       </div>
       <div class="bottom">
-        <input class="inputs" type="text" v-model="inputMsg" />
-        <div class="boxinput">
-          <img src="@/assets/img/voice.png" alt="" />
+        <textarea
+          id="textareaMsg"
+          class="inputs"
+          style="
+            z-index: 9999999999;
+            min-height: 50px;
+            max-height: 400px;
+            max-width: 65%;
+            min-width: 65%;
+          "
+          maxlength="2000"
+          rows="3"
+          dirautocorrect="off"
+          aria-autocomplete="both"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          v-model="inputMsg"
+          @keyup.enter="sendText"
+        >
+        </textarea>
+        <div v-if="acqStatus">
+          <div class="send boxinput" @click="sendText">
+            <img src="@/assets/img/send.png" alt="" />
+          </div>
         </div>
-        <button class="send" @click="sendText">发送</button>
+        <!--等待-->
+        <div v-else>
+          <div class="send boxinput" @click="waitMessage">
+            <div class="spinner">
+              <img src="@/assets/img/shuaxin.png" alt="AI回答中" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import headerPng from "@/assets/img/header.png";
 import LitterVoice from "@/components/litter/LitterVoice.vue";
-import voiceUrl from "@/assets/video/zaoshanghao.mp3";
 import { getVoice } from "@/api/getData";
-
+import { getNowTime, yueyunFormatDate } from "@/util/util.js";
+import LitterChat from "@/components/litter/LitterChat.vue";
+import liang from "@/components/litter/liang.vue";
 export default {
   components: {
     LitterVoice,
+    LitterChat,
+    liang,
   },
   data() {
     return {
       acqStatus: true,
       inputMsg: "",
-      voice: voiceUrl,
       messageList: [],
     };
   },
@@ -100,8 +128,8 @@ export default {
 
 <style scoped lang="scss">
 .voice {
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;

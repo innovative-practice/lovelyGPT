@@ -5,22 +5,49 @@
     </div>
     <div class="voice-right">
       <div class="chat-content" id="chat-content" ref="chatContent">
-        <div class="chat-wrapper" v-for="(item, index) in messageList" :key="index">
+        <div
+          class="chat-wrapper"
+          v-for="(item, index) in messageList"
+          :key="index"
+        >
           <div v-if="item.type === 'text'" class="chat-me">
-            <LitterChat :chatContent="item.content" :person="item.person"></LitterChat>
+            <LitterChat
+              :chatContent="item.content"
+              :person="item.person"
+            ></LitterChat>
           </div>
           <div v-if="item.type === 'video'" class="chat-friend">
-            <LitterVoice :voiceUrl="item.voiceUrl" :person="item.person" :voiceTime="item.voiceDuration"
-              :gptchat="item.gptchat"></LitterVoice>
+            <LitterVoice
+              :voiceUrl="item.voiceUrl"
+              :person="item.person"
+              :voiceTime="item.voiceDuration"
+              :gptchat="item.gptchat"
+            ></LitterVoice>
           </div>
         </div>
       </div>
       <div class="bottom">
-        <textarea id="textareaMsg" class="inputs"
-          style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;" maxlength="2000"
-          rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false" autocapitalize="off"
-          autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
-                                                                                                                                                                      </textarea>
+        <textarea
+          id="textareaMsg"
+          class="inputs"
+          style="
+            z-index: 9999999999;
+            min-height: 50px;
+            max-height: 400px;
+            max-width: 65%;
+            min-width: 65%;
+          "
+          maxlength="2000"
+          rows="3"
+          dirautocorrect="off"
+          aria-autocomplete="both"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          v-model="inputMsg"
+          @keyup.enter="sendText"
+        >
+        </textarea>
         <div v-if="acqStatus">
           <div class="send boxinput" @click="sendText">
             <img src="@/assets/img/send.png" alt="" />
@@ -39,85 +66,94 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import Liang from '@/components/litter/liang.vue';
-import LitterChat from '@/components/litter/LitterChat.vue';
-import { animation, getNowTime, yueyunFormatDate, getMP3Duration } from '@/util/index'
-import { reactive, ref } from 'vue'
-import headerPng from '@/assets/img/header.png'
-import LitterVoice from '@/components/litter/LitterVoice.vue'
-import voiceUrl from '@/assets/video/zaoshanghao.mp3'
-import { getVoice } from '@/api/getData'
+<script setup lang="ts">
+import Liang from "@/components/litter/liang.vue";
+import LitterChat from "@/components/litter/LitterChat.vue";
+import {
+  animation,
+  getNowTime,
+  yueyunFormatDate,
+  getMP3Duration,
+} from "@/util/index";
+import { reactive, ref } from "vue";
+import headerPng from "@/assets/img/header.png";
+import LitterVoice from "@/components/litter/LitterVoice.vue";
+import { getVoice } from "@/api/getData";
 interface person {
-  name: string,
-  avatar: string,
-  time: string
+  name: string;
+  avatar: string;
+  time: string;
 }
 interface Message {
-  type: string,
-  content: string,
-  person?: person,
-  voiceUrl?: string,
-  voiceDuration?: any,
-  gptchat?: string
+  type: string;
+  content: string;
+  person?: person;
+  voiceUrl?: string;
+  voiceDuration?: any;
+  gptchat?: string;
 }
-let acqStatus = ref(true)
-let inputMsg = ref('')
-let voice = voiceUrl
+let acqStatus = ref(true);
+let inputMsg = ref("");
 // 存储消息的数组
-let messageList: Message[] = reactive([])
+let messageList: Message[] = reactive([]);
 
 const sendText = async () => {
-  let message = inputMsg.value
+  let message = inputMsg.value;
   // console.log('sendText')
   if (inputMsg.value) {
     messageList.push({
-      type: 'text',
+      type: "text",
       content: inputMsg.value,
       person: {
-        name: '月晕',
+        name: "月晕",
         avatar: headerPng,
         time: yueyunFormatDate(getNowTime()),
-      }
-    })
-    acqStatus.value = false
-    inputMsg.value = ''
+      },
+    });
+    acqStatus.value = false;
+    inputMsg.value = "";
     try {
-      const res: any = await getVoice(message)
-      console.log(res)
-      const mp3Duration = await getMP3Duration(res.voicePath)
+      const res: any = await getVoice(message);
+      console.log(res);
+      const mp3Duration = await getMP3Duration(res.voicePath);
       messageList.push({
-        type: 'video',
-        content: 'explosion',
+        type: "video",
+        content: "explosion",
         voiceUrl: res.voicePath,
         gptchat: res.reply,
         person: {
-          name: 'AI',
+          name: "AI",
           avatar: headerPng,
           time: yueyunFormatDate(getNowTime()),
         },
-        voiceDuration: mp3Duration
-      })
-      acqStatus.value = true
+        voiceDuration: mp3Duration,
+      });
+      acqStatus.value = true;
+      // 滚动到底部
+      const chatContent: any = document.getElementById("chat-content");
+      // 流畅滑动
+      chatContent.scrollTo({
+        top: chatContent.scrollHeight,
+        behavior: "smooth",
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
-  inputMsg.value = ''
-}
+  inputMsg.value = "";
+};
 
 const waitMessage = () => {
-  console.log('waitMessage')
-}
+  console.log("waitMessage");
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .voice {
   width: 90vw;
   height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
   .voice-left {
     width: 40%;
@@ -240,7 +276,6 @@ const waitMessage = () => {
   }
 
   .inputs {
-
     width: 65%;
     height: 50px;
     background-color: #e7e6e6;
@@ -261,14 +296,13 @@ const waitMessage = () => {
 
   .send {
     background-color: rgb(255, 255, 255);
-          border: 0;
-          transition: 0.3s;
-          box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
+    border: 0;
+    transition: 0.3s;
+    box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
 
-          &:hover {
-            box-shadow: 0px 0px 10px 0px rgb(149, 149, 149)
-          }
-        
+    &:hover {
+      box-shadow: 0px 0px 10px 0px rgb(149, 149, 149);
+    }
   }
 
   .boxinput {

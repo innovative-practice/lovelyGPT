@@ -136,3 +136,25 @@ export function JCMFormatDate(dateStr){
   let second = date.getSeconds();
   return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
 }
+
+// 格式化时间
+export function yueyunFormatDate(dateStr) {
+  let date = new Date(dateStr);
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let second = date.getSeconds();
+  return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
+}
+
+// 获取MP3的时长
+export function getMP3Duration(url) {
+  return new Promise((resolve, reject) => {
+    let audio = new Audio(url);
+    audio.addEventListener("loadedmetadata", () => {
+      resolve(+audio.duration);
+    });
+  });
+}

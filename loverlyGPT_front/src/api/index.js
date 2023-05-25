@@ -2,7 +2,7 @@ import axios from 'axios'
 
 //全局参数，自定义参数可在发送请求时设置
 axios.defaults.timeout = 300000000 //超时时间ms
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 // 请求时的拦截
 //回调里面不能获取错误信息
 axios.interceptors.request.use(
@@ -30,7 +30,8 @@ axios.interceptors.response.use(function (response) {
 
 const base = {
   axios: axios,
-  baseUrl: 'https://api.openai.com'
+  baseUrl: 'https://api.openai.com',
+  proDuUrl: 'https://124.221.89.187:4200',
 }
 
 export default base

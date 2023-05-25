@@ -99,7 +99,9 @@ async function convertTextToSpeech (text) {
     if (response.status === 200 && response.headers['content-type'] === 'audio/wav') {
       const buffer = Buffer.from(response.data, 'binary')
       // 将文件写入到本地的public下面的video文件夹中
-      await fs.writeFile(path.join(__dirname, '../public/video/output.wav'), buffer, (err) => {
+      // 随机生成文件名
+      const fileName = `${Date.now()}-${Math.random()}`
+      await fs.writeFile(path.join(__dirname, `../public/video/${fileName}.wav`), buffer, (err) => {
         if (err) {
           console.log('写入文件失败', err)
         } else {
@@ -110,7 +112,7 @@ async function convertTextToSpeech (text) {
       // 返回文件的路径
       // return path.join(__dirname, '../public/video/output.wav')
       // 此服务器public资源的路径
-      return 'http://127.0.0.1:4000/video/output.wav'
+      return `http://127.0.0.1:4000/video/${fileName}.wav`
     } else {
       console.log('Download failed')
     }
