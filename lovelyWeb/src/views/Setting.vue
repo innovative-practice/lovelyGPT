@@ -39,6 +39,15 @@ import { reactive, ref } from 'vue'
 
 </script>
 <style scoped lang='less'>
+.setting{
+  //元素居中
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
 .auther {
   padding-top: 50px;
 

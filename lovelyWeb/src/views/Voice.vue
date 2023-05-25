@@ -112,8 +112,8 @@ const waitMessage = () => {
 </script>
 <style scoped lang='less'>
 .voice {
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;

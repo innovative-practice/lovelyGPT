@@ -37,8 +37,8 @@
         <div class="bottom">
           <div class="chatInputs">
             <!--表情-->
-            <div class="emoji boxinput" @click="clickEmoji">
-              <img src="@/assets/img/biaoqing.png" alt="" />
+              <div class="emoji boxinput" @click="clickEmoji">
+                <img src="@/assets/img/biaoqing.png" alt="" />
             </div>
             <!--录音-->
             <div class="send boxinput" @click="stopRecording" v-if="recording"
@@ -51,7 +51,8 @@
             </div>
             <!--emo表情列表-->
             <div class="emoji-content">
-              <!-- <Emoji v-show="showEmoji" @sendEmoji="sendEmoji" @closeEmoji="clickEmoji"></Emoji> -->
+              <Emoji v-if="showEmoji" @sendEmoji="sendEmoji" @closeEmoji="clickEmoji"></Emoji>
+              <!-- <Emoji v-if="showEmoji"></Emoji> -->
             </div>
             <textarea id="textareaMsg" class="inputs"
               style="z-index: 9999999999;min-height: 50px;max-height:400px;max-width: 65%;min-width: 65%;"
@@ -87,6 +88,7 @@
 <script setup lang='ts'>
 import { reactive, ref, watch } from 'vue'
 import HeadPortrait from '../litter/HeadPortrait.vue'
+import Emoji from '@/components/Emoji.vue'
 import LitterChat from '@/components/litter/LitterChat.vue';
 import { animation, getNowTime, yueyunFormatDate, getMP3Duration } from '@/util/index'
 import headerPng from '@/assets/img/header.png'
@@ -128,6 +130,7 @@ watch(openApi, (newVal, oldVal) => {
   * @Description: 点击表情
 */
 const clickEmoji = () => {
+  console.log('clickEmoji');
   showEmoji.value = !showEmoji.value
 }
 const sendEmoji = (emoji: string) => {
@@ -417,6 +420,9 @@ watch(selectPerson, () => {
             box-shadow: 0px 0px 10px 0px rgb(149, 149, 149);
           }
         }
+      }
+      .emoji-content{
+        
       }
 
       .inputs {
