@@ -155,6 +155,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { reactive, ref, watch } from "vue";
 import HeadPortrait from "../litter/HeadPortrait.vue";
 import Emoji from "@/components/Emoji.vue";
@@ -163,6 +164,10 @@ import { getNowTime, yueyunFormatDate, getMP3Duration } from "@/util/index";
 import headerPng from "@/assets/img/header.png";
 import { usePersonStore } from "@/store/index";
 import { openApiParams } from "@/store/index";
+// 初始化openai
+// 使用代理
+// openai.proxy = "http://127.0.0.1:7890";
+
 interface person {
   name: string;
   avatar: string;
@@ -177,14 +182,14 @@ interface Message {
   gptchat?: string;
 }
 // 数据
-let messageList: Message[] = reactive([]);
+let messageList: Message[] = ref([]);
 let inputMsg = ref("");
 let acqStatus = ref(true);
 // 使用pinia接受参数
 let selectPerson: any = usePersonStore();
 const showEmoji = ref(false);
 const recording = ref(false);
-const originParams = ref({});
+const originParams: any = ref({});
 // 接受openApi参数
 const openApi = openApiParams();
 
@@ -220,7 +225,7 @@ const sendText = async () => {
   let message = inputMsg.value;
   // console.log('sendText')
   if (inputMsg.value) {
-    messageList.push({
+    messageList.value.push({
       type: "text",
       content: inputMsg.value,
       person: {
@@ -232,15 +237,29 @@ const sendText = async () => {
     acqStatus.value = false;
     inputMsg.value = "";
   }
-  messageList.push({
-    type: "AIreply",
-    content: "Explosion!!",
-    person: {
-      name: selectPerson.person.name,
-      avatar: selectPerson.person.headImg,
-      time: yueyunFormatDate(getNowTime()),
-    },
-  });
+  // 获得params
+  let params = {
+    model: selectPerson.person.id,
+    prompt: message,
+    max_tokens: originParams.value.MaxTokens,
+    temperature: originParams.value.Temperature,
+    top_p: originParams.value.TopP,
+    n: originParams.value.n,
+    stream: true,
+    frequency_penalty: originParams.value.FrequencyPenalty,
+    presence_penalty: originParams.value.PresencePenalty,
+  };
+  // 调用openai
+  let result = await completion(params);
+  // messageList.push({
+  //   type: "AIreply",
+  //   content: "Explosion!!",
+  //   person: {
+  //     name: selectPerson.person.name,
+  //     avatar: selectPerson.person.headImg,
+  //     time: yueyunFormatDate(getNowTime()),
+  //   },
+  // });
   acqStatus.value = true;
   inputMsg.value = "";
   // 滚动条滚动到底部
@@ -271,12 +290,56 @@ const sendFile = (e: any) => {
 
 const getOpenApiReply = async (params: any) => {
   // 获取openApi的回复
+  // console.log(originParams.value.apiKey);
+  try {
+    await fetch("https://api.openai.com/v1/completions", {
+      method: "POST",
+      body: JSON.stringify({ ...params }),
+      headers: {
+        Authorization: `Bearer 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`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((response) => {
+      const reader: any = response.body.getReader();
+      readStream(reader);
+      //跟新messageList渲染
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 
-}
+// 数据流
+const readStream = (reader: any) => {
+  return reader.read().then(({ done, value }) => {
+    if (done) {
+      return;
+    }
+    let decodeds = new TextDecoder().decode(value);
+    let decodedArray = decodeds.split("data: ");
+    decodedArray.forEach((decoded) => {
+      if (decoded !== "") {
+        if (decoded.trim() === "[DONE]") {
+          return;
+        } else {
+          const response = JSON.parse(decoded).choices[0].text;
+          // 将messageList的最后一个元素的content替换为response逐字输出
+          messageList.value[messageList.value.length - 1].content += response;
+        }
+      }
+    });
+    return readStream(reader);
+  });
+};
+// 有上下文的openai回复
+const getConversionAiReply = async () => {
+  console.log("getConversionAiReply");
+};
 
-const completion = async (params: any, chatBeforResMsg: any) => {
+const completion = async (params: any) => {
   // 新增一个空消息
-  messageList.push({
+  messageList.value.push({
     type: "AIreply",
     content: "",
     person: {
@@ -284,16 +347,16 @@ const completion = async (params: any, chatBeforResMsg: any) => {
       avatar: selectPerson.person.headImg,
       time: yueyunFormatDate(getNowTime()),
     },
-  })
+  });
   // 获取openApi的回复
-  const res = await getOpenApiReply(params);
-}
+  getOpenApiReply(params);
+};
 // 监听
 watch(selectPerson, () => {
   // 当改变人物的时候，清空聊天记录
-  console.log("111", originParams.value);
-  console.log("222", selectPerson.person);
-  messageList = [];
+  // console.log("111", originParams.value);
+  // console.log("222", selectPerson.person);
+  messageList.value = [];
 });
 </script>
 <style scoped lang="less">

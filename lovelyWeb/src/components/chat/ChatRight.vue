@@ -172,7 +172,6 @@ const deleteFiles = (item: any) => {
   nowFile = {};
 };
 const SettingInfo = reactive({
-  KeyMsg: "",
   MaxTokens: 1000,
   Temperature: 1,
   TemperatureAudio: 0,
