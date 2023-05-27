@@ -531,7 +531,7 @@ export default {
       try {
         await fetch("https://api.openai.com" + "/v1/chat/completions", {
           method: "POST",
-          body: JSON.stringify({  
+          body: JSON.stringify({
             ...params,
           }),
           headers: {
@@ -542,28 +542,28 @@ export default {
         }).then((response) => {
           const reader = response.body.getReader();
           function readStream(reader) {
-              return reader.read().then(({ done, value }) => {
-                if (done) {
-                  return;
-                }
-                let decodeds = new TextDecoder().decode(value);
-                let decodedArray = decodeds.split("data: ");
-                decodedArray.forEach((decoded) => {
-                  if (decoded !== "") {
-                    if (decoded.trim() === "[DONE]") {
-                      return;
-                    } else {
-                      const response = JSON.parse(decoded).choices[0].delta
-                        .content
-                        ? JSON.parse(decoded).choices[0].delta.content
-                        : "";
-                      _this.chatList[currentResLocation].msg =
-                        _this.chatList[currentResLocation].msg + response;
-                    }
+            return reader.read().then(({ done, value }) => {
+              if (done) {
+                return;
+              }
+              let decodeds = new TextDecoder().decode(value);
+              let decodedArray = decodeds.split("data: ");
+              decodedArray.forEach((decoded) => {
+                if (decoded !== "") {
+                  if (decoded.trim() === "[DONE]") {
+                    return;
+                  } else {
+                    const response = JSON.parse(decoded).choices[0].delta
+                      .content
+                      ? JSON.parse(decoded).choices[0].delta.content
+                      : "";
+                    _this.chatList[currentResLocation].msg =
+                      _this.chatList[currentResLocation].msg + response;
                   }
-                });
-                return readStream(reader);
+                }
               });
+              return readStream(reader);
+            });
           }
           readStream(reader);
         });

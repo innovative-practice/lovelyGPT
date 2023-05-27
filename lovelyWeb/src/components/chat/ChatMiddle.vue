@@ -237,20 +237,9 @@ const sendText = async () => {
     acqStatus.value = false;
     inputMsg.value = "";
   }
-  // 获得params
-  let params = {
-    model: selectPerson.person.id,
-    prompt: message,
-    max_tokens: originParams.value.MaxTokens,
-    temperature: originParams.value.Temperature,
-    top_p: originParams.value.TopP,
-    n: originParams.value.n,
-    stream: true,
-    frequency_penalty: originParams.value.FrequencyPenalty,
-    presence_penalty: originParams.value.PresencePenalty,
-  };
   // 调用openai
-  let result = await completion(params);
+  let result = await completion(message);
+  // 下面为测试代码
   // messageList.push({
   //   type: "AIreply",
   //   content: "Explosion!!",
@@ -310,6 +299,69 @@ const getOpenApiReply = async (params: any) => {
   }
 };
 
+// 有上下文的openai回复
+const getConversionAiReply = async (params) => {
+  try {
+    await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      body: JSON.stringify({
+        ...params,
+      }),
+      headers: {
+        Authorization:
+          "Bearer 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",
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((response) => {
+      const reader: any = response.body.getReader();
+      chatReadStream(reader);
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+// 回复消息的逻辑
+const completion = async (message: any) => {
+  // 新增一个空消息
+  messageList.value.push({
+    type: "AIreply",
+    content: "",
+    person: {
+      name: selectPerson.person.name,
+      avatar: selectPerson.person.headImg,
+      time: yueyunFormatDate(getNowTime()),
+    },
+  });
+  let params = {
+    model: selectPerson.person.id,
+    max_tokens: originParams.value.MaxTokens,
+    temperature: originParams.value.Temperature,
+    top_p: originParams.value.TopP,
+    n: originParams.value.n,
+    stream: true,
+    frequency_penalty: originParams.value.FrequencyPenalty,
+    presence_penalty: originParams.value.PresencePenalty,
+  };
+  if (
+    selectPerson.person.id == "gpt-3.5-turbo" ||
+    selectPerson.person.id === "gpt-3.5-turbo-0301"
+  ) {
+    // 具有上下文的gpt3.5
+    params.messages = [
+      { role: "system", content: "you are a helpful assistant" },
+      { role: "user", content: message },
+    ];
+    // 获取openApi的回复
+    getConversionAiReply(params);
+  } else {
+    // 没有上下文的openai
+    params.prompt = message;
+    getOpenApiReply(params);
+  }
+};
+
 // 数据流
 const readStream = (reader: any) => {
   return reader.read().then(({ done, value }) => {
@@ -332,30 +384,35 @@ const readStream = (reader: any) => {
     return readStream(reader);
   });
 };
-// 有上下文的openai回复
-const getConversionAiReply = async () => {
-  console.log("getConversionAiReply");
+
+//chat的数据流
+const chatReadStream = (reader: any) => {
+  return reader.read().then(({ done, value }) => {
+    if (done) {
+      return;
+    }
+    let decodeds = new TextDecoder().decode(value);
+    let decodedArray = decodeds.split("data: ");
+    decodedArray.forEach((decoded) => {
+      if (decoded !== "") {
+        if (decoded.trim() === "[DONE]") {
+          return;
+        } else {
+          const response = JSON.parse(decoded).choices[0].delta.content
+            ? JSON.parse(decoded).choices[0].delta.content
+            : "";
+          // 将messageList的最后一个元素的content替换为response逐字输出
+          messageList.value[messageList.value.length - 1].content += response;
+        }
+      }
+    });
+    return chatReadStream(reader);
+  });
 };
 
-const completion = async (params: any) => {
-  // 新增一个空消息
-  messageList.value.push({
-    type: "AIreply",
-    content: "",
-    person: {
-      name: selectPerson.person.name,
-      avatar: selectPerson.person.headImg,
-      time: yueyunFormatDate(getNowTime()),
-    },
-  });
-  // 获取openApi的回复
-  getOpenApiReply(params);
-};
 // 监听
 watch(selectPerson, () => {
   // 当改变人物的时候，清空聊天记录
-  // console.log("111", originParams.value);
-  // console.log("222", selectPerson.person);
   messageList.value = [];
 });
 </script>
