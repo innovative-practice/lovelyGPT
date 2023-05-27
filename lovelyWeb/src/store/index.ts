@@ -1,22 +1,20 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 export const usePersonStore = defineStore({
-  id: 'person',
+  id: "person",
   state: () => {
     return {
-      person: {
-        
-      }
-    }
-  }
-})
+      person: {},
+    };
+  },
+});
 
+// 组件间的通信
 export const openApiParams = defineStore({
-  id: 'openApiParams',
+  id: "openApiParams",
   state: () => {
     return {
       openApiParams: {
-        
-      }
-    }
-  }
-})
+      },
+    };
+  },
+});

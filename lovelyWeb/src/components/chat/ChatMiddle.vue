@@ -159,12 +159,7 @@ import { reactive, ref, watch } from "vue";
 import HeadPortrait from "../litter/HeadPortrait.vue";
 import Emoji from "@/components/Emoji.vue";
 import LitterChat from "@/components/litter/LitterChat.vue";
-import {
-  animation,
-  getNowTime,
-  yueyunFormatDate,
-  getMP3Duration,
-} from "@/util/index";
+import { getNowTime, yueyunFormatDate, getMP3Duration } from "@/util/index";
 import headerPng from "@/assets/img/header.png";
 import { usePersonStore } from "@/store/index";
 import { openApiParams } from "@/store/index";
@@ -208,9 +203,11 @@ const clickEmoji = () => {
 };
 const sendEmoji = (emoji: string) => {
   inputMsg.value += emoji;
+  // 发送表情的逻辑
   showEmoji.value = false;
 };
 // *******
+// 语音输入的逻辑
 const startRecording = () => {
   recording.value = true;
 };
@@ -218,6 +215,7 @@ const stopRecording = () => {
   recording.value = false;
 };
 // *********
+// 发送消息的逻辑
 const sendText = async () => {
   let message = inputMsg.value;
   // console.log('sendText')
@@ -253,20 +251,28 @@ const sendText = async () => {
     behavior: "smooth",
   });
 };
+
 const waitMessage = () => {
+  // 等待消息
   console.log("waitMessage");
 };
 const sc = () => {
+  // 截图
   console.log("sc");
 };
 const sendImg = (e: any) => {
+  // 发送图片
   console.log(e.target.files[0]);
 };
 const sendFile = (e: any) => {
+  // 发送文件
   console.log(e.target.files[0]);
 };
 
-const getOpenApiReply = (params: any) => {};
+const getOpenApiReply = async (params: any) => {
+  // 获取openApi的回复
+
+}
 
 const completion = async (params: any, chatBeforResMsg: any) => {
   // 新增一个空消息
@@ -278,11 +284,15 @@ const completion = async (params: any, chatBeforResMsg: any) => {
       avatar: selectPerson.person.headImg,
       time: yueyunFormatDate(getNowTime()),
     },
-  });
-};
-
+  })
+  // 获取openApi的回复
+  const res = await getOpenApiReply(params);
+}
 // 监听
 watch(selectPerson, () => {
+  // 当改变人物的时候，清空聊天记录
+  console.log("111", originParams.value);
+  console.log("222", selectPerson.person);
   messageList = [];
 });
 </script>
@@ -292,6 +302,7 @@ watch(selectPerson, () => {
   padding-right: 30px;
   margin: 0;
   padding: 0;
+
   // background-color: red;
   .showIcon {
     position: relative;
@@ -458,10 +469,12 @@ watch(selectPerson, () => {
           transition: 0.5s;
           background-color: #fff;
           border-color: #ffffff;
+
           img {
             width: 36px;
             height: 36px;
           }
+
           &:hover {
             box-shadow: 0px 0px 10px 0px rgb(149, 149, 149);
           }
@@ -566,6 +579,7 @@ watch(selectPerson, () => {
     }
   }
 }
+
 .choose {
   width: 100%;
   height: 100%;
@@ -574,6 +588,7 @@ watch(selectPerson, () => {
   align-items: flex-start;
   // align-items: center;
   justify-content: center;
+
   .choose-main {
     font-size: 40px;
     color: rgb(200, 71, 50);
