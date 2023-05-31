@@ -32,6 +32,21 @@
             <div v-if="item.type === 'AIreply'" class="chat-friend">
               <LitterChat :chatContent="item.content" :person="item.person" type="AI"></LitterChat>
             </div>
+            <div v-if="item.type === 'ImgShow'" class="chat-me">
+              <div class="chat-img">
+                <img
+                  class="chat-img-show"
+                  :src="item.msg"
+                  alt="表情"
+                  style="width: 100px; height: 100px"
+                />
+                <div class="info-time">
+                  <span>{{ item.person?.name }}</span>
+                  <span>{{ item.person?.time }}</span>
+                  <img :src="item.person?.avatar" alt="" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="bottom">
@@ -125,6 +140,7 @@ interface Message {
   voiceUrl?: string;
   voiceDuration?: any;
   gptchat?: string;
+  extends?: string;
 }
 // 数据
 let messageList: Message[] = ref([]);
@@ -155,9 +171,31 @@ const clickEmoji = () => {
   showEmoji.value = !showEmoji.value;
 };
 const sendEmoji = (emoji: string) => {
-  inputMsg.value += emoji;
+  // inputMsg.value += emoji;
   // 发送表情的逻辑
+  // ImgShow
+  console.log("sendEmoji");
+  acqStatus.value = false;
+  let chatMsg = {
+    type: "ImgShow",
+    msg: emoji,
+    person: {
+      name: "月晕",
+      avatar: headerPng,
+      time: yueyunFormatDate(getNowTime()),
+    },
+  };
+  messageList.value.push(chatMsg);
+  acqStatus.value = true;
+  // 关闭表情
   showEmoji.value = false;
+  // smooth滑动
+  const chatContent: any = document.getElementById("chat-content");
+  // 流畅滑动
+  chatContent.scrollTo({
+    top: chatContent.scrollHeight,
+    behavior: "smooth",
+  });
 };
 // *******
 // 语音输入的逻辑
@@ -211,6 +249,8 @@ const stopRecording = async () => {
 // 发送消息的逻辑
 const sendText = async () => {
   let message = inputMsg.value;
+  // 如果消息为空则不发送
+  if (!message) return;
   // console.log('sendText')
   if (inputMsg.value) {
     messageList.value.push({
@@ -258,7 +298,20 @@ const sc = () => {
 };
 const sendImg = (e: any) => {
   // 发送图片
-  console.log(e.target.files[0]);
+  // console.log(e.target.files[0]);
+  acqStatus.value = false;
+  // 获取文件
+  const file = e.target.files[0];
+  // 验证文件是否为PNG格式或JPG格式
+  if (!/image\/(png|jpg|jpeg)/.test(file.type)) {
+    acqStatus.value = true;
+    return;
+  }
+  // 通过验证后上传图片
+  const formData = new FormData();
+  formData.append("image", file);
+  // 上传图片到服务器
+  console.log(111);
 };
 const sendFile = (e: any) => {
   // 发送文件
@@ -700,6 +753,42 @@ watch(selectPerson, () => {
   .choose-main {
     font-size: 40px;
     color: rgb(200, 71, 50);
+  }
+}
+.chat-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  .chat-img-show {
+    width: 100px;
+    height: 100px;
+    margin-right: 25px;
+  }
+  .info-time {
+    margin: 10px 0;
+    color: #000000;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    span {
+      line-height: 32px;
+    }
+
+    span:first-child {
+      color: rgb(101, 104, 115);
+      margin-right: 10px;
+      vertical-align: middle;
+    }
   }
 }
 </style>
