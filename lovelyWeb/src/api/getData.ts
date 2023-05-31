@@ -48,3 +48,18 @@ export const getModels = (token: string) => {
   })
 }
 
+// 语音转文字的函数捏
+// 将音频转换为文字
+export const createTranscription = (formData:any, token:any) => {
+  return myaxios({
+    method: 'post',
+    baseURL: `${aiBaseUrl}/v1/audio/transcriptions`,
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'multipart/form-data"'
+    },
+    data: formData
+  }).then(res => {
+    return res.data;
+  })
+}

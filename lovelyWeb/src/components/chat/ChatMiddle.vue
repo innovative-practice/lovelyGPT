@@ -19,42 +19,18 @@
           <label for="imgFile">
             <span class="iconfont icon-tupian"></span>
           </label>
-          <input
-            type="file"
-            name=""
-            id="imgFile"
-            @change="sendImg"
-            accept="image/*"
-          />
-          <input
-            type="file"
-            name=""
-            id="docFile"
-            @change="sendFile"
-            accept="application/*,tenxt/*"
-          />
+          <input type="file" name="" id="imgFile" @change="sendImg" accept="image/*" />
+          <input type="file" name="" id="docFile" @change="sendFile" accept="application/*,tenxt/*" />
         </div>
       </div>
       <div class="message">
         <div class="chat-content" id="chat-content" ref="chatContent">
-          <div
-            class="chat-wrapper"
-            v-for="(item, index) in messageList"
-            :key="index"
-          >
+          <div class="chat-wrapper" v-for="(item, index) in messageList" :key="index">
             <div v-if="item.type === 'text'" class="chat-me">
-              <LitterChat
-                :chatContent="item.content"
-                :person="item.person"
-                type="me"
-              ></LitterChat>
+              <LitterChat :chatContent="item.content" :person="item.person" type="me"></LitterChat>
             </div>
             <div v-if="item.type === 'AIreply'" class="chat-friend">
-              <LitterChat
-                :chatContent="item.content"
-                :person="item.person"
-                type="AI"
-              ></LitterChat>
+              <LitterChat :chatContent="item.content" :person="item.person" type="AI"></LitterChat>
             </div>
           </div>
         </div>
@@ -65,70 +41,38 @@
               <img src="@/assets/img/biaoqing.png" alt="" />
             </div>
             <!--录音-->
-            <div
-              class="send boxinput"
-              @click="stopRecording"
-              v-if="recording"
-              style="
-                margin-left: 1.5%;
-                font-size: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <span
-                class="iconfont icon-microphone"
-                style="font-size: 25px"
-              ></span>
+            <div class="send boxinput" @click="stopRecording" v-if="recording" style="
+                      margin-left: 1.5%;
+                      font-size: 30px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    ">
+              <span class="iconfont icon-microphone" style="font-size: 25px"></span>
             </div>
-            <div
-              class="send boxinput"
-              @click="startRecording"
-              v-if="!recording"
-              style="
-                margin-left: 1.5%;
-                font-size: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <span
-                class="iconfont icon-microphone-mute"
-                style="font-size: 25px"
-              ></span>
+            <div class="send boxinput" @click="startRecording" v-if="!recording" style="
+                      margin-left: 1.5%;
+                      font-size: 30px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    ">
+              <span class="iconfont icon-microphone-mute" style="font-size: 25px"></span>
             </div>
             <!--emo表情列表-->
             <div class="emoji-content">
-              <Emoji
-                v-if="showEmoji"
-                @sendEmoji="sendEmoji"
-                @closeEmoji="clickEmoji"
-              ></Emoji>
+              <Emoji v-if="showEmoji" @sendEmoji="sendEmoji" @closeEmoji="clickEmoji"></Emoji>
               <!-- <Emoji v-if="showEmoji"></Emoji> -->
             </div>
-            <textarea
-              id="textareaMsg"
-              class="inputs"
-              style="
-                z-index: 9999999999;
-                min-height: 50px;
-                max-height: 400px;
-                max-width: 65%;
-                min-width: 65%;
-              "
-              maxlength="2000"
-              rows="3"
-              dirautocorrect="off"
-              aria-autocomplete="both"
-              spellcheck="false"
-              autocapitalize="off"
-              autocomplete="off"
-              v-model="inputMsg"
-              @keyup.enter="sendText"
-            >
-            </textarea>
+            <textarea id="textareaMsg" class="inputs" style="
+                      z-index: 9999999999;
+                      min-height: 50px;
+                      max-height: 400px;
+                      max-width: 65%;
+                      min-width: 65%;
+                    " maxlength="2000" rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false"
+              autocapitalize="off" autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
+                  </textarea>
             <div v-if="acqStatus">
               <div class="send boxinput" @click="sendText">
                 <img src="/src/assets/img/send.png" alt="" />
@@ -164,6 +108,7 @@ import { getNowTime, yueyunFormatDate, getMP3Duration } from "@/util/index";
 import headerPng from "@/assets/img/header.png";
 import { usePersonStore } from "@/store/index";
 import { openApiParams } from "@/store/index";
+import {createTranscription} from "@/api/getData"
 // 初始化openai
 // 使用代理
 // openai.proxy = "http://127.0.0.1:7890";
@@ -185,6 +130,9 @@ interface Message {
 let messageList: Message[] = ref([]);
 let inputMsg = ref("");
 let acqStatus = ref(true);
+// 定义录音
+const recorder = ref(null);
+const audioChunks = ref([]);
 // 使用pinia接受参数
 let selectPerson: any = usePersonStore();
 const showEmoji = ref(false);
@@ -214,12 +162,52 @@ const sendEmoji = (emoji: string) => {
 // *******
 // 语音输入的逻辑
 const startRecording = () => {
-  recording.value = true;
-};
-const stopRecording = () => {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      recorder.value = new MediaRecorder(stream);
+      recorder.value.addEventListener("dataavailable", (event) => {
+        audioChunks.value.push(event.data);
+      });
+      recording.value = true;
+      recorder.value.start();
+      // 在这里使用录音器
+      alert("开始录音");
+    })
+    .catch((error) => {
+      alert(error);
+    });
+}
+const stopRecording = async () => {
+  recorder.value.stop();
   recording.value = false;
+  recorder.value.ondataavailable = (event) => {
+    const blob = new Blob([event.data], { type: "audio/wav" });
+    const file = new File([blob], "recording.wav", {
+      type: "audio/wav",
+      lastModified: Date.now(),
+    });
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("model", "whisper-1");
+    formData.append("temperature", "0");
+    formData.append("response_format", "text");
+    // todo
+    formData.append("language", 'zh');
+    createTranscription(formData, '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').then(
+      (data) => {
+        inputMsg.value = data;
+        console.log('111');
+        console.log(data);
+      }
+    );
+
+  };
+  alert("结束录音咯");
 };
+
 // *********
+
 // 发送消息的逻辑
 const sendText = async () => {
   let message = inputMsg.value;
