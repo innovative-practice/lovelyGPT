@@ -217,6 +217,7 @@ interface Message {
 let messageList: Message[] = ref([]);
 let inputMsg = ref("");
 let acqStatus = ref(true);
+
 // 定义录音
 const recorder = ref(null);
 const audioChunks = ref([]);
@@ -570,6 +571,20 @@ const getConversionAiReply = async (params) => {
     console.log(err.message);
   }
 };
+//组装上下文数据
+const contextualAssemblyData=()=> {
+      const conversation = [];
+      for (var chat of messageList.value) {
+        if (chat.type == "text") {
+          let my = { speaker: "user", text: chat.content };
+          conversation.push(my);
+        } else if (chat.type == "AIreply") {
+          let ai = { speaker: "agent", text: chat.content };
+          conversation.push(ai);
+        }
+      }
+      return conversation;
+    }
 
 // 回复消息的逻辑
 const completion = async (message: any) => {
@@ -598,10 +613,19 @@ const completion = async (message: any) => {
     selectPerson.person.id === "gpt-3.5-turbo-0301"
   ) {
     // 具有上下文的gpt3.5
-    params.messages = [
-      { role: "system", content: "you are a helpful assistant" },
-      { role: "user", content: message },
-    ];
+    // params.messages = [
+    //   { role: "system", content: sysmsg.value },
+    //   { role: "user", content: message },
+    // ];
+    let conversation = contextualAssemblyData();
+    params.messages = conversation.map((item) => {
+        return {
+          role: item.speaker === "user" ? "user" : "system",
+          content: item.text,
+        };
+      });
+    console.log(params.messages);
+    
     // 获取openApi的回复
     getConversionAiReply(params);
   } else {
@@ -652,6 +676,7 @@ const readStream = (reader: any) => {
           return;
         } else {
           const response = JSON.parse(decoded).choices[0].text;
+          
           // 将messageList的最后一个元素的content替换为response逐字输出
           messageList.value[messageList.value.length - 1].content += response;
         }
@@ -677,6 +702,7 @@ const chatReadStream = (reader: any) => {
           const response = JSON.parse(decoded).choices[0].delta.content
             ? JSON.parse(decoded).choices[0].delta.content
             : "";
+            
           // 将messageList的最后一个元素的content替换为response逐字输出
           messageList.value[messageList.value.length - 1].content += response;
         }
@@ -684,6 +710,7 @@ const chatReadStream = (reader: any) => {
     });
     return chatReadStream(reader);
   });
+  
 };
 
 // 监听

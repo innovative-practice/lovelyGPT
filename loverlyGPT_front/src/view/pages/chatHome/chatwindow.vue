@@ -516,6 +516,7 @@ export default {
     },
     async chatCompletion(params, chatBeforResMsg) {
       let conversation = this.contextualAssemblyData();
+      console.log("conversation:", conversation);
       params.messages = conversation.map((item) => {
         return {
           role: item.speaker === "user" ? "user" : "assistant",
