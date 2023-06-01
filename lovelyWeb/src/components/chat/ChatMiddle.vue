@@ -630,7 +630,7 @@ const fileCompletion = async (data: any) => {
         acqStatus.value = true;
       } else {
         alert("服务器出错了~");
-      }
+      }   
     })
     .catch((err) => {
       console.log(err);
