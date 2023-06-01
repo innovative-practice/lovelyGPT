@@ -58,10 +58,10 @@ class QA():
         self.index = index
         self.data = data
 
-    def __call__(self, query, chatRecord):
+    def __call__(self, query):
         embedding = create_embedding(query)
         context = self.get_texts(embedding[1], limit)
-        answer = self.completion(query, context, chatRecord)
+        answer = self.completion(query, context)
         return answer, context
 
     def get_texts(self, embeding, limit):
@@ -71,16 +71,9 @@ class QA():
             context.extend(self.data[i:i+5])
         return context
 
-    def completion(self, query, context, chatRecord):
+    def completion(self, query, context):
         """Create a completion."""
         lens = [len(text) for text in context]
-        role_Arr = re.findall(r'role: (.*?),', chatRecord)
-        content_Arr = re.findall(r'content: (.*?)}', chatRecord)
-        chatRecord_Arr = [{} for i in range(len(role_Arr))]
-        for i in range(len(role_Arr)):
-            chatRecord_Arr[i] = {
-                'role': role_Arr[i], 'content': content_Arr[i]}
-        # print(chatRecord_Arr)
         maximum = 3000
         for index, l in enumerate(lens):
             maximum -= l
@@ -91,15 +84,13 @@ class QA():
 
         text = "\n".join(f"{index}. {text}" for index,
                          text in enumerate(context))
-        messages = [
-            {'role': 'system',
-             'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答,相关性从高到底排序：\n\n{text}'}
-        ]
-        messages.extend(chatRecord_Arr)
-        messages.append({'role': 'user', 'content': query})
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages
+            messages=[
+                {'role': 'system',
+                 'content': f'你是一个有帮助的AI文章助手，从下文中提取有用的内容进行回答,相关性从高到底排序：\n\n{text}'},
+                {'role': 'user', 'content': query},
+            ]
         )
         # print("使用的tokens：", response.usage.total_tokens)
         return response.choices[0].message.content
@@ -114,8 +105,6 @@ if __name__ == '__main__':
     parser.add_argument("--print_context", action='store_true', help="是否打印上下文")
     parser.add_argument("-a", "--input_query", help="this is parameter a",
                         dest="argA", type=str)
-    parser.add_argument("--chat_record", help="this is cahtred",
-                        dest="conversi", type=str)
     args = parser.parse_args()
     if os.path.isfile(args.file_embeding):
         data_embe = pickle.load(open(args.file_embeding, 'rb'))
@@ -128,7 +117,6 @@ if __name__ == '__main__':
             # print("文本消耗 {} tokens".format(tokens))
     qa = QA(data_embe)
     query = args.argA
-    chatredo = args.conversi
     limit = 10
-    answer, context = qa(query, chatredo)
+    answer, context = qa(query)
     print(answer.strip())

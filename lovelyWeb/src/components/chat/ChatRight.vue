@@ -111,7 +111,7 @@
             <div v-for="(item, index) in fileList" :key="index">
               <div
                 class="fileshow"
-                @click.stop="selectFiles($event, item, index)"
+                @click="selectFiles($event, item, index)"
                 :class="item.isSelect == 1 ? 'fileactive' : ''"
               >
                 <img :src="item.imgs" />
@@ -148,28 +148,34 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { openApiParams } from "@/store/index";
+import { openApiParams, fileListStore } from "@/store/index";
 let SettingStatus = ref(0);
-let fileList: any = reactive([]);
+let myFileList = fileListStore();
+let fileList: any = ref([]);
+fileList.value = myFileList.fileList;
 let nowFile = reactive({});
+nowFile = myFileList.nowFile;
 const apiParams = openApiParams();
-
 const clearSelect = (event: any) => {
-  for (let i = 0; i < fileList.length; i++) {
-    fileList[i].isSelect = 0;
+  for (let i = 0; i < fileList.value.length; i++) {
+    fileList.value[i].isSelect = 0;
   }
-  nowFile = {};
+  // nowFile = {};
+  // myFileList.nowFile = nowFile;
 };
 const selectFiles = (event: any, item: any, index: any) => {
-  for (let i = 0; i < fileList.length; i++) {
-    fileList[i].isSelect = 0;
+  for (let i = 0; i < fileList.value.length; i++) {
+    fileList.value[i].isSelect = 0;
   }
   item.isSelect = 1;
   nowFile = item;
+  myFileList.nowFile = nowFile;
+  console.log(nowFile);
 };
 const deleteFiles = (item: any) => {
-  fileList.splice(fileList.indexOf(item), 1);
+  fileList.value.splice(fileList.value.indexOf(item), 1);
   nowFile = {};
+  myFileList.nowFile = nowFile;
 };
 const SettingInfo = reactive({
   MaxTokens: 1000,
@@ -295,6 +301,75 @@ const postParams = () => {
     .left-right {
       height: 60vh;
     }
+  }
+}
+.fileshow {
+  transition: 0.25s;
+  width: 250px;
+  height: 100px;
+  position: relative;
+  background-color: rgb(45, 48, 63);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-top: 20px;
+
+  .delete {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    transition: all 0.25s;
+    display: none;
+  }
+
+  &:hover {
+    background-color: rgb(33, 36, 54);
+
+    .delete {
+      display: flex;
+    }
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .word {
+    width: 60%;
+    margin-left: 10px;
+    overflow: hidden;
+
+    span {
+      width: 90%;
+      display: inline-block;
+      color: #fff;
+    }
+
+    span:first-child {
+      font-size: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    span:last-child {
+      font-size: 12px;
+      color: rgb(180, 180, 180);
+    }
+  }
+}
+
+.fileactive {
+  background-color: rgb(33, 36, 54);
+  font-size: 20px;
+  .delete {
+    display: flex;
   }
 }
 </style>

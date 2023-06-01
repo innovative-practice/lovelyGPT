@@ -19,18 +19,42 @@
           <label for="imgFile">
             <span class="iconfont icon-tupian"></span>
           </label>
-          <input type="file" name="" id="imgFile" @change="sendImg" accept="image/*" />
-          <input type="file" name="" id="docFile" @change="sendFile" accept="application/*,tenxt/*" />
+          <input
+            type="file"
+            name=""
+            id="imgFile"
+            @change="sendImg"
+            accept="image/*"
+          />
+          <input
+            type="file"
+            name=""
+            id="docFile"
+            @change="sendFile"
+            accept="application/*,tenxt/*"
+          />
         </div>
       </div>
       <div class="message">
         <div class="chat-content" id="chat-content" ref="chatContent">
-          <div class="chat-wrapper" v-for="(item, index) in messageList" :key="index">
+          <div
+            class="chat-wrapper"
+            v-for="(item, index) in messageList"
+            :key="index"
+          >
             <div v-if="item.type === 'text'" class="chat-me">
-              <LitterChat :chatContent="item.content" :person="item.person" type="me"></LitterChat>
+              <LitterChat
+                :chatContent="item.content"
+                :person="item.person"
+                type="me"
+              ></LitterChat>
             </div>
             <div v-if="item.type === 'AIreply'" class="chat-friend">
-              <LitterChat :chatContent="item.content" :person="item.person" type="AI"></LitterChat>
+              <LitterChat
+                :chatContent="item.content"
+                :person="item.person"
+                type="AI"
+              ></LitterChat>
             </div>
             <div v-if="item.type === 'ImgShow'" class="chat-me">
               <div class="chat-img">
@@ -47,6 +71,19 @@
                 </div>
               </div>
             </div>
+            <div v-if="item.type === 'fileType'" class="chat-me">
+              <div class="chat-img">
+                <div class="word-file">
+                  <FileCard :fileType="item.extends" :file="item.fileContent">
+                  </FileCard>
+                </div>
+                <div class="info-time">
+                  <span>{{ item.person?.name }}</span>
+                  <span>{{ item.person?.time }}</span>
+                  <img :src="item.person?.avatar" alt="" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="bottom">
@@ -56,38 +93,70 @@
               <img src="@/assets/img/biaoqing.png" alt="" />
             </div>
             <!--录音-->
-            <div class="send boxinput" @click="stopRecording" v-if="recording" style="
-                      margin-left: 1.5%;
-                      font-size: 30px;
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                    ">
-              <span class="iconfont icon-microphone" style="font-size: 25px"></span>
+            <div
+              class="send boxinput"
+              @click="stopRecording"
+              v-if="recording"
+              style="
+                margin-left: 1.5%;
+                font-size: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <span
+                class="iconfont icon-microphone"
+                style="font-size: 25px"
+              ></span>
             </div>
-            <div class="send boxinput" @click="startRecording" v-if="!recording" style="
-                      margin-left: 1.5%;
-                      font-size: 30px;
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                    ">
-              <span class="iconfont icon-microphone-mute" style="font-size: 25px"></span>
+            <div
+              class="send boxinput"
+              @click="startRecording"
+              v-if="!recording"
+              style="
+                margin-left: 1.5%;
+                font-size: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <span
+                class="iconfont icon-microphone-mute"
+                style="font-size: 25px"
+              ></span>
             </div>
             <!--emo表情列表-->
             <div class="emoji-content">
-              <Emoji v-if="showEmoji" @sendEmoji="sendEmoji" @closeEmoji="clickEmoji"></Emoji>
+              <Emoji
+                v-if="showEmoji"
+                @sendEmoji="sendEmoji"
+                @closeEmoji="clickEmoji"
+              ></Emoji>
               <!-- <Emoji v-if="showEmoji"></Emoji> -->
             </div>
-            <textarea id="textareaMsg" class="inputs" style="
-                      z-index: 9999999999;
-                      min-height: 50px;
-                      max-height: 400px;
-                      max-width: 65%;
-                      min-width: 65%;
-                    " maxlength="2000" rows="3" dirautocorrect="off" aria-autocomplete="both" spellcheck="false"
-              autocapitalize="off" autocomplete="off" v-model="inputMsg" @keyup.enter="sendText">
-                  </textarea>
+            <textarea
+              id="textareaMsg"
+              class="inputs"
+              style="
+                z-index: 9999999999;
+                min-height: 50px;
+                max-height: 400px;
+                max-width: 65%;
+                min-width: 65%;
+              "
+              maxlength="2000"
+              rows="3"
+              dirautocorrect="off"
+              aria-autocomplete="both"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              v-model="inputMsg"
+              @keyup.enter="sendText"
+            >
+            </textarea>
             <div v-if="acqStatus">
               <div class="send boxinput" @click="sendText">
                 <img src="/src/assets/img/send.png" alt="" />
@@ -119,15 +188,16 @@ import { reactive, ref, watch } from "vue";
 import HeadPortrait from "../litter/HeadPortrait.vue";
 import Emoji from "@/components/Emoji.vue";
 import LitterChat from "@/components/litter/LitterChat.vue";
+import FileCard from "@/components/litter/FileCard.vue";
 import { getNowTime, yueyunFormatDate, getMP3Duration } from "@/util/index";
 import headerPng from "@/assets/img/header.png";
 import { usePersonStore } from "@/store/index";
-import { openApiParams } from "@/store/index";
-import {createTranscription} from "@/api/getData"
-// 初始化openai
-// 使用代理
-// openai.proxy = "http://127.0.0.1:7890";
-
+import { openApiParams, fileListStore } from "@/store/index";
+import { createTranscription } from "@/api/getData";
+import axios from "axios";
+import pdf from "@/assets/img/fileImg/pdf.png";
+import word from "@/assets/img/fileImg/word.png";
+import txt from "@/assets/img/fileImg/txt.png";
 interface person {
   name: string;
   avatar: string;
@@ -141,6 +211,7 @@ interface Message {
   voiceDuration?: any;
   gptchat?: string;
   extends?: string;
+  fileContent?: Object;
 }
 // 数据
 let messageList: Message[] = ref([]);
@@ -151,22 +222,25 @@ let acqStatus = ref(true);
 const recorder = ref(null);
 const audioChunks = ref([]);
 // 使用pinia接受参数
+// 选择聊天人的消息数据
 let selectPerson: any = usePersonStore();
 const showEmoji = ref(false);
 const recording = ref(false);
 const originParams: any = ref({});
+// 文件列表的消息数据
+const myFileList = fileListStore();
+let fileList: Array = ref([]);
+fileList.value = myFileList.fileList;
+let nowFile: Object = reactive({});
+nowFile = myFileList.nowFile;
 // 接受openApi参数
 const openApi = openApiParams();
-
 // 监听openApi参数
 watch(openApi, (newVal, oldVal) => {
   originParams.value = newVal.openApiParams;
 });
 
 // 函数
-/*
- * @Description: 点击表情
- */
 const clickEmoji = () => {
   console.log("clickEmoji");
   showEmoji.value = !showEmoji.value;
@@ -216,7 +290,7 @@ const startRecording = () => {
     .catch((error) => {
       alert(error);
     });
-}
+};
 const stopRecording = async () => {
   recorder.value.stop();
   recording.value = false;
@@ -232,21 +306,20 @@ const stopRecording = async () => {
     formData.append("temperature", "0");
     formData.append("response_format", "text");
     // todo
-    formData.append("language", 'zh');
-    createTranscription(formData, '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').then(
-      (data) => {
-        inputMsg.value = data;
-        // console.log('111');
-        // console.log(data);
-      }
-    );
-
+    formData.append("language", "zh");
+    createTranscription(
+      formData,
+      "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"
+    ).then((data) => {
+      inputMsg.value = data;
+      console.log("111");
+      console.log(data);
+    });
   };
   alert("结束录音咯");
 };
 
 // *********
-
 // 发送消息的逻辑
 const sendText = async () => {
   let message = inputMsg.value;
@@ -266,20 +339,24 @@ const sendText = async () => {
     acqStatus.value = false;
     inputMsg.value = "";
   }
-  // 调用openai
-  let result = await completion(message);
-  // 下面为测试代码
-  // messageList.push({
-  //   type: "AIreply",
-  //   content: "Explosion!!",
-  //   person: {
-  //     name: selectPerson.person.name,
-  //     avatar: selectPerson.person.headImg,
-  //     time: yueyunFormatDate(getNowTime()),
-  //   },
-  // });
-  acqStatus.value = true;
-  inputMsg.value = "";
+  // 判断是否有文件
+  nowFile = fileListStore().nowFile;
+  if (Object.keys(nowFile).length !== 0) {
+    console.log("nowFile", nowFile);
+    // 处理文件聊天的功能
+
+    let data = {
+      content: message,
+      fileName: nowFile.name,
+    };
+    fileCompletion(data);
+  } else {
+    // 调用openai
+    // console.log("111", nowFile);
+    let result = await completion(message);
+    acqStatus.value = true;
+    inputMsg.value = "";
+  }
   // 滚动条滚动到底部
   const chatContent: any = document.getElementById("chat-content");
   // 流畅滑动
@@ -314,9 +391,140 @@ const sendImg = (e: any) => {
   // 上传图片到服务器
   console.log(111);
 };
-const sendFile = (e: any) => {
+const sendFile = async (e: any) => {
   // 发送文件
   console.log(e.target.files[0]);
+  let chatMsg = {
+    type: "fileType",
+    content: e.target.files[0].name,
+    fileContent: e.target.files[0],
+    person: {
+      name: "月晕",
+      avatar: headerPng,
+      time: yueyunFormatDate(getNowTime()),
+    },
+    extends: 0, // (1word，2excel，3ppt，4pdf，5zpi, 6txt)
+  };
+  let params = new FormData();
+  let files = e.target.files[0]; // 文件
+  params.append("file", files);
+  const header = {
+    "Content-Type": "multipart/form-data",
+  };
+  if (files) {
+    switch (files.type) {
+      case "application/msword":
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        chatMsg.extends = 1;
+        break;
+      case "application/vnd.ms-excel":
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        chatMsg.extends = 2;
+        break;
+      case "application/vnd.ms-powerpoint":
+      case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        chatMsg.extends = 3;
+        break;
+      case "application/pdf":
+        chatMsg.extends = 4;
+        break;
+      case "application/zip":
+      case "application/x-zip-compressed":
+        chatMsg.extends = 5;
+        break;
+      case "text/plain":
+        chatMsg.extends = 6;
+        break;
+      default:
+        chatMsg.extends = 0;
+    }
+    // 如果文件已经存在则不发送
+    for (let i = 0; i < fileList.value.length; i++) {
+      if (fileList.value[i].name === files.name) {
+        alert("文件已存在");
+        return;
+      }
+    }
+    // 发送消息
+    messageList.value.push(chatMsg);
+    try {
+      let response = await axios({
+        url: "http://127.0.0.1:4200/uploads",
+        method: "post",
+        data: params,
+        headers: header,
+      });
+      // 回答消息
+      // messageList.push({
+      //   type: "AIreply",
+      //   content: response.data.data,
+      //   person: {
+      //     name: selectPerson.person.name,
+      //     avatar: selectPerson.person.headImg,
+      //     time: yueyunFormatDate(getNowTime()),
+      //   },
+      // });
+      let chatResMsg = {
+        type: "AIreply",
+        content: response.data.data,
+        person: {
+          name: "月晕",
+          avatar: headerPng,
+          time: yueyunFormatDate(getNowTime()),
+        },
+      };
+      // sendMsgInternal(chatResMsg);
+      messageList.value.push(chatResMsg);
+      // 判断文件是否以及在filesList中
+      let isExist = false;
+      for (let i = 0; i < fileList.value.length; i++) {
+        if (fileList.value[i].name === files.name) {
+          isExist = true;
+          break;
+        }
+      }
+      if (!isExist) {
+        if (files.type == "application/pdf") {
+          fileList.valule.push({
+            imgs: pdf,
+            name: files.name,
+            isSelect: 0,
+          });
+        } else if (
+          files.type ==
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ) {
+          fileList.value.push({
+            imgs: word,
+            name: files.name,
+            isSelect: 0,
+          });
+        } else if (files.type == "application/octet-stream") {
+          fileList.value.push({
+            imgs: txt,
+            name: files.name,
+            isSelect: 0,
+          });
+        } else {
+          // this.$message({
+          //   message: "暂不支持该文件类型(目前可支持的文件只有pdf、word、md)",
+          //   type: "warning",
+          // });
+          alert("暂不支持该文件类型(目前可支持的文件只有pdf、word、md)");
+        }
+      }
+      if (isExist) {
+        // this.$message({
+        //   message: "文件已经存在噢~",
+        //   type: "warning",
+        // });
+        alert("文件已经存在噢~");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    e.target.files = null;
+  }
 };
 
 const getOpenApiReply = async (params: any) => {
@@ -427,6 +635,33 @@ const completion = async (message: any) => {
   }
 };
 
+// 文件的问答
+const fileCompletion = async (data: any) => {
+  axios
+    .post("http://127.0.0.1:4200/chat", data)
+    .then((res) => {
+      if (res.data.code === 200) {
+        // 新增一个空消息
+        messageList.value.push({
+          type: "AIreply",
+          content: res.data.data,
+          person: {
+            name: selectPerson.person.name,
+            avatar: selectPerson.person.headImg,
+            time: yueyunFormatDate(getNowTime()),
+          },
+        });
+        acqStatus.value = true;
+      } else {
+        alert("服务器出错了~");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("服务器出错了~");
+    });
+};
+
 // 数据流
 const readStream = (reader: any) => {
   return reader.read().then(({ done, value }) => {
@@ -483,6 +718,10 @@ watch(selectPerson, () => {
   // 当改变人物的时候，清空聊天记录
   messageList.value = [];
 });
+// watch(myFileList, (value, oldvalue) => {
+//   // 发送变化时跟新数据
+//   nowFile = value.nowFile;
+// });
 </script>
 <style scoped lang="less">
 .chatMiddle {

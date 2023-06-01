@@ -237,50 +237,23 @@ router.post('/uploads', uploads.single('file'), async function (req, res, next) 
   }
 })
 
-// 保存聊天记录，并对不同的文件有不同的聊天记录
-let chatRecord = []
 
 // 查询文件内容并聊天的路由
 router.post('/chat', (req, res, next) => {
   let { content, fileName } = req.body
+  console.log(content, fileName);
   try {
-    let realRecord = []
-    // 如果聊天记录数组中不存在该文件的聊天记录，则添加该文件的聊天记录
-    if (!chatRecord.find(item => item.fileName === fileName)) {
-      chatRecord.push({
-        fileName,
-        record: []
-      })
-    }
-    // 将聊天记录添加到对应的文件中
-    chatRecord.forEach(item => {
-      if (item.fileName === fileName) {
-        realRecord = item.record
-        realRecord.push(
-          { "role": 'user', "content": content },
-        )
-      }
-    })
-    // 将realRecord数组对象转化成字符串并赋值
-    let str = ''
-    realRecord.forEach(ele => {
-      str += JSON.stringify(ele) + ','
-    })
-    str = '[' + str + ']'
     fileName = fileName.split('.')[0]
     fileName = iconv.encode(fileName, 'utf-8')
     fileName = iconv.decode(fileName, 'utf-8')
-    let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content} --chat_record ${str}`)
+    let ans = execSync(`python ${path.join(__dirname, 'main.py')} --input_file ${path.join(__dirname, `../upload/${fileName}.md`)} --file_embeding ${path.join(__dirname, `../upload/${fileName}.pkl`)} --input_query ${content}`)
     ans = iconv.decode(ans, 'gbk')
-    realRecord.push({ 'role': 'assistant', 'content': ans })
     res.send({
       code: 200,
       status: 'ok',
       data: ans
     })
   } catch (e) {
-    // token 限制则清空聊天记录
-    reaklRecord = []
     res.send({
       code: 400,
       error: e,
