@@ -181,7 +181,7 @@
   </div>
 </template>
 
-<script>
+<script>  
 import { animation, getNowTime, JCMFormatDate } from "@/util/util";
 import {
   getChatMsg,
