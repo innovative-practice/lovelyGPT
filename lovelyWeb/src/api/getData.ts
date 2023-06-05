@@ -74,7 +74,7 @@ export const getModels =  (token: string) => {
         headImg: imgArr[index],
       }
       getWord().then(res=>{
-        modelObj.detail = res
+        modelObj.detail = res.trim()
         // 刷新视图
         getCurrentInstance()?.proxy?.$forceUpdate()
       })

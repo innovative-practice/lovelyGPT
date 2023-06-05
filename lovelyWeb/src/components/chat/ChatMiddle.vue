@@ -749,7 +749,7 @@ watch(selectPerson, () => {
 
     .top {
       margin-bottom: 20px;
-
+      display: flex;
       &::after {
         content: "";
         display: block;
@@ -774,6 +774,9 @@ watch(selectPerson, () => {
           color: #fff;
           font-size: 18px;
           margin-top: 2px;
+          width: 100%;
+          // overflow: hidden;
+          height: 18px;
         }
       }
 
