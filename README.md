@@ -27,4 +27,5 @@
 - ~~chatMiddle右上方的icon需要右边距与下面的盒子保持相同的距离~~    
 - ~~在voice的tab中聊天的容器需要有右边距不能紧贴着~~
 - chatRight 的文件选择功能加上动态样式的hover效果
-
+- ICON 的选择
+- chatLeft 的聊天头像和聊天的saying需要更新
