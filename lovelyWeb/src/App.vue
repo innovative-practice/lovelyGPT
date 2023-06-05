@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import home from '@/views/home.vue'
-import '@/assets/font/font/iconfont.css'
+import home from "@/views/home.vue";
+import "@/assets/font/font/iconfont.css";
+import "@/assets/font/font/fonts.css";
 </script>
 <template>
   <div class="app">
@@ -9,13 +10,14 @@ import '@/assets/font/font/iconfont.css'
 </template>
 
 <style scoped>
+@import "@/assets/font/font/fonts.css";
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
   font-size: 25px;
   vertical-align: middle;
   color: rgb(117, 120, 137);
-  transition: .3s;
+  transition: 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -23,9 +25,8 @@ import '@/assets/font/font/iconfont.css'
 * {
   padding: 0;
   margin: 0;
-  font-family: 'SSFY';
+  font-family: "SSFY";
 }
-
 
 #app {
   width: 100%;
@@ -34,6 +35,5 @@ import '@/assets/font/font/iconfont.css'
   overflow: hidden;
   background-size: cover;
   position: absolute;
-
 }
 </style>

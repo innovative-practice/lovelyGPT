@@ -152,16 +152,16 @@ const waitMessage = () => {
   width: 90vw;
   height: 90vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-
+  // background-color: red;
   .voice-left {
     width: 40%;
     height: 74vh;
   }
 
   .voice-right {
-    width: 60%;
+    width: 50%;
     height: 74vh;
     background-color: #dfdddd;
     border-radius: 20px;
@@ -169,7 +169,7 @@ const waitMessage = () => {
     box-sizing: border-box;
     position: relative;
     left: -50px;
-
+    margin-right: 20px;
     .chat-content {
       width: 100%;
       height: 85%;

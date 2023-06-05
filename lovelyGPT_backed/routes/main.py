@@ -5,8 +5,6 @@ import pickle
 from tqdm import tqdm
 import argparse
 import os
-import re
-import sys
 # openai.api_key = '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'
 openai.api_key = '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'
 

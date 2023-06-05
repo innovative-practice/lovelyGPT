@@ -242,7 +242,6 @@ watch(openApi, (newVal, oldVal) => {
 
 // 函数
 const clickEmoji = () => {
-  console.log("clickEmoji");
   showEmoji.value = !showEmoji.value;
 };
 const sendEmoji = (emoji: string) => {
@@ -291,6 +290,7 @@ const startRecording = () => {
       alert(error);
     });
 };
+
 const stopRecording = async () => {
   recorder.value.stop();
   recording.value = false;
@@ -325,7 +325,6 @@ const sendText = async () => {
   let message = inputMsg.value;
   // 如果消息为空则不发送
   if (!message) return;
-  // console.log('sendText')
   if (inputMsg.value) {
     messageList.value.push({
       type: "text",
@@ -344,16 +343,13 @@ const sendText = async () => {
   if (Object.keys(nowFile).length !== 0) {
     console.log("nowFile", nowFile);
     // 处理文件聊天的功能
-
     let data = {
       content: message,
       fileName: nowFile.name,
     };
-    fileCompletion(data);
+    await fileCompletion(data);
   } else {
-    // 调用openai
-    // console.log("111", nowFile);
-    let result = await completion(message);
+    await completion(message);
     acqStatus.value = true;
     inputMsg.value = "";
   }
@@ -449,7 +445,7 @@ const sendFile = async (e: any) => {
     messageList.value.push(chatMsg);
     try {
       let response = await axios({
-        url: "http://127.0.0.1:4200/uploads",
+        url: "http://124.221.89.187:4200/uploads",
         method: "post",
         data: params,
         headers: header,
@@ -572,19 +568,19 @@ const getConversionAiReply = async (params) => {
   }
 };
 //组装上下文数据
-const contextualAssemblyData=()=> {
-      const conversation = [];
-      for (var chat of messageList.value) {
-        if (chat.type == "text") {
-          let my = { speaker: "user", text: chat.content };
-          conversation.push(my);
-        } else if (chat.type == "AIreply") {
-          let ai = { speaker: "agent", text: chat.content };
-          conversation.push(ai);
-        }
-      }
-      return conversation;
+const contextualAssemblyData = () => {
+  const conversation = [];
+  for (var chat of messageList.value) {
+    if (chat.type == "text") {
+      let my = { speaker: "user", text: chat.content };
+      conversation.push(my);
+    } else if (chat.type == "AIreply") {
+      let ai = { speaker: "agent", text: chat.content };
+      conversation.push(ai);
     }
+  }
+  return conversation;
+};
 
 // 回复消息的逻辑
 const completion = async (message: any) => {
@@ -619,13 +615,13 @@ const completion = async (message: any) => {
     // ];
     let conversation = contextualAssemblyData();
     params.messages = conversation.map((item) => {
-        return {
-          role: item.speaker === "user" ? "user" : "system",
-          content: item.text,
-        };
-      });
+      return {
+        role: item.speaker === "user" ? "user" : "system",
+        content: item.text,
+      };
+    });
     console.log(params.messages);
-    
+
     // 获取openApi的回复
     getConversionAiReply(params);
   } else {
@@ -638,7 +634,7 @@ const completion = async (message: any) => {
 // 文件的问答
 const fileCompletion = async (data: any) => {
   axios
-    .post("http://127.0.0.1:4200/chat", data)
+    .post("http://124.221.89.187:4200/chat", data)
     .then((res) => {
       if (res.data.code === 200) {
         // 新增一个空消息
@@ -654,7 +650,7 @@ const fileCompletion = async (data: any) => {
         acqStatus.value = true;
       } else {
         alert("服务器出错了~");
-      }   
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -676,7 +672,7 @@ const readStream = (reader: any) => {
           return;
         } else {
           const response = JSON.parse(decoded).choices[0].text;
-          
+
           // 将messageList的最后一个元素的content替换为response逐字输出
           messageList.value[messageList.value.length - 1].content += response;
         }
@@ -702,7 +698,7 @@ const chatReadStream = (reader: any) => {
           const response = JSON.parse(decoded).choices[0].delta.content
             ? JSON.parse(decoded).choices[0].delta.content
             : "";
-            
+
           // 将messageList的最后一个元素的content替换为response逐字输出
           messageList.value[messageList.value.length - 1].content += response;
         }
@@ -710,7 +706,6 @@ const chatReadStream = (reader: any) => {
     });
     return chatReadStream(reader);
   });
-  
 };
 
 // 监听
@@ -718,10 +713,6 @@ watch(selectPerson, () => {
   // 当改变人物的时候，清空聊天记录
   messageList.value = [];
 });
-// watch(myFileList, (value, oldvalue) => {
-//   // 发送变化时跟新数据
-//   nowFile = value.nowFile;
-// });
 </script>
 <style scoped lang="less">
 .chatMiddle {
@@ -790,13 +781,12 @@ watch(selectPerson, () => {
         float: right;
         margin-top: 20px;
         font-size: 25px;
-
+        margin-right: 22px;
         span {
           font-size: 25px;
-          margin-left: 30px;
+          margin-left: 20px;
           cursor: pointer;
         }
-
         // .icon-tupian {
 
         // }
