@@ -749,7 +749,9 @@ watch(selectPerson, () => {
 
     .top {
       margin-bottom: 20px;
+      width: 100%;
       display: flex;
+      justify-content: flex-end;
       &::after {
         content: "";
         display: block;
@@ -758,12 +760,13 @@ watch(selectPerson, () => {
 
       .head-pic {
         float: left;
+        margin-left: 35px;
       }
 
       .info-detail {
         float: left;
         margin: 5px 20px 0;
-
+        flex: 1;
         .name {
           font-size: 20px;
           font-weight: 600;
