@@ -7,15 +7,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { reactive, ref, onMounted } from "vue";
-// import lovely from "@/assets/liang/liang.model3.json";
-// import axios from "axios";
 let lovely = "/liang/liang.model3.json";
-// const lovely = "/assets/liang/liang.model3.json";
-// const lovely = "../../../public/liang/liang.model3.json";
-// axios.get("../../../public/liang/liang.model3.json").then((res) => {
-//   // console.log(res)
-//   lovely.value = res.data;
-// });
 const liang_warpper = document.getElementById("liang");
 const liang = async () => {
   const app = new PIXI.Application({

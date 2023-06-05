@@ -288,4 +288,29 @@ router.get('/toVoice/:text', async (req, res, next) => {
   }
 })
 
+// 请求图片的路由
+router.get('/getImg', async (req, res, next) => {
+  // 请求public文件夹下img下的所有图片
+  try{
+    let imgList = fs.readdirSync(path.join(__dirname, '../public/img'))
+  // console.log(imgList)
+  // 将图片的路径拼接成一个数组
+    let imgPathList = imgList.map(item => {
+      return `http://124.221.89.187:4200/img/${item}`
+    })
+    res.send({
+      code: 200,
+      status: 'ok',
+      data: imgPathList
+    })
+  } catch (err) {
+    console.log('error',err.message)
+    res.send({
+      code: 400,
+      status: 'error',
+      data: '出错辣'
+    })
+  }
+})
+
 module.exports = router;
