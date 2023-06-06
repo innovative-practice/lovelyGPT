@@ -39,9 +39,8 @@ let personList: any = ref([]);
 let personListCache: any = ref([]);
 let pcCurrent = ref();
 onMounted(async () => {
-  personList.value = await getModels(
-    "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"
-  );
+  personList.value = await getModels();
+  console.log(personList.value);
   personListCache.value = personList.value;
   // pcCurrent.value = personList.value[0].id
 });

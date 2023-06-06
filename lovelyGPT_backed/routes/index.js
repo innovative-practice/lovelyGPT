@@ -188,6 +188,21 @@ async function ToVoice(text) {
   }
 }
 
+function getWord () {
+  return axios.get('https://v1.hitokoto.cn/', {
+    headers: {
+      'Content-Type': 'application/json'
+    }})
+    .then(res =>{
+      return res.data.hitokoto
+    })
+    .catch(err => {
+      console.log(err)
+  })
+}
+
+
+
 /* GET home page. */
 // 访问主页的路由
 router.get('/', function (req, res, next) {
@@ -304,6 +319,59 @@ router.get('/getImg', async (req, res, next) => {
       data: imgPathList
     })
   } catch (err) {
+    console.log('error',err.message)
+    res.send({
+      code: 400,
+      status: 'error',
+      data: '出错辣'
+    })
+  }
+})
+
+// 请求模型的路由 (在服务器上完成请求防止因为用户没开梯子导致进步去)
+// TODO 2023 6/6
+router.get('/getModels',async(req,res,next)=>{
+  console.log('getModels')
+  try{
+    const respon = await axios.get('https://api.openai.com/v1/models',{
+      headers:{
+        'Authorization': 'Bearer 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',
+        'Content-Type': 'application/json'
+      },
+      proxy:{
+        host:'127.0.0.1',
+        port:7890,
+        protocol:'http'
+      }
+    })
+    // console.log(respon.data.data)
+    // 获取图片
+    const imgList = fs.readdirSync(path.join(__dirname, '../public/img'))
+    // 将图片的路径拼接成一个数组
+    let imgPathList = imgList.map(item => {
+      return `http://124.221.89.187:4200/img/${item}`
+    })
+    const modelObj = []
+    // 获取所有模型
+    const models = [...new Set(respon.data.data.map(item=>item.id))].sort()
+    for (const [index, model] of models.entries()) {
+      let obj = {
+        img: imgPathList[index],
+        name: model,
+        detail: 'EXPlOSION',
+        lastMsg: model + "模型",
+        id: model,
+        headImg: imgPathList[index],
+      }
+      obj.detail = await getWord()
+      modelObj.push(obj)
+    }
+    res.send({
+      code: 200,
+      status: 'ok',
+      data: modelObj
+    })
+  } catch(err){
     console.log('error',err.message)
     res.send({
       code: 400,
