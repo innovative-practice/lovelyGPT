@@ -38,17 +38,22 @@ let modelSearch = ref("");
 let personList: any = ref([]);
 let personListCache: any = ref([]);
 let pcCurrent = ref();
-onMounted(async () => {
-  personList.value = await getModels();
-  console.log(personList.value);
-  personListCache.value = personList.value;
-  // pcCurrent.value = personList.value[0].id
-});
-
 // 使用pinia传递参数
 const selectPerson = usePersonStore();
 // 传递给中间组件的数据 <storeToRefs> 做成响应式
 let toPerson = storeToRefs(selectPerson);
+onMounted(async () => {
+  if (selectPerson.personList.length == 0) {
+    personList.value = await getModels();
+    selectPerson.personList = personList.value;
+    // 将数据存入缓存
+    console.log(personList.value);
+    personListCache.value = personList.value;
+  } else {
+    personList.value = selectPerson.personList;
+    personListCache.value = selectPerson.personList;
+  }
+});
 
 // 点击函数
 const clickPerson = (personInfo: any) => {

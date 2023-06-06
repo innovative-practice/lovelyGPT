@@ -175,9 +175,10 @@
       </div>
     </div>
     <div v-else class="choose">
-      <div class="choose-main">
+      <div class="choose-main" v-if="!loading">
         <span>Please choose the model !</span>
       </div>
+      <div v-else><span>loading...</span></div>
     </div>
   </div>
 </template>
@@ -217,6 +218,9 @@ interface Message {
 let messageList: Message[] = ref([]);
 let inputMsg = ref("");
 let acqStatus = ref(true);
+
+// 加载的动画
+let loading = ref(true);
 
 // 定义录音
 const recorder = ref(null);
@@ -305,7 +309,6 @@ const stopRecording = async () => {
     formData.append("model", "whisper-1");
     formData.append("temperature", "0");
     formData.append("response_format", "text");
-    // todo
     formData.append("language", "zh");
     createTranscription(
       formData,
@@ -712,6 +715,10 @@ const chatReadStream = (reader: any) => {
 watch(selectPerson, () => {
   // 当改变人物的时候，清空聊天记录
   messageList.value = [];
+  // 当人物不为空的时候loading 改称flase
+  if (selectPerson.person.id !== "") {
+    loading.value = false;
+  }
 });
 </script>
 <style scoped lang="less">
