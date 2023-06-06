@@ -23,7 +23,7 @@ export const getVoice = (message: string) => {
 
 // 获取模型列表
 export const getModels =  () => {
-  return axios.get(`${baseUrl}/getModels`, {
+  return axios.get(`${proDuctUrl}/getModels`, {
     headers: {
       'Content-Type': 'application/json',
   }}).then(res => {
