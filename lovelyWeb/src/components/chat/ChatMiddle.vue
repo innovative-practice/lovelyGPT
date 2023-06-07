@@ -176,15 +176,36 @@
     </div>
     <div v-else class="choose">
       <div class="choose-main" v-if="!loading">
-        <span>Please choose the model !</span>
+        <div class="choose-main-top">P<span>l</span>ea<span>s</span>e</div>
+        <div class="choose-main-middle">Ch<span>oo</span>se</div>
+        <div class="choose-main-bottom">
+          <span>T</span>he <span>M</span>o<span>dd</span>le
+        </div>
       </div>
-      <div v-else><span>loading....</span></div>
+      <div v-else class="loading-wrapper">
+        <div class="loading-gif">
+          <img :src="loadingGif" alt="可爱捏" />
+        </div>
+        <div class="loading">
+          <div class="loading-letter">L</div>
+          <div class="loading-letter">O</div>
+          <div class="loading-letter">A</div>
+          <div class="loading-letter">D</div>
+          <div class="loading-letter">I</div>
+          <div class="loading-letter">N</div>
+          <div class="loading-letter">D</div>
+          <div class="loading-letter">.</div>
+          <div class="loading-letter">.</div>
+          <div class="loading-letter">.</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // @ts-nocheck
+import loadingGif from "@/assets/img/loading.gif";
 import { reactive, ref, watch } from "vue";
 import HeadPortrait from "../litter/HeadPortrait.vue";
 import Emoji from "@/components/Emoji.vue";
@@ -549,6 +570,7 @@ const getOpenApiReply = async (params: any) => {
 };
 
 // 有上下文的openai回复
+// TODO 需要转到服务器端
 const getConversionAiReply = async (params) => {
   try {
     await fetch("https://api.openai.com/v1/chat/completions", {
@@ -1007,14 +1029,136 @@ watch(selectPerson, () => {
   width: 100%;
   height: 100%;
   display: flex;
-  margin-top: 10vh;
-  align-items: flex-start;
-  // align-items: center;
+  margin-top: -10vh;
+  // align-items: flex-start;
+  align-items: center;
   justify-content: center;
 
   .choose-main {
-    font-size: 40px;
-    color: rgb(200, 71, 50);
+    font-size: 50px;
+    // color: rgb(240, 61, 34);
+    // 字母间距
+    font-weight: bold;
+    letter-spacing: 5px;
+    .choose-main-top {
+      color: #fff;
+      font-size: 80px;
+      letter-spacing: 20px;
+      // 取第二个字母
+      span:nth-child(1) {
+        color: rgba(32, 205, 248, 0.733);
+        font-size: 85px;
+      }
+      span:nth-child(2) {
+        color: rgb(243, 235, 120);
+        font-size: 85px;
+      }
+    }
+    .choose-main-middle {
+      margin-top: 20px;
+      font-size: 70px;
+      color: #fff;
+      letter-spacing: 3px;
+      span {
+        color: rgb(243, 235, 120);
+        font-size: 70px;
+      }
+    }
+    .choose-main-bottom {
+      margin-top: 20px;
+      font-size: 68px;
+      color: #fff;
+      letter-spacing: 3px;
+      span:nth-child(1) {
+        color: rgb(32, 205, 248);
+        font-size: 78px;
+      }
+      span:nth-child(2) {
+        color: rgb(243, 235, 120);
+        font-size: 78px;
+      }
+      span:nth-child(3) {
+        color: rgb(240, 61, 34);
+        font-size: 75px;
+      }
+    }
+  }
+  .loading-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .loading-gif {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+      margin-bottom: 60px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+      }
+    }
+    .loading {
+      display: flex;
+      font-size: 60px;
+      color: #fff;
+      letter-spacing: 10px;
+      .loading-letter:nth-child(1) {
+        color: rgb(32, 205, 248);
+        // font-size: 70px;
+        animation: loading 1s infinite;
+        animation-delay: 0;
+      }
+      .loading-letter:nth-child(2) {
+        color: rgb(243, 235, 120);
+        // font-size: 70px;
+        animation: loading 1s infinite;
+        animation-delay: 0.05s;
+      }
+      .loading-letter:nth-child(3) {
+        color: rgb(240, 61, 34);
+        // font-size: 70px;
+        animation: loading 1s infinite;
+        animation-delay: 0.1s;
+      }
+      .loading-letter:nth-child(4) {
+        color: rgb(32, 205, 248);
+        animation: loading 1s infinite;
+        animation-delay: 0.15s;
+      }
+      .loading-letter:nth-child(5) {
+        color: rgb(243, 235, 120);
+        animation: loading 1s infinite;
+        animation-delay: 0.2s;
+      }
+      .loading-letter:nth-child(6) {
+        color: rgb(240, 61, 34);
+        animation: loading 1s infinite;
+        animation-delay: 0.25s;
+      }
+      .loading-letter:nth-child(7) {
+        color: rgb(32, 205, 248);
+        animation: loading 1s infinite;
+        animation-delay: 0.3s;
+      }
+      .loading-letter:nth-child(8) {
+        color: rgb(243, 235, 120);
+        animation: loading 1s infinite;
+        animation-delay: 0.35s;
+      }
+      .loading-letter:nth-child(9) {
+        color: rgb(240, 61, 34);
+        animation: loading 1s infinite;
+        animation-delay: 0.4s;
+      }
+      .loading-letter:nth-child(10) {
+        color: rgb(32, 205, 248);
+        animation: loading 1s infinite;
+        animation-delay: 0.45s;
+      }
+    }
   }
 }
 .chat-img {
@@ -1051,6 +1195,17 @@ watch(selectPerson, () => {
       margin-right: 10px;
       vertical-align: middle;
     }
+  }
+}
+@keyframes loading {
+  0% {
+    margin-top: 0px;
+  }
+  50% {
+    margin-top: -30px;
+  }
+  100% {
+    margin-top: 0px;
   }
 }
 </style>
