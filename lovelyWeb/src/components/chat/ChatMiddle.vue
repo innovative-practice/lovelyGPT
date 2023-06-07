@@ -178,7 +178,7 @@
       <div class="choose-main" v-if="!loading">
         <span>Please choose the model !</span>
       </div>
-      <div v-else><span>loading...</span></div>
+      <div v-else><span>loading....</span></div>
     </div>
   </div>
 </template>
@@ -611,11 +611,6 @@ const completion = async (message: any) => {
     selectPerson.person.id == "gpt-3.5-turbo" ||
     selectPerson.person.id === "gpt-3.5-turbo-0301"
   ) {
-    // 具有上下文的gpt3.5
-    // params.messages = [
-    //   { role: "system", content: sysmsg.value },
-    //   { role: "user", content: message },
-    // ];
     let conversation = contextualAssemblyData();
     params.messages = conversation.map((item) => {
       return {
@@ -623,8 +618,6 @@ const completion = async (message: any) => {
         content: item.text,
       };
     });
-    console.log(params.messages);
-
     // 获取openApi的回复
     getConversionAiReply(params);
   } else {

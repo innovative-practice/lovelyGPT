@@ -29,3 +29,7 @@
 - chatRight 的文件选择功能加上动态样式的hover效果 （懒的改了）
 - ~~ICON 的选择~~
 - ~~chatLeft 的聊天头像和聊天的saying需要更新~~
+- loading动画
+- 请求更改
+- 样式优化
+- 待续...
