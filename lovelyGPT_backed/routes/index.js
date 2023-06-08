@@ -381,4 +381,28 @@ router.get('/getModels',async(req,res,next)=>{
   }
 })
 
+// 翻译的路由
+router.get('/translate',async(req,res,next)=>{
+  // 取text参数
+  const {text} = req.query
+  text.trim()
+  console.log(text)
+  try{
+    // 调用百度翻译api
+    let result = await baiduTra(text)
+    res.send({
+      code: 200,
+      status: 'ok',
+      data: result
+    })
+  } catch(err) {
+    console.log('error',err.message)
+    res.send({
+      code: 400,
+      status: 'error',
+      data: '出错辣'
+    })
+  }
+})
+
 module.exports = router;
