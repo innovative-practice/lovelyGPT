@@ -220,6 +220,7 @@ import axios from "axios";
 import pdf from "@/assets/img/fileImg/pdf.png";
 import word from "@/assets/img/fileImg/word.png";
 import txt from "@/assets/img/fileImg/txt.png";
+import { fa } from "element-plus/es/locale";
 interface person {
   name: string;
   avatar: string;
@@ -249,6 +250,11 @@ const audioChunks = ref([]);
 // 使用pinia接受参数
 // 选择聊天人的消息数据
 let selectPerson: any = usePersonStore();
+(() => {
+  if (selectPerson.personList.length != 0) {
+    loading.value = false;
+  }
+})();
 const showEmoji = ref(false);
 const recording = ref(false);
 const originParams: any = ref({});
@@ -296,7 +302,6 @@ const sendEmoji = (emoji: string) => {
     behavior: "smooth",
   });
 };
-// *******
 // 语音输入的逻辑
 const startRecording = () => {
   navigator.mediaDevices
@@ -315,7 +320,6 @@ const startRecording = () => {
       alert(error);
     });
 };
-
 const stopRecording = async () => {
   recorder.value.stop();
   recording.value = false;
@@ -342,8 +346,6 @@ const stopRecording = async () => {
   };
   alert("结束录音咯");
 };
-
-// *********
 // 发送消息的逻辑
 const sendText = async () => {
   let message = inputMsg.value;
@@ -385,7 +387,6 @@ const sendText = async () => {
     behavior: "smooth",
   });
 };
-
 const waitMessage = () => {
   // 等待消息
   console.log("waitMessage");
@@ -546,7 +547,6 @@ const sendFile = async (e: any) => {
     e.target.files = null;
   }
 };
-
 const getOpenApiReply = async (params: any) => {
   // 获取openApi的回复
   // console.log(originParams.value.apiKey);
@@ -568,9 +568,7 @@ const getOpenApiReply = async (params: any) => {
     console.log(err.message);
   }
 };
-
 // 有上下文的openai回复
-// TODO 需要转到服务器端
 const getConversionAiReply = async (params) => {
   try {
     await fetch("https://api.openai.com/v1/chat/completions", {

@@ -200,12 +200,15 @@ const postParams = () => {
   height: 90vh;
 
   // overflow: hidden;
+  .login-video {
+    padding: 0px 8px;
+  }
   #myVideo {
     width: 100%;
     height: auto;
     margin-top: 10px;
     // 右上角设置圆角
-    border-top-right-radius: 8px;
+    border-radius: 8px;
   }
 
   .title {

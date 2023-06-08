@@ -69,12 +69,7 @@
 <script setup lang="ts">
 import Liang from "@/components/litter/liang.vue";
 import LitterChat from "@/components/litter/LitterChat.vue";
-import {
-  animation,
-  getNowTime,
-  yueyunFormatDate,
-  getMP3Duration,
-} from "@/util/index";
+import { getNowTime, yueyunFormatDate, getMP3Duration } from "@/util/index";
 import { reactive, ref } from "vue";
 import headerPng from "@/assets/img/header.png";
 import LitterVoice from "@/components/litter/LitterVoice.vue";
@@ -113,8 +108,8 @@ const sendText = async () => {
     acqStatus.value = false;
     inputMsg.value = "";
     try {
+      console.log(message);
       const res: any = await getVoice(message);
-      console.log(res);
       const mp3Duration = await getMP3Duration(res.voicePath);
       messageList.push({
         type: "video",
