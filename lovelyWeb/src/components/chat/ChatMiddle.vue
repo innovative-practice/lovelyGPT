@@ -303,8 +303,9 @@ const sendEmoji = (emoji: string) => {
   });
 };
 // 语音输入的逻辑
-const startRecording = () => {
-  navigator.mediaDevices
+const startRecording = async () => {
+  // 兼容
+  await navigator.mediaDevices
     .getUserMedia({ audio: true })
     .then((stream) => {
       recorder.value = new MediaRecorder(stream);
