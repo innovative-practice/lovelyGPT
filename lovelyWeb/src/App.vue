@@ -10,7 +10,6 @@ import "@/assets/font/font/fonts.css";
 </template>
 
 <style scoped>
-@import "@/assets/font/font/fonts.css";
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
@@ -25,7 +24,7 @@ import "@/assets/font/font/fonts.css";
 * {
   padding: 0;
   margin: 0;
-  font-family: "SSFY";
+  font-family: "SSFY" !important;
 }
 
 #app {

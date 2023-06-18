@@ -4,6 +4,7 @@ export const usePersonStore = defineStore({
   state: () => {
     return {
       person: {},
+      personList: [],
     };
   },
 });

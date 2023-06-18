@@ -4,7 +4,6 @@
       <h1>AI问答系统</h1>
     </div>
     <div class="online-person" style="margin-top: 5%">
-      <!--暂时注释掉“模型列表”四个字<span class="onlin-text">模型列表</span>-->
       <input
         class="inputs"
         v-model="modelSearch"
@@ -27,7 +26,6 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import { reactive, ref, onMounted, watch } from "vue";
 import PersonCard from "../litter/PersonCard.vue";
@@ -38,17 +36,21 @@ let modelSearch = ref("");
 let personList: any = ref([]);
 let personListCache: any = ref([]);
 let pcCurrent = ref();
-onMounted(async () => {
-  personList.value = await getModels();
-  console.log(personList.value);
-  personListCache.value = personList.value;
-  // pcCurrent.value = personList.value[0].id
-});
-
 // 使用pinia传递参数
 const selectPerson = usePersonStore();
 // 传递给中间组件的数据 <storeToRefs> 做成响应式
 let toPerson = storeToRefs(selectPerson);
+onMounted(async () => {
+  if (selectPerson.personList.length == 0) {
+    // 将数据存入缓存 防止重复加载数据捏
+    personList.value = await getModels();
+    selectPerson.personList = personList.value;
+    personListCache.value = personList.value;
+  } else {
+    personList.value = selectPerson.personList;
+    personListCache.value = selectPerson.personList;
+  }
+});
 
 // 点击函数
 const clickPerson = (personInfo: any) => {
